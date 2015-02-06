@@ -2,15 +2,13 @@
 #define _TEMPLATEAPPLICATION_H_
 
 #include "Application.h"
-#define GLM_SWIZZLE
-#include "glm/glm.hpp"
-#include "glm/ext.hpp"
 
 class TemplateApplication : public Application
 {
 private:
 	float timer;
-	glm::mat4 ProjectionMatrix;
+	//glm::mat4 ProjectionMatrix;
+	//glm::mat4 ViewMatrix;
 
 public:
 	virtual ~TemplateApplication();

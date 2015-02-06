@@ -2,15 +2,17 @@
 #define _CAMERAANDPROJECTIONS_H_
 
 #include "Application.h"
-#define GLM_SWIZZLE
-#include "glm/glm.hpp"
-#include "glm/ext.hpp"
+
+class Camera;
+class FlyCamera;
 
 class CameraAndProjections : public Application
 {
 private:
-	float timer;
+	float previousTime;
 	glm::mat4 ProjectionMatrix;
+	//Camera* sceneCamera;
+	//FlyCamera* flyCamera;
 
 public:
 	virtual ~CameraAndProjections();

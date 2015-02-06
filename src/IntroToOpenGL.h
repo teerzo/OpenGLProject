@@ -2,9 +2,7 @@
 #define _INTROTOOPENGL_H_
 
 #include "Application.h"
-#define GLM_SWIZZLE
-#include "glm/glm.hpp"
-#include "glm/ext.hpp"
+
 using glm::vec2;
 using glm::vec3;
 using glm::vec4;

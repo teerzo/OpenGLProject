@@ -32,8 +32,8 @@ bool TemplateApplication::startup()
 	Gizmos::create();
 
 
-	ProjectionMatrix = glm::perspective(glm::radians(80.0f), 1280.0f / 720.0f, 0.1f, 1000.0f);
-
+	//ProjectionMatrix = glm::perspective(glm::radians(80.0f), 1280.0f / 720.0f, 0.1f, 1000.0f);
+	//ViewMatrix = glm::lookAt(glm::vec3(10, 10, 10), glm::vec3(0, 0, 0), vec3(0, 1, 0));
 
 	glfwSetTime(0.0);
 
@@ -65,6 +65,8 @@ bool TemplateApplication::update()
 
 void TemplateApplication::draw()
 {
+	
+
 	glfwSwapBuffers(this->window);
 	glfwPollEvents();
 }
