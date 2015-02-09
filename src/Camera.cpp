@@ -93,8 +93,8 @@ void FlyCamera::update(float a_deltaTime)
 		x_delta /= (width / 2);
 		y_delta /= (height / 2);
 
-		x_delta *= -10 * a_deltaTime;
-		y_delta *= -10 * a_deltaTime;
+		x_delta *= -100 * a_deltaTime;
+		y_delta *= -100 * a_deltaTime;
 
 
 		//x_delta -= ()
@@ -111,15 +111,12 @@ void FlyCamera::update(float a_deltaTime)
 			m_mWorldTransform[0] = rot * m_mWorldTransform[0];
 			m_mWorldTransform[1] = rot * m_mWorldTransform[1];
 			m_mWorldTransform[2] = rot * m_mWorldTransform[2];
-
-
 		}
 		if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
 		{
 			// Reset
 			m_mViewTransform = glm::lookAt(glm::vec3(10, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 		}
-
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		{
 			// move forward
@@ -150,13 +147,11 @@ void FlyCamera::update(float a_deltaTime)
 			// move forward
 			m_mWorldTransform[3] += m_mWorldTransform[1] * m_fSpeed * a_deltaTime;
 		}
-		
 	}
 	else
 	{
 		//setPosition(glm::vec3(0, 0, 0));
 	}
-
 }
 void FlyCamera::setSpeed(float a_speed)
 {
