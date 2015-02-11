@@ -1,9 +1,10 @@
 #include "CameraAndProjections.h"
+#include "RenderingGeometry.h"
 
 int main(int argc, char *argv[])
 {
-	CameraAndProjections app;
-		
+	//CameraAndProjections app;
+	RenderingGeometry app;
 	// sets the name and screen size of the app
 	app.setDefaults();
 
