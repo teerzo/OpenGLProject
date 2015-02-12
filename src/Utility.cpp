@@ -29,16 +29,16 @@ bool LoadShader(char* vertex_filename, char* fragment_filename, GLuint* Program 
 		char* vs_source = new char[vertex_file_length];
 		char* fs_source = new char[fragment_file_length];
 		
-		fread(vs_source, 1, vertex_file_length, vertex_file);
-		fread(fs_source, 1, fragment_file_length, fragment_file);
+		vertex_file_length = fread(vs_source, 1, vertex_file_length, vertex_file);
+		fragment_file_length = fread(fs_source, 1, fragment_file_length, fragment_file);
 
 		// $$ Shader Load code here
 		unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 		unsigned int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
-		glShaderSource(vertex_shader, 1, &vs_source, 0);
+		glShaderSource(vertex_shader, 1, &vs_source, &vertex_file_length);
 		glCompileShader(vertex_shader);
-		glShaderSource(fragment_shader, 1, &fs_source, 0);
+		glShaderSource(fragment_shader, 1, &fs_source, &fragment_file_length);
 		glCompileShader(fragment_shader);
 
 		*Program = glCreateProgram();

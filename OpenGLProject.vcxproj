@@ -41,13 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>./deps/glfw/lib-vc2013;./deps/glm;$(LibraryPath)</LibraryPath>
-    <IncludePath>./deps/glfw/include/GLFW;./deps/glm;$(IncludePath)</IncludePath>
+    <LibraryPath>./deps/glfw/lib-vc2013;./deps/glm;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
+    <IncludePath>./deps/glfw/include/GLFW;./deps/glm;./deps/FBXLoader;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>./deps/glfw/lib-vc2013;./deps/glm;$(LibraryPath)</LibraryPath>
-    <IncludePath>./deps/glfw/include/GLFW;./deps/glm;$(IncludePath)</IncludePath>
+    <LibraryPath>./deps/glfw/lib-vc2013;./deps/glm;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
+    <IncludePath>./deps/glfw/include/GLFW;./deps/glm;./deps/FBXLoader;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -61,7 +61,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;OpenGL32.lib;FBXLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -80,11 +80,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glfw3.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;OpenGL32.lib;FBXLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\BasicLighting.cpp" />
+    <ClCompile Include="src\BasicTexturing.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\CameraAndProjections.cpp" />
     <ClCompile Include="src\Entity.cpp" />
@@ -99,6 +101,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\BasicLighting.h" />
+    <ClInclude Include="src\BasicTexturing.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\CameraAndProjections.h" />
     <ClInclude Include="src\Entity.h" />
@@ -119,6 +123,10 @@
     <None Include="data\shaders\BasicVertex.glsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </None>
+    <None Include="data\shaders\Lighting_fragment.glsl" />
+    <None Include="data\shaders\Lighting_vertex.glsl" />
+    <None Include="data\shaders\TexturedFragment.glsl" />
+    <None Include="data\shaders\TexturedVertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

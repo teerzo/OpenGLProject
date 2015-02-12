@@ -19,17 +19,62 @@
     <Filter Include="Projects">
       <UniqueIdentifier>{270386b8-605e-4212-b17d-a25bb3acfe1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Projects\CamerasAndProjections">
-      <UniqueIdentifier>{9c80129f-00a8-46c3-acb1-8953884f094d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\IntroToOpenGL">
+    <Filter Include="Projects\01IntroToOpenGL">
       <UniqueIdentifier>{50a86e46-af0e-43d5-97b3-26e431413a10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Projects\RenderingGeometry">
+    <Filter Include="Projects\02CamerasAndProjections">
+      <UniqueIdentifier>{9c80129f-00a8-46c3-acb1-8953884f094d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\03RenderingGeometry">
       <UniqueIdentifier>{539e70de-11e4-4767-88c8-237cd3670ee4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Projects\Template">
+    <Filter Include="Projects\04BasicTexturing">
+      <UniqueIdentifier>{43d07c04-23e7-4d7c-ac95-9136aecdf3eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\05Lighting">
+      <UniqueIdentifier>{12535df6-f25f-4887-b23c-6a10181b8c25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\00Template">
       <UniqueIdentifier>{9a21c5de-bf21-4c14-bbec-f450ce23773e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\06 Advanced Texturing">
+      <UniqueIdentifier>{33616142-b997-42af-86ef-2805d16045c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\07 Animation">
+      <UniqueIdentifier>{6d954b5b-b366-4c6e-bb00-400c2129d138}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\08 Particle Systems">
+      <UniqueIdentifier>{f39de31a-92d8-4f54-b189-cdad1144adbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\09 GPU Particle Systems">
+      <UniqueIdentifier>{7c0c80ac-89ef-43b5-8799-7bedb3b028ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\10 Scene Management">
+      <UniqueIdentifier>{108a24f9-bbf4-434f-bf27-7dd16b0d70ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\11 Render Targets">
+      <UniqueIdentifier>{452ca53f-ce28-4745-b70b-6323d742a5bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\12 Post-Processing">
+      <UniqueIdentifier>{dc887094-4897-4c13-80f0-c26ab6c8e593}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\13 Shadows">
+      <UniqueIdentifier>{d9c272f6-cb04-4cd2-af63-74d833fe7af7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\14 Deferred Rendering">
+      <UniqueIdentifier>{72e7e679-c218-407c-bc88-9d684efcb219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\15 Procedural Generation">
+      <UniqueIdentifier>{7e05228c-ed69-48a4-a3aa-fc4f500e63b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\16 Physically-Based Lighting">
+      <UniqueIdentifier>{2fda9105-e8db-424d-a99b-0f8ca1717f1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\17 Image-Based Lighting">
+      <UniqueIdentifier>{4ecf3407-7b60-45e6-97ae-185773df28d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\18 Bonus - GUI Interfaces">
+      <UniqueIdentifier>{a476b69d-cca6-464e-bf80-4b4707d8a170}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,7 +82,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TemplateApplication.cpp">
-      <Filter>Projects\Template</Filter>
+      <Filter>Projects\00Template</Filter>
     </ClCompile>
     <ClCompile Include="src\Entity.cpp">
       <Filter>Source Files</Filter>
@@ -46,13 +91,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CameraAndProjections.cpp">
-      <Filter>Projects\CamerasAndProjections</Filter>
+      <Filter>Projects\02CamerasAndProjections</Filter>
     </ClCompile>
     <ClCompile Include="src\IntroToOpenGL.cpp">
-      <Filter>Projects\IntroToOpenGL</Filter>
+      <Filter>Projects\01IntroToOpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\RenderingGeometry.cpp">
-      <Filter>Projects\RenderingGeometry</Filter>
+      <Filter>Projects\03RenderingGeometry</Filter>
     </ClCompile>
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\gl_core_4_4.c">
@@ -65,7 +110,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Application.cpp">
-      <Filter>Projects\Template</Filter>
+      <Filter>Projects\00Template</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BasicTexturing.cpp">
+      <Filter>Projects\04BasicTexturing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BasicLighting.cpp">
+      <Filter>Projects\05Lighting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -76,10 +127,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\CameraAndProjections.h">
-      <Filter>Projects\CamerasAndProjections</Filter>
+      <Filter>Projects\02CamerasAndProjections</Filter>
     </ClInclude>
     <ClInclude Include="src\IntroToOpenGL.h">
-      <Filter>Projects\IntroToOpenGL</Filter>
+      <Filter>Projects\01IntroToOpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Entity.h">
       <Filter>Header Files</Filter>
@@ -88,10 +139,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderingGeometry.h">
-      <Filter>Projects\RenderingGeometry</Filter>
+      <Filter>Projects\03RenderingGeometry</Filter>
     </ClInclude>
     <ClInclude Include="src\TemplateApplication.h">
-      <Filter>Projects\Template</Filter>
+      <Filter>Projects\00Template</Filter>
     </ClInclude>
     <ClInclude Include="src\glm_header.h">
       <Filter>Header Files</Filter>
@@ -106,7 +157,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Application.h">
-      <Filter>Projects\Template</Filter>
+      <Filter>Projects\00Template</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicTexturing.h">
+      <Filter>Projects\04BasicTexturing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicLighting.h">
+      <Filter>Projects\05Lighting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +171,18 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="data\shaders\BasicVertex.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\TexturedVertex.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\TexturedFragment.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\Lighting_vertex.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\Lighting_fragment.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
