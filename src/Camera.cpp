@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include <glfw3.h>
+#include "Gizmos.h"
 
 Camera::Camera()
 {
@@ -19,6 +20,10 @@ void Camera::update(float a_deltaTime)
 {
 	m_mViewTransform = glm::inverse(m_mWorldTransform);
 	updateProjectionViewTransform();
+	
+
+	//Gizmos::addAABB(getPosition(), glm::vec3(1.2, 1.2, 1.2), color.Red);
+	//Gizmos::addLine(m_vListofCameras[i]->getPosition(), m_vListofCameras[i]->getPosition() + (m_vListofCameras[i]->getForward() * -2), color.Blue);
 
 }
 void Camera::setPerspective(float a_FOV, float a_aspectRatio, float a_near, float a_far)
@@ -63,8 +68,16 @@ glm::vec3 Camera::getForward()
 	temp.z *= 1;
 	return temp;
 }
-// FLY Camera
 
+glm::vec3 Camera::getRight()
+{
+	glm::vec3 temp;
+	temp = m_mWorldTransform[0].xyz;
+	temp.x *= 1;
+	return temp;
+}
+
+// FLY Camera
 FlyCamera::FlyCamera()
 {
 	printf("$Fly");
@@ -75,8 +88,18 @@ void FlyCamera::update(float a_deltaTime)
 {
 	Camera::update( a_deltaTime );
 
+	glm::mat4 temp = this->getWorldTransform();
+	//temp[2][2] += 20.0f;
+	temp[3].xyz += (this->getForward() * -2); // + (this->getRight() * 1.5);
+	temp *= -1;
+	Gizmos::addTransform(temp, 1.0f);
+
+	//Gizmos::addLine(getPosition(), getPosition() + (getForward() * -2), color.Blue);
+
 	if (m_bIsSelected)
 	{
+	
+
 		// Check w,a,s,d and mouse
 		// move camera
 		GLFWwindow* window = glfwGetCurrentContext();
@@ -146,6 +169,10 @@ void FlyCamera::update(float a_deltaTime)
 		{
 			// move forward
 			m_mWorldTransform[3] += m_mWorldTransform[1] * m_fSpeed * a_deltaTime;
+		}
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		{
+			m_mWorldTransform[3].y += m_fSpeed * a_deltaTime;
 		}
 	}
 	else

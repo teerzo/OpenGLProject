@@ -11,6 +11,15 @@ struct Vertex
 	//glm::vec4 Normal;
 };
 
+struct VertexNormal
+{
+	glm::vec4 Position;
+	glm::vec4 Normal;
+	glm::vec4 Tangent;
+	glm::vec2 UV;
+
+};
+
 
 
 #endif _VERTEX_H_

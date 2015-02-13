@@ -26,6 +26,7 @@ public:
 	glm::mat4 getProjectionView();
 	glm::vec3 getPosition();
 	glm::vec3 getForward();
+	glm::vec3 getRight();
 
 
 	bool m_bIsSelected;
@@ -43,8 +44,21 @@ public:
 	void update(float a_deltaTime);
 	void setSpeed(float a_speed);
 	float getSpeed();
-
 	
+};
+
+class SpotLightCamera : public FlyCamera
+{
+private:
+	//float m_fSpeed;
+	//glm::vec3 m_vUp;
+
+
+public:
+	SpotLightCamera();
+	//void update(float a_deltaTime);
+	//void setSpeed(float a_speed);
+	//float getSpeed();
 
 };
 

@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Resource Files\Shaders">
-      <UniqueIdentifier>{b7834e83-6abb-4bdf-958f-286a37691d95}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Projects">
       <UniqueIdentifier>{270386b8-605e-4212-b17d-a25bb3acfe1e}</UniqueIdentifier>
     </Filter>
@@ -76,6 +73,12 @@
     <Filter Include="Projects\18 Bonus - GUI Interfaces">
       <UniqueIdentifier>{a476b69d-cca6-464e-bf80-4b4707d8a170}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\models">
+      <UniqueIdentifier>{5f3b4a2a-9717-4088-8b96-7bb2e7d6972d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders">
+      <UniqueIdentifier>{b7834e83-6abb-4bdf-958f-286a37691d95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Gizmos.cpp">
@@ -106,9 +109,6 @@
     <ClCompile Include="src\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Application.cpp">
       <Filter>Projects\00Template</Filter>
     </ClCompile>
@@ -118,11 +118,13 @@
     <ClCompile Include="src\BasicLighting.cpp">
       <Filter>Projects\05Lighting</Filter>
     </ClCompile>
+    <ClCompile Include="src\tiny_obj_loader.cc" />
+    <ClCompile Include="src\Utility.cpp" />
+    <ClCompile Include="src\AdvancedTexturing.cpp">
+      <Filter>Projects\06 Advanced Texturing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\gl_core_4_4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Gizmos.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -147,12 +149,6 @@
     <ClInclude Include="src\glm_header.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Vertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -165,25 +161,43 @@
     <ClInclude Include="src\BasicLighting.h">
       <Filter>Projects\05Lighting</Filter>
     </ClInclude>
+    <ClInclude Include="src\gl_core_4_4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tiny_obj_loader.h" />
+    <ClInclude Include="src\Vertex.h" />
+    <ClInclude Include="src\Utility.h" />
+    <ClInclude Include="src\AdvancedTexturing.h">
+      <Filter>Projects\06 Advanced Texturing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\BasicFragment.glsl">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="data\shaders\BasicVertex.glsl">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="data\shaders\TexturedVertex.glsl">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="data\shaders\TexturedFragment.glsl">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="data\shaders\Lighting_vertex.glsl">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="data\shaders\Lighting_fragment.glsl">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\shaders</Filter>
     </None>
+    <None Include="data\shaders\NormalMapVertex.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="data\shaders\NormalMapFragment.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Hotkeys.txt" />
   </ItemGroup>
 </Project>

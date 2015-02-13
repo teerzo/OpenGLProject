@@ -1,5 +1,5 @@
-#ifndef _BASIC_LIGHTING_H_
-#define _BASIC_LIGHTING_H_
+#ifndef _ADVANCED_TEXTURING_H_
+#define _ADVANCED_TEXTURING_H_
 
 #include "Application.h"
 #include "Vertex.h"
@@ -19,31 +19,22 @@ struct OpenGLData
 	unsigned int m_index_count;
 };
 
-class BasicLighting : public Application
+class AdvancedTexturing : public Application
 {
 private:
-	
+	VertexNormal test;
+	OpenGLData m_quad;
+	unsigned int m_diffuse_texture;
+	unsigned int m_normal_texture;
+	unsigned int m_specular_texture;
 
-	// Lighting Code
-	glm::vec3 eye_pos;
-	float specular_power;
-	glm::vec3 ambient_light;
-	glm::vec3 light_dir;
-	glm::vec3 light_color;
-	glm::vec3 material_color;
-
-
-
-	//FBXFile* m_fbx_file;
-	std::vector<OpenGLData> m_gl_data;
-
-	
-
-
-	unsigned int m_index_count;
+	glm::vec3 m_ambient_light;
+	glm::vec3 m_light_dir;
+	glm::vec3 m_light_color;
+	float m_specular_power;
 
 public:
-	virtual ~BasicLighting();
+	virtual ~AdvancedTexturing();
 
 	virtual void setDefaults();
 	virtual bool startup();
@@ -51,16 +42,22 @@ public:
 	virtual bool update();
 	virtual void draw();
 
+	// Advanced Texturing
+	// diffuse, normal
+	void loadTextures();
+
+
+
 	// BasicLighting functions
-	void createOpenGLBuffers(std::vector<tinyobj::shape_t>& a_shapes );
+	void createOpenGLBuffers(std::vector<tinyobj::shape_t>& a_shapes);
 	//void createOpenGLBuffers(FBXFile* a_file);
 	void cleanupOpenGLBuffers();
 	//void cleanupOpenGLBuffers(FBXFile* a_file);
 	void reloadShader();
 
-
 	// Non BasicLighting functions
 	virtual bool loadShaders();
+	// diffuse only
 	void loadTexture(const char* a_fileName);
 	void generateQuad(float a_size);
 	void generateGrid(unsigned int rows, unsigned int cols);

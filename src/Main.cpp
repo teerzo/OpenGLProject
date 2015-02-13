@@ -2,8 +2,9 @@
 #//include "CameraAndProjections.h"
 //#include "RenderingGeometry.h"
 //#include "BasicTexturing.h"
+//#include "BasicLighting.h"
 
-#include "BasicLighting.h"
+#include "AdvancedTexturing.h"
 
 
 int main(int argc, char *argv[])
@@ -11,7 +12,9 @@ int main(int argc, char *argv[])
 	//CameraAndProjections app;
 	//RenderingGeometry app;
 	//BasicTexturing app;
-	BasicLighting app;
+	//BasicLighting app;
+	
+	AdvancedTexturing app;
 	// sets the name and screen size of the app
 	app.setDefaults();
 

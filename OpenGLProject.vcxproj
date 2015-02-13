@@ -41,13 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>./deps/glfw/lib-vc2013;./deps/glm;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
-    <IncludePath>./deps/glfw/include/GLFW;./deps/glm;./deps/FBXLoader;$(IncludePath)</IncludePath>
+    <LibraryPath>./deps/glfw/lib-vc2013;./deps/glm;$(LibraryPath)</LibraryPath>
+    <IncludePath>./deps/glfw/include/GLFW;./deps/glm;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>./deps/glfw/lib-vc2013;./deps/glm;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
-    <IncludePath>./deps/glfw/include/GLFW;./deps/glm;./deps/FBXLoader;$(IncludePath)</IncludePath>
+    <LibraryPath>./deps/glfw/lib-vc2013;./deps/glm;$(LibraryPath)</LibraryPath>
+    <IncludePath>./deps/glfw/include/GLFW;./deps/glm;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -61,7 +61,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;OpenGL32.lib;FBXLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -80,10 +80,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glfw3.lib;OpenGL32.lib;FBXLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AdvancedTexturing.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\BasicLighting.cpp" />
     <ClCompile Include="src\BasicTexturing.cpp" />
@@ -97,9 +98,11 @@
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\RenderingGeometry.cpp" />
     <ClCompile Include="src\TemplateApplication.cpp" />
+    <ClCompile Include="src\tiny_obj_loader.cc" />
     <ClCompile Include="src\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AdvancedTexturing.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\BasicLighting.h" />
     <ClInclude Include="src\BasicTexturing.h" />
@@ -113,6 +116,7 @@
     <ClInclude Include="src\Object.h" />
     <ClInclude Include="src\RenderingGeometry.h" />
     <ClInclude Include="src\TemplateApplication.h" />
+    <ClInclude Include="src\tiny_obj_loader.h" />
     <ClInclude Include="src\Utility.h" />
     <ClInclude Include="src\Vertex.h" />
   </ItemGroup>
@@ -125,8 +129,13 @@
     </None>
     <None Include="data\shaders\Lighting_fragment.glsl" />
     <None Include="data\shaders\Lighting_vertex.glsl" />
+    <None Include="data\shaders\NormalMapFragment.glsl" />
+    <None Include="data\shaders\NormalMapVertex.glsl" />
     <None Include="data\shaders\TexturedFragment.glsl" />
     <None Include="data\shaders\TexturedVertex.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Hotkeys.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

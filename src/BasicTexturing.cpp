@@ -4,10 +4,9 @@
 #include <glfw3.h>
 #include <cstdio>
 #include "Gizmos.h"
-//#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-#include "FBXFile.h"
 #include "Utility.h"
 #include "Camera.h"
 

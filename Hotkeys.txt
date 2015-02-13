@@ -1,0 +1,10 @@
+OpenGLProject By Kyle Mcarthur
+
+
+#Hotkeys
+
+
+
+
+DebugMode : On	: o 
+DebugMode : Off : p
