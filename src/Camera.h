@@ -13,9 +13,14 @@ protected:
 	glm::mat4 m_mProjectionTransform;
 	glm::mat4 m_mProjectionViewTransform;
 
+	unsigned int m_CameraID;
+
 	void updateProjectionViewTransform();
 public:
 	Camera();
+	
+	void DestroyCamera();
+
 	virtual void update(float a_deltaTime);
 	void setPerspective(float a_FOV, float a_aspectRatio, float a_near, float a_far);
 	void setLookAt(glm::vec3 a_from, glm::vec3 a_to, glm::vec3 a_up);
@@ -38,12 +43,14 @@ private:
 	float m_fSpeed;
 	glm::vec3 m_vUp;
 	
+	void _DebugCurrentPos();
 
 public:
-	FlyCamera();
+	FlyCamera(unsigned int a_CameraID);
 	void update(float a_deltaTime);
 	void setSpeed(float a_speed);
 	float getSpeed();
+	void CheckKeys(float a_deltaTime);
 	
 };
 

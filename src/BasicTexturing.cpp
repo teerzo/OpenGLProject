@@ -43,11 +43,6 @@ bool BasicTexturing::startup()
 	generateQuad(5.0f);
 	LoadShader("shaders/TexturedVertex.glsl", "shaders/TexturedFragment.glsl", (GLuint*)&m_ProgramID);
 
-	this->m_vListofCameras.push_back(new FlyCamera());
-	this->m_vListofCameras.push_back(new FlyCamera());
-
-	m_vListofCameras[0]->m_bIsSelected = true;
-	m_vListofCameras[1]->m_bIsSelected = false;
 	
 	return true;
 }

@@ -73,15 +73,8 @@ bool AdvancedTexturing::startup()
 	m_light_color = glm::vec3(0.6f, 0, 0);
 	//material_color = glm::vec3(1);
 
-
-	this->m_vListofCameras.push_back(new FlyCamera());
-	this->m_vListofCameras.push_back(new FlyCamera());
-	this->m_vListofCameras.push_back(new FlyCamera());
-
-	ActiveCamera = 0;
-	m_vListofCameras[0]->m_bIsSelected = true;
-	m_vListofCameras[1]->m_bIsSelected = false;
-	m_vListofCameras[2]->m_bIsSelected = false;
+	
+		
 
 	return true;
 }
@@ -91,7 +84,7 @@ void AdvancedTexturing::shutdown()
 {
 	//cleanupOpenGLBuffers(m_fbx_file);
 	cleanupOpenGLBuffers();
-	Gizmos::destroy();
+	Application::shutdown();
 }
 
 bool AdvancedTexturing::update()
@@ -122,13 +115,15 @@ void AdvancedTexturing::draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(m_ProgramID);
 
-
 	int proj_view_handle = glGetUniformLocation(m_ProgramID, "ProjectionView");
 	if (proj_view_handle >= 0)
 	{
 		glUniformMatrix4fv(proj_view_handle, 1, GL_FALSE, (float*)&m_vListofCameras[ActiveCamera]->getProjectionView());
 
 	}
+	////////////////////////////////
+	//! Advanced Texturing Drawcode 
+	////////////////////////////////
 
 	/*for (unsigned int mesh_index = 0; mesh_index < m_gl_data.size(); ++mesh_index)
 	{
@@ -195,20 +190,11 @@ void AdvancedTexturing::draw()
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	//glBindVertexArray(m_VAO);
 	//glDrawElements(GL_TRIANGLES, m_index_count, GL_UNSIGNED_INT, 0);
-
-	// Wireframe??
-	if (mode.Wireframe)
-	{
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
-	else
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
-	}
-
-	Gizmos::draw(m_vListofCameras[ActiveCamera]->getProjectionView());
+	
+	//////////////////////
+	//! End of Draw Code 
+	//////////////////////
 	Application::draw();
-
 	glfwSwapBuffers(this->window);
 	glfwPollEvents();
 

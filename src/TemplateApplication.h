@@ -6,20 +6,22 @@
 class TemplateApplication : public Application
 {
 private:
-	float timer;
-	//glm::mat4 ProjectionMatrix;
-	//glm::mat4 ViewMatrix;
+	// Base Variables
+
+	// Project Specific
 
 public:
 	virtual ~TemplateApplication();
 
+	// Base Functions 
 	virtual void setDefaults();
-
 	virtual bool startup();
 	virtual void shutdown();
-
 	virtual bool update();
 	virtual void draw();
+	//virtual void checkKeys();
+
+	// Project Specific 
 
 };
 

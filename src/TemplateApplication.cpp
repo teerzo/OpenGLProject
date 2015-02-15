@@ -4,8 +4,8 @@
 #include <glfw3.h>
 #include <cstdio>
 
-
 #include "Gizmos.h"
+#include "Camera.h"
 
 TemplateApplication::~TemplateApplication()
 {
@@ -28,14 +28,9 @@ bool TemplateApplication::startup()
 	}
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
-
 	Gizmos::create();
-
-
-	//ProjectionMatrix = glm::perspective(glm::radians(80.0f), 1280.0f / 720.0f, 0.1f, 1000.0f);
-	//ViewMatrix = glm::lookAt(glm::vec3(10, 10, 10), glm::vec3(0, 0, 0), vec3(0, 1, 0));
-
 	glfwSetTime(0.0);
+
 
 	return true;
 }
@@ -51,13 +46,15 @@ bool TemplateApplication::update()
 	{
 		return false;
 	}
-	// Cool code here please
-	float dt = (float)glfwGetTime();
-	timer += dt;
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//////////////////////////////////////
+	//! Project Specific Update Code Here
+	//////////////////////////////////////
 
-	Gizmos::clear();
 
+
+	///////////////////////
+	//! End of Update Code
+	///////////////////////
 
 
 	return true;
@@ -65,8 +62,26 @@ bool TemplateApplication::update()
 
 void TemplateApplication::draw()
 {
-	
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glUseProgram(m_ProgramID);
 
+	int proj_view_handle = glGetUniformLocation(m_ProgramID, "ProjectionView");
+	if (proj_view_handle >= 0)
+	{
+		glUniformMatrix4fv(proj_view_handle, 1, GL_FALSE, (float*)&m_vListofCameras[ActiveCamera]->getProjectionView());
+
+	}
+	///////////////////////////////////
+	//! Project Specific Drawcode Here 
+	///////////////////////////////////
+
+
+
+	//////////////////////
+	//! End of Draw Code 
+	//////////////////////
+	Application::draw();
 	glfwSwapBuffers(this->window);
 	glfwPollEvents();
 }

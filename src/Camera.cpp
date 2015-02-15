@@ -11,6 +11,11 @@ Camera::Camera()
 	setPosition(glm::vec3(0));
 }
 
+void Camera::DestroyCamera()
+{
+
+}
+
 void Camera::updateProjectionViewTransform()
 {
 	m_mProjectionViewTransform = m_mProjectionTransform * m_mViewTransform;
@@ -18,25 +23,25 @@ void Camera::updateProjectionViewTransform()
 
 void Camera::update(float a_deltaTime)
 {
+
+
 	m_mViewTransform = glm::inverse(m_mWorldTransform);
 	updateProjectionViewTransform();
-	
-
-	//Gizmos::addAABB(getPosition(), glm::vec3(1.2, 1.2, 1.2), color.Red);
-	//Gizmos::addLine(m_vListofCameras[i]->getPosition(), m_vListofCameras[i]->getPosition() + (m_vListofCameras[i]->getForward() * -2), color.Blue);
-
 }
 void Camera::setPerspective(float a_FOV, float a_aspectRatio, float a_near, float a_far)
 {
 	m_mProjectionTransform = glm::perspective(glm::radians(a_FOV), a_aspectRatio, a_near, a_far);
+	updateProjectionViewTransform();
 }
 void Camera::setLookAt(glm::vec3 a_from, glm::vec3 a_to, glm::vec3 a_up)
 {
+	//
 	m_mViewTransform = glm::lookAt(a_from, a_to, a_up);
 	m_mWorldTransform = glm::inverse(m_mViewTransform);
 }
 void Camera::setPosition(glm::vec3 a_position)
 {
+	//
 	m_mWorldTransform = glm::translate(a_position);
 	m_mViewTransform = glm::inverse(m_mWorldTransform);
 }
@@ -78,10 +83,10 @@ glm::vec3 Camera::getRight()
 }
 
 // FLY Camera
-FlyCamera::FlyCamera()
+FlyCamera::FlyCamera( unsigned int a_CameraID )
 {
-	printf("$Fly");
 	m_fSpeed = 2.0f;
+	m_CameraID = a_CameraID;
 }
 
 void FlyCamera::update(float a_deltaTime)
@@ -96,10 +101,21 @@ void FlyCamera::update(float a_deltaTime)
 
 	//Gizmos::addLine(getPosition(), getPosition() + (getForward() * -2), color.Blue);
 
+	CheckKeys(a_deltaTime);	
+}
+void FlyCamera::setSpeed(float a_speed)
+{
+	m_fSpeed = a_speed;
+}
+float FlyCamera::getSpeed()
+{
+	return m_fSpeed;
+}
+
+void FlyCamera::CheckKeys(float a_deltaTime)
+{
 	if (m_bIsSelected)
 	{
-	
-
 		// Check w,a,s,d and mouse
 		// move camera
 		GLFWwindow* window = glfwGetCurrentContext();
@@ -109,7 +125,7 @@ void FlyCamera::update(float a_deltaTime)
 		float height = 720.0f;
 
 		glfwGetCursorPos(window, &x_delta, &y_delta);
-		
+
 		x_delta -= (width / 2);
 		y_delta -= (height / 2);
 
@@ -128,7 +144,7 @@ void FlyCamera::update(float a_deltaTime)
 			glm::vec3 camera_right = (glm::vec3)m_mWorldTransform[0];
 
 			glm::mat4 yaw = glm::rotate((float)x_delta, glm::vec3(0, 1, 0));
-			glm::mat4 pitch = glm::rotate((float)y_delta, camera_right );
+			glm::mat4 pitch = glm::rotate((float)y_delta, camera_right);
 			glm::mat4 rot = yaw * pitch;
 
 			m_mWorldTransform[0] = rot * m_mWorldTransform[0];
@@ -177,15 +193,11 @@ void FlyCamera::update(float a_deltaTime)
 	}
 	else
 	{
-		//setPosition(glm::vec3(0, 0, 0));
+
 	}
 }
-void FlyCamera::setSpeed(float a_speed)
-{
-	m_fSpeed = a_speed;
-}
-float FlyCamera::getSpeed()
-{
-	return m_fSpeed;
-}
 
+void FlyCamera::_DebugCurrentPos()
+{
+	//printf 
+}

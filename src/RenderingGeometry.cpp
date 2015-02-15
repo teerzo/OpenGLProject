@@ -41,19 +41,6 @@ bool RenderingGeometry::startup()
 
 	LoadShader("shaders/BasicVertex.glsl", "shaders/BasicFragment.glsl", (GLuint*)&m_ProgramID);
 
-	//ProjectionMatrix = glm::perspective(glm::radians(80.0f), 1280.0f / 720.0f, 0.1f, 1000.0f);
-
-	this->m_vListofCameras.push_back(new FlyCamera());
-	this->m_vListofCameras.push_back(new FlyCamera());
-
-	//this->Camera = new Camera();
-	//this->flyCamera = new FlyCamera();
-
-	m_vListofCameras[0]->m_bIsSelected = true;
-	m_vListofCameras[1]->m_bIsSelected = false;
-
-	//glClearColor()
-
 
 	return true;
 }

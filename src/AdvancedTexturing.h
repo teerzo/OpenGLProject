@@ -11,19 +11,13 @@ class FlyCamera;
 //class FBXFile;
 //class tinyobj;
 
-struct OpenGLData
-{
-	unsigned int m_VAO;
-	unsigned int m_VBO;
-	unsigned int m_IBO;
-	unsigned int m_index_count;
-};
+
 
 class AdvancedTexturing : public Application
 {
 private:
 	VertexNormal test;
-	OpenGLData m_quad;
+	
 	unsigned int m_diffuse_texture;
 	unsigned int m_normal_texture;
 	unsigned int m_specular_texture;

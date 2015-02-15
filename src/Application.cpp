@@ -23,9 +23,7 @@ void Application::setDefaults()
 	this->ScreenSize.Width = 1280;
 	this->ScreenSize.Height = 720;
 
-	mode.Debug = false;
-	mode.Wireframe = false;
-
+	
 }
 
 bool Application::startup()
@@ -54,7 +52,20 @@ bool Application::startup()
 
 	printf("Opengl Version: %d.%d Loaded\n", Major_Version, Minor_Version);
 
+	ActiveCamera = 0; 
+	AddFlyCamera();
+
+	mode.LockCamera = false;
+	mode.Debug = true;
+	mode.Wireframe = false;
+	mode.HideObjects = false;
+
+	m_fDelayTimer = 0.0f;
+	m_fDelayMax = 1.0f;
+
 	printf("************\n%s Init Complete\n", this->AppName);
+
+	
 	return true;
 }
 
@@ -64,6 +75,7 @@ void Application::shutdown()
 	{
 		glfwDestroyWindow(this->window);
 	}
+	Gizmos::destroy();
 	glfwTerminate();
 }
 
@@ -78,13 +90,44 @@ bool Application::update()
 	m_fdeltaTime = m_fTimer - m_fPreviousTime; // prev of last frame
 	m_fPreviousTime = m_fTimer;
 
+	if (m_fDelayTimer < m_fDelayMax)
+	{
+		m_fDelayTimer += m_fdeltaTime;
+	}
+
 	Gizmos::clear();
 
+	_DrawGrid();
+
+	_UpdateCameras();
+	
+	_CheckKeys();
+	
+	return true;
+}
+
+void Application::draw()
+{
+	// Base Draw Code
+	Gizmos::draw(m_vListofCameras[ActiveCamera]->getProjectionView());
+}
+
+GLFWwindow* Application::getWindow()
+{
+	return this->window;
+}
+
+void Application::_DrawGrid()
+{
 	for (int i = 0; i <= 20; ++i)
 	{
 		Gizmos::addLine(glm::vec3(-10 + i, 0, -10), glm::vec3(-10 + i, 0, 10), i == 10 ? color.White : color.Gray);
 		Gizmos::addLine(glm::vec3(-10, 0, -10 + i), glm::vec3(10, 0, -10 + i), i == 10 ? color.White : color.Gray);
 	}
+}
+
+void Application::_UpdateCameras()
+{
 	for (unsigned i = 0; i < m_vListofCameras.size(); ++i)
 	{
 		m_vListofCameras[i]->update(m_fdeltaTime);
@@ -94,35 +137,60 @@ bool Application::update()
 			Gizmos::addLine(m_vListofCameras[i]->getPosition(), m_vListofCameras[i]->getPosition() + (m_vListofCameras[i]->getForward() * -2), color.Blue);
 		}
 	}
+}
+
+void Application::_CheckKeys()
+{
 	// hotkeys.... move to own function
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 	{
-		ActiveCamera = 0;
-		m_vListofCameras[0]->m_bIsSelected = true;
-		m_vListofCameras[1]->m_bIsSelected = false;
-		m_vListofCameras[2]->m_bIsSelected = false;
+		if (m_fDelayTimer >= m_fDelayMax)
+		{
+			ActiveCamera = 0;
+			m_fDelayTimer = 0.0f;
+			_DisableOtherCameras();
+		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
 	{
-		ActiveCamera = 1;
-		m_vListofCameras[0]->m_bIsSelected = false;
-		m_vListofCameras[1]->m_bIsSelected = true;
-		m_vListofCameras[2]->m_bIsSelected = false;
+		if (ActiveCamera - 1 >= 0)
+		{
+			if (m_fDelayTimer >= m_fDelayMax)
+			{
+				ActiveCamera -= 1;
+				m_fDelayTimer = 0.0f;
+				_DisableOtherCameras();
+			}
+		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
 	{
-		ActiveCamera = 2;
-		m_vListofCameras[0]->m_bIsSelected = false;
-		m_vListofCameras[1]->m_bIsSelected = false;
-		m_vListofCameras[2]->m_bIsSelected = true;
+		if ((unsigned int)ActiveCamera + 1 < m_vListofCameras.size() )
+		{
+			if (m_fDelayTimer >= m_fDelayMax)
+			{
+				ActiveCamera += 1;
+				m_fDelayTimer = 0.0f;
+				_DisableOtherCameras();
+			}
+		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
 	{
-		m_vListofCameras[0]->m_bIsSelected = false;
-		m_vListofCameras[1]->m_bIsSelected = false;
-		m_vListofCameras[2]->m_bIsSelected = true;
+		if (m_fDelayTimer >= m_fDelayMax)
+		{
+			AddFlyCamera();
+			m_fDelayTimer = 0.0f;
+		}
 	}
-
+	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+	{
+		if (m_fDelayTimer >= m_fDelayMax)
+		{
+			DestroyActiveCamera();
+			m_fDelayTimer = 0.0f;
+		}
+	}
 	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
 	{
 		mode.Debug = true;
@@ -131,15 +199,42 @@ bool Application::update()
 	{
 		mode.Debug = false;
 	}
-	return true;
 }
 
-void Application::draw()
+void Application::_DisableOtherCameras()
 {
-
+	if ((unsigned int)ActiveCamera < m_vListofCameras.size())
+	{
+		if (!mode.LockCamera)
+		{
+			m_vListofCameras[ActiveCamera]->m_bIsSelected = true;
+			printf("~Camera : %d\n", ActiveCamera);
+		}
+		for (unsigned int i = 0; i < m_vListofCameras.size(); ++i)
+		{
+			if (i != ActiveCamera)
+			{
+				m_vListofCameras[i]->m_bIsSelected = false;
+			}
+		}
+	} 
 }
 
-GLFWwindow* Application::getWindow()
+void Application::AddFlyCamera()
 {
-	return this->window;
+	
+	this->m_vListofCameras.push_back(new FlyCamera(m_vListofCameras.size()));
+	ActiveCamera = m_vListofCameras.size()-1;
+	printf("~New Camera : %d\n", ActiveCamera);
+	_DisableOtherCameras();
+	
+}
+
+void Application::DestroyActiveCamera()
+{
+	if (this->m_vListofCameras.size() > 1)
+	{
+		// delete active camera
+		//this->m_vListofCameras.
+	}
 }

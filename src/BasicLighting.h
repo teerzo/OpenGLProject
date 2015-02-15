@@ -8,21 +8,9 @@
 class Camera;
 class FlyCamera;
 
-//class FBXFile;
-//class tinyobj;
-
-struct OpenGLData
-{
-	unsigned int m_VAO;
-	unsigned int m_VBO;
-	unsigned int m_IBO;
-	unsigned int m_index_count;
-};
-
 class BasicLighting : public Application
 {
 private:
-	
 
 	// Lighting Code
 	glm::vec3 eye_pos;
@@ -32,16 +20,9 @@ private:
 	glm::vec3 light_color;
 	glm::vec3 material_color;
 
-
-
-	//FBXFile* m_fbx_file;
 	std::vector<OpenGLData> m_gl_data;
-
+	OpenGLData m_gl_Quad;
 	
-
-
-	unsigned int m_index_count;
-
 public:
 	virtual ~BasicLighting();
 
