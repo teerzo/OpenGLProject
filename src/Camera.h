@@ -13,6 +13,8 @@ protected:
 	glm::mat4 m_mProjectionTransform;
 	glm::mat4 m_mProjectionViewTransform;
 
+
+	// Shitty camera number for printf's
 	unsigned int m_CameraID;
 
 	void updateProjectionViewTransform();
@@ -33,7 +35,7 @@ public:
 	glm::vec3 getForward();
 	glm::vec3 getRight();
 
-
+	// Controls Camera WASD controls if true
 	bool m_bIsSelected;
 };
 
@@ -41,7 +43,7 @@ class FlyCamera : public Camera
 {
 private:
 	float m_fSpeed;
-	glm::vec3 m_vUp;
+	
 	
 	void _DebugCurrentPos();
 

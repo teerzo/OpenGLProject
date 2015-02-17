@@ -25,4 +25,4 @@ public:
 
 };
 
-#endif // _CAMERAANDPROJECTIONS_H_
+#endif // _TEMPLATEAPPLICATION_H_

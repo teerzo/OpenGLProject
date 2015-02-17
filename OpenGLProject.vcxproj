@@ -121,21 +121,17 @@
     <ClInclude Include="src\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\shaders\BasicFragment.glsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </None>
-    <None Include="data\shaders\BasicVertex.glsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </None>
+    <Text Include="Hotkeys.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data\shaders\BasicFragment.glsl" />
+    <None Include="data\shaders\BasicVertex.glsl" />
     <None Include="data\shaders\Lighting_fragment.glsl" />
     <None Include="data\shaders\Lighting_vertex.glsl" />
     <None Include="data\shaders\NormalMapFragment.glsl" />
     <None Include="data\shaders\NormalMapVertex.glsl" />
     <None Include="data\shaders\TexturedFragment.glsl" />
     <None Include="data\shaders\TexturedVertex.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Hotkeys.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

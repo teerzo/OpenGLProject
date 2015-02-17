@@ -23,22 +23,20 @@ uniform sampler2D specular_tex;
 
 void main()
 { 
-	mat3 TBN = mat3( normalize(frag_tangent),  normalize(frag_bitangent),  normalize(frag_normal) );
+	mat3 TBN = mat3( normalize(frag_tangent),  normalize(frag_bitangent),  normalize(frag_normal) ); //
 
 	vec3 sampled_normal = texture( normal_tex, frag_uv).xyz;
 	vec3 adjusted_normal = sampled_normal * 2 - 1;
 	vec3 N = normalize(TBN * adjusted_normal);
 	
-	vec3 material_color = texture( diffuse_tex, frag_uv).xyz;
-	
-	
-	
-	vec3 L = normalize(-light_dir);
+	vec3 material_color = texture( diffuse_tex, frag_uv).xyz; // 
+		
+	vec3 L = normalize(light_dir); // 
 
 	vec3 ambient = material_color * ambient_light;
 
-	float d = max(0.0, dot(N,-L));
-	vec3 diffuse = vec3(d) * light_color * material_color;
+	float d = max(0.0, dot(N,L));
+	vec3 diffuse = vec3(d)  * light_color * material_color;
 
 	vec3 E = normalize(eye_pos - frag_position.xyz);
 	vec3 R = reflect(L, N);
@@ -51,5 +49,6 @@ void main()
 
 	vec3 specular = vec3(s) * light_color * material_specular;
 
-	frag_color = vec4(ambient + diffuse + specular, 1 ); 
+	frag_color = vec4( ambient + diffuse + specular, 1 ); 
 }
+

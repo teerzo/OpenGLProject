@@ -10,8 +10,11 @@ bool LoadShader(char* vertex_filename, char* fragment_filename, GLuint* Program 
 
 	FILE* vertex_file = fopen(vertex_filename, "r");
 	FILE* fragment_file = fopen(fragment_filename, "r");
-
-	if (vertex_file == 0 || fragment_file == 0)
+	if (vertex_file == nullptr || fragment_file == nullptr)
+	{
+		return false;
+	}
+	else if (vertex_file == 0 || fragment_file == 0)
 	{	
 		result = false;
 	}

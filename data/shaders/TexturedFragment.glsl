@@ -11,11 +11,11 @@ void main()
 {
 	vec2 UV = out_uv;
 	vec4 color = out_color;
-	UV.x += cameraPos.x * 0.1 ;
-	UV.y += cameraPos.z * 0.1 ;
-	color.x = cameraPos.x / 1;
-	color.y = cameraPos.y / 1;
-	color.z = cameraPos.z / 1;
+	UV.x += sin( timer );
+	UV.y += cos( timer );
+	//color.x += cos(-timer);
+	//color.y += cos(-timer);
+	//color.z += cos(-timer);
 
 	//UV.x = (cameraPos.x / 1) + 1;
 	//UV.y = (cameraPos.z / 1) + 1;

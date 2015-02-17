@@ -3,27 +3,24 @@
 
 #include "Application.h"
 
-class Camera;
-class FlyCamera;
-
 class CameraAndProjections : public Application
 {
 private:
-	float previousTime;
-	glm::mat4 ProjectionMatrix;
-	//Camera* sceneCamera;
-	//FlyCamera* flyCamera;
+	// Base Variables
 
+	// Project Specific
+	
 public:
 	virtual ~CameraAndProjections();
-
+	// Base Functions 
 	virtual void setDefaults();
-
 	virtual bool startup();
 	virtual void shutdown();
-
 	virtual bool update();
 	virtual void draw();
+	//virtual void checkKeys();
+
+	// Project Specific 
 
 };
 

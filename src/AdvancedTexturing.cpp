@@ -22,8 +22,6 @@ void AdvancedTexturing::setDefaults()
 	this->AppName = "Basic Lighting";
 	this->ScreenSize.Width = 1280;
 	this->ScreenSize.Height = 720;
-
-
 }
 
 
@@ -35,8 +33,8 @@ bool AdvancedTexturing::startup()
 	}
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
-
 	Gizmos::create();
+	glfwSetTime(0.0);
 
 	//m_fbx_file = new FBXFile();
 	//m_fbx_file->load("models/stanford/Bunny.fbx");
@@ -53,7 +51,7 @@ bool AdvancedTexturing::startup()
 
 	generateQuad(10.0f);
 	loadTextures();
-	LoadShader("shaders/NormalMapVertex.glsl", "shaders/NormalMapFragment.glsl", (GLuint*)&m_ProgramID);
+	LoadShader("../data/shaders/NormalMapVertex.glsl", "../data/shaders/NormalMapFragment.glsl", (GLuint*)&m_ProgramID);
 
 	//createOpenGLBuffers(m_fbx_file);
 	//createOpenGLBuffers(shapes);
@@ -66,15 +64,13 @@ bool AdvancedTexturing::startup()
 	//LoadShader("shaders/TexturedVertex.glsl", "shaders/TexturedFragment.glsl", (GLuint*)&m_ProgramID);
 
 	// lighting code
-	//eye_pos = glm::vec3(0);
+	m_eye_pos = glm::vec3(0);
 	m_specular_power = 15.0f;
 	m_ambient_light = glm::vec3(0.1f);
 	//m_light_dir = (glm::rotation(dt, glm::vec3(0, -1.0f, 0)) * glm::vec4(m_light_dir, 0).xyz;
-	m_light_color = glm::vec3(0.6f, 0, 0);
+	m_light_color = glm::vec3(1.0f, 1.0f, 1.0f);
 	//material_color = glm::vec3(1);
-
-	
-		
+			
 
 	return true;
 }
@@ -93,11 +89,9 @@ bool AdvancedTexturing::update()
 	{
 		return false;
 	}
-	// Cool code here please
-
-
-
-
+	//////////////////////////////////////
+	//! Project Specific Update Code Here
+	//////////////////////////////////////
 
 	// reloadShader() hotkey
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
@@ -105,6 +99,11 @@ bool AdvancedTexturing::update()
 		reloadShader();
 	}
 
+
+	///////////////////////
+	//! End of Update Code
+	///////////////////////
+	
 
 	return true;
 }
@@ -149,11 +148,11 @@ void AdvancedTexturing::draw()
 	int cameraPos = glGetUniformLocation(m_ProgramID, "cameraPos");
 	glUniform3f(cameraPos, Cameratemp.x, Cameratemp.y, Cameratemp.z);
 	*/
-	//eye_pos = m_vListofCameras[ActiveCamera]->getPosition();
-	//int eye_pos_uniform = glGetUniformLocation(m_ProgramID, "eye_pos");
-	//glUniform3f(eye_pos_uniform, eye_pos.x, eye_pos.y, eye_pos.z);
+	m_eye_pos = m_vListofCameras[ActiveCamera]->getPosition();
+	int eye_pos_uniform = glGetUniformLocation(m_ProgramID, "eye_pos");
+	glUniform3f(eye_pos_uniform, m_eye_pos.x, m_eye_pos.y, m_eye_pos.z);
 
-	m_light_dir = m_vListofCameras[2]->getForward();
+	m_light_dir = m_vListofCameras[0]->getForward();
 	int light_dir_uniform = glGetUniformLocation(m_ProgramID, "light_dir");
 	glUniform3f(light_dir_uniform, m_light_dir.x, m_light_dir.y, m_light_dir.z);
 
@@ -187,9 +186,9 @@ void AdvancedTexturing::draw()
 	glUniform1i(specularLocation, 2);
 
 	//
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glBindVertexArray(m_VAO);
-	//glDrawElements(GL_TRIANGLES, m_index_count, GL_UNSIGNED_INT, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(m_quad.m_VAO);
+	glDrawElements(GL_TRIANGLES, m_quad.m_index_count, GL_UNSIGNED_INT, 0);
 	
 	//////////////////////
 	//! End of Draw Code 
@@ -206,7 +205,7 @@ void AdvancedTexturing::loadTextures()
 
 	unsigned char *data;
 
-	data = stbi_load("textures/rock_diffuse.tga", &width, &height, &channels, STBI_default);
+	data = stbi_load("../data/textures/rock_diffuse.tga", &width, &height, &channels, STBI_default);
 	glGenTextures(1, &m_diffuse_texture);
 	glBindTexture(GL_TEXTURE_2D, m_diffuse_texture);
 
@@ -215,7 +214,9 @@ void AdvancedTexturing::loadTextures()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-	data = stbi_load("textures/rock_normal.tga", &width, &height, &channels, STBI_default);
+	stbi_image_free(data);
+
+	data = stbi_load("../data/textures/rock_normal.tga", &width, &height, &channels, STBI_default);
 	glGenTextures(1, &m_normal_texture);
 	glBindTexture(GL_TEXTURE_2D, m_normal_texture);
 
@@ -224,7 +225,9 @@ void AdvancedTexturing::loadTextures()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-	data = stbi_load("textures/rock_specular.tga", &width, &height, &channels, STBI_default);
+	stbi_image_free(data);
+
+	data = stbi_load("../data/textures/rock_specular.tga", &width, &height, &channels, STBI_default);
 	glGenTextures(1, &m_specular_texture);
 	glBindTexture(GL_TEXTURE_2D, m_specular_texture);
 
@@ -232,6 +235,7 @@ void AdvancedTexturing::loadTextures()
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	stbi_image_free(data);
 
 }
 
@@ -344,7 +348,7 @@ void AdvancedTexturing::cleanupOpenGLBuffers()
 void AdvancedTexturing::reloadShader()
 {
 	glDeleteProgram(m_ProgramID);
-	LoadShader("shaders/Lighting_vertex.glsl", "shaders/Lighting_fragment.glsl", (GLuint*)&m_ProgramID);
+	LoadShader("../data/shaders/NormalMapVertex.glsl", "../data/shaders/NormalMapFragment.glsl", (GLuint*)&m_ProgramID);
 }
 
 
@@ -379,8 +383,7 @@ void AdvancedTexturing::loadTexture(const char* a_fileName)
 void AdvancedTexturing::generateQuad(float a_size)
 {
 	VertexNormal vertex_data[4];
-	
-	
+		
 	vertex_data[0].Position = glm::vec4(-a_size, 1, -a_size, 1);
 	vertex_data[1].Position = glm::vec4(-a_size, 1, a_size, 1);
 	vertex_data[2].Position = glm::vec4(a_size, 1, a_size, 1);

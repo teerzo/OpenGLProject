@@ -172,32 +172,32 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Hotkeys.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="data\shaders\BasicFragment.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="data\shaders\BasicVertex.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="data\shaders\TexturedVertex.glsl">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="data\shaders\TexturedFragment.glsl">
+    <None Include="data\shaders\Lighting_fragment.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="data\shaders\Lighting_vertex.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="data\shaders\Lighting_fragment.glsl">
+    <None Include="data\shaders\NormalMapFragment.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="data\shaders\NormalMapVertex.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="data\shaders\NormalMapFragment.glsl">
+    <None Include="data\shaders\TexturedFragment.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Hotkeys.txt" />
+    <None Include="data\shaders\TexturedVertex.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -5,13 +5,6 @@
 #include "Vertex.h"
 #include "tiny_obj_loader.h"
 
-class Camera;
-class FlyCamera;
-
-//class FBXFile;
-//class tinyobj;
-
-
 
 class AdvancedTexturing : public Application
 {
@@ -22,6 +15,7 @@ private:
 	unsigned int m_normal_texture;
 	unsigned int m_specular_texture;
 
+	glm::vec3 m_eye_pos;
 	glm::vec3 m_ambient_light;
 	glm::vec3 m_light_dir;
 	glm::vec3 m_light_color;

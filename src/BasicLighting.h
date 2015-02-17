@@ -5,9 +5,6 @@
 #include "Vertex.h"
 #include "tiny_obj_loader.h"
 
-class Camera;
-class FlyCamera;
-
 class BasicLighting : public Application
 {
 private:
@@ -25,7 +22,7 @@ private:
 	
 public:
 	virtual ~BasicLighting();
-
+	// Base Functions 
 	virtual void setDefaults();
 	virtual bool startup();
 	virtual void shutdown();
@@ -38,7 +35,6 @@ public:
 	void cleanupOpenGLBuffers();
 	//void cleanupOpenGLBuffers(FBXFile* a_file);
 	void reloadShader();
-
 
 	// Non BasicLighting functions
 	virtual bool loadShaders();

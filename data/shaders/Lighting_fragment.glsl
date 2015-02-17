@@ -19,24 +19,24 @@ void main()
 	vec3 N = normalize(frag_normal.xyz);
 	vec3 L = normalize(-light_dir);
 
-	//vec3 temp_color = material_color;
+	vec3 temp_color = material_color;
 
+
+	//N -= frag_position.xyz;
 	//N.x *= 1.5;
 	//N.y *= 1.5;
 	//N.z *= 1.5;
 
 
-	//vec3 ambient = temp_color * ambient_light;
-	vec3 ambient = material_color * ambient_light;
+	vec3 ambient = temp_color * ambient_light;
+	//vec3 ambient = material_color * ambient_light;
 
-	float d = max(0.0, dot(N,-L));
+	float d = max(0.0, dot(N ,-L ));
 	vec3 diffuse = vec3(d) * light_color * material_color;
-
-	
-	
+		
 
 	vec3 E = normalize(eye_pos - frag_position.xyz);
-	vec3 R = reflect(L, N);
+	vec3 R = reflect(L, -N);
 
 
 	float s = max(0, dot(R, E));

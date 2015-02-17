@@ -9,21 +9,18 @@
 #include "Camera.h"
 
 
+
 BasicLighting::~BasicLighting()
 {
 
 }
-
 
 void BasicLighting::setDefaults()
 {
 	this->AppName = "Basic Lighting";
 	this->ScreenSize.Width = 1280;
 	this->ScreenSize.Height = 720;
-
-
 }
-
 
 bool BasicLighting::startup()
 {
@@ -42,7 +39,7 @@ bool BasicLighting::startup()
 	std::vector <tinyobj::shape_t> shapes;
 	std::vector <tinyobj::material_t> materials;
 
-	std::string err = tinyobj::LoadObj(shapes, materials, "models/stanford/bunny.obj");
+	std::string err = tinyobj::LoadObj(shapes, materials, "../data/models/stanford/bunny.obj");
 	printf("Mesh load error %s\n", err);
 	if (err.size() != 0)
 	{
@@ -52,7 +49,7 @@ bool BasicLighting::startup()
 
 	//createOpenGLBuffers(m_fbx_file);
 	createOpenGLBuffers(shapes);
-	LoadShader("shaders/Lighting_vertex.glsl", "shaders/Lighting_fragment.glsl", (GLuint*)&m_ProgramID);
+	LoadShader("../data/shaders/Lighting_vertex.glsl", "../data/shaders/Lighting_fragment.glsl", (GLuint*)&m_ProgramID);
 
 	//generateGrid(10, 10);
 
@@ -77,7 +74,7 @@ void BasicLighting::shutdown()
 {
 	//cleanupOpenGLBuffers(m_fbx_file);
 	cleanupOpenGLBuffers();
-	Gizmos::destroy();
+	Application::shutdown();
 }
 
 bool BasicLighting::update()
@@ -86,17 +83,21 @@ bool BasicLighting::update()
 	{
 		return false;
 	}
-	// Cool code here please
-	
+	//////////////////////////////////////
+	//! Project Specific Update Code Here
+	//////////////////////////////////////
 
-	
-
-	
 	// reloadShader() hotkey
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
 	{
 		reloadShader();
 	}
+
+
+
+	///////////////////////
+	//! End of Update Code
+	///////////////////////
 
 
 	return true;
@@ -108,13 +109,15 @@ void BasicLighting::draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(m_ProgramID);
 
-	
 	int proj_view_handle = glGetUniformLocation(m_ProgramID, "ProjectionView");
 	if (proj_view_handle >= 0)
 	{
 		glUniformMatrix4fv(proj_view_handle, 1, GL_FALSE, (float*)&m_vListofCameras[ActiveCamera]->getProjectionView());
-		
+
 	}
+	///////////////////////////////////
+	//! Project Specific Drawcode Here 
+	///////////////////////////////////
 
 	for (unsigned int mesh_index = 0; mesh_index < m_gl_data.size(); ++mesh_index)
 	{
@@ -144,7 +147,7 @@ void BasicLighting::draw()
 	int eye_pos_uniform = glGetUniformLocation(m_ProgramID, "eye_pos");
 	glUniform3f(eye_pos_uniform, eye_pos.x, eye_pos.y, eye_pos.z);
 
-	light_dir = m_vListofCameras[2]->getForward();
+	light_dir = m_vListofCameras[0]->getForward();
 	int light_dir_uniform = glGetUniformLocation(m_ProgramID, "light_dir");
 	glUniform3f(light_dir_uniform, light_dir.x, light_dir.y, light_dir.z);
 
@@ -182,12 +185,12 @@ void BasicLighting::draw()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
 	}
 
-	Gizmos::draw(m_vListofCameras[ActiveCamera]->getProjectionView());
+	//////////////////////
+	//! End of Draw Code 
+	//////////////////////
 	Application::draw();
-
 	glfwSwapBuffers(this->window);
 	glfwPollEvents();
-
 }
 
 void BasicLighting::createOpenGLBuffers(std::vector<tinyobj::shape_t>& a_shapes)

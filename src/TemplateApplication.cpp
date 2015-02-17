@@ -12,7 +12,6 @@ TemplateApplication::~TemplateApplication()
 
 }
 
-
 void TemplateApplication::setDefaults()
 {
 	this->AppName = "TemplateApplication";
@@ -37,7 +36,7 @@ bool TemplateApplication::startup()
 
 void TemplateApplication::shutdown()
 {
-	Gizmos::destroy();
+	Application::shutdown();
 }
 
 bool TemplateApplication::update()

@@ -70,7 +70,7 @@ glm::vec3 Camera::getForward()
 {
 	glm::vec3 temp;
 	temp = m_mWorldTransform[2].xyz;
-	temp.z *= 1;
+	temp.z *= -1;
 	return temp;
 }
 

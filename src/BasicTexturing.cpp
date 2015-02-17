@@ -34,22 +34,26 @@ bool BasicTexturing::startup()
 	}
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
-
 	Gizmos::create();
+	glfwSetTime(0.0);
+
 
 	//generateGrid(10, 10);
 
 	loadTexture("textures/crate.png");
 	generateQuad(5.0f);
-	LoadShader("shaders/TexturedVertex.glsl", "shaders/TexturedFragment.glsl", (GLuint*)&m_ProgramID);
-
 	
+	loadShaders();
+
 	return true;
 }
 
 bool BasicTexturing::loadShaders()
 {
-
+	if (!LoadShader("shaders/TexturedVertex.glsl", "shaders/TexturedFragment.glsl", (GLuint*)&m_ProgramID))
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -83,40 +87,15 @@ bool BasicTexturing::update()
 	{
 		return false;
 	}
-	// Cool code here please
-	m_fTimer = (float)glfwGetTime();
-	m_fdeltaTime = m_fTimer - m_fPreviousTime; // prev of last frame
-	m_fPreviousTime = m_fTimer;
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//////////////////////////////////////
+	//! Project Specific Update Code Here
+	//////////////////////////////////////
+	
+	
 
-	Gizmos::clear();
-
-	for (int i = 0; i <= 20; ++i)
-	{
-		Gizmos::addLine(glm::vec3(-10 + i, 0, -10), glm::vec3(-10 + i, 0, 10), i == 10 ? color.White : color.Gray);
-		Gizmos::addLine(glm::vec3(-10, 0, -10 + i), glm::vec3(10, 0, -10 + i), i == 10 ? color.White : color.Gray);
-	}
-
-	for (unsigned i = 0; i < m_vListofCameras.size(); ++i)
-	{
-		m_vListofCameras[i]->update(m_fdeltaTime);
-		Gizmos::addAABB(m_vListofCameras[i]->getPosition(), glm::vec3(1.2, 1.2, 1.2), color.Red);
-		Gizmos::addLine(m_vListofCameras[i]->getPosition(), m_vListofCameras[i]->getPosition() + (m_vListofCameras[i]->getForward() * -2), color.Blue);
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-	{
-		m_vListofCameras[0]->m_bIsSelected = true;
-		m_vListofCameras[1]->m_bIsSelected = false;
-	}
-	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
-	{
-		m_vListofCameras[0]->m_bIsSelected = false;
-		m_vListofCameras[1]->m_bIsSelected = true;
-	}
-
-	//Gizmos::addAABB(glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), color.Blue);
-
+	///////////////////////
+	//! End of Update Code
+	///////////////////////
 
 
 	return true;
@@ -126,27 +105,22 @@ void BasicTexturing::draw()
 {
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	glUseProgram(m_ProgramID);
-	glm::vec3 Cameratemp;
+
 	int proj_view_handle = glGetUniformLocation(m_ProgramID, "ProjectionView");
 	if (proj_view_handle >= 0)
 	{
-		if (m_vListofCameras[0]->m_bIsSelected)
-		{
-			glUniformMatrix4fv(proj_view_handle, 1, GL_FALSE, (float*)&m_vListofCameras[0]->getProjectionView());
-			Cameratemp = m_vListofCameras[0]->getPosition();
-		}
-		else
-		{
-			glUniformMatrix4fv(proj_view_handle, 1, GL_FALSE, (float*)&m_vListofCameras[1]->getProjectionView());
-			Cameratemp = m_vListofCameras[1]->getPosition();
-		}
+		glUniformMatrix4fv(proj_view_handle, 1, GL_FALSE, (float*)&m_vListofCameras[ActiveCamera]->getProjectionView());
+	
 	}
+	///////////////////////////////////
+	//! Project Specific Drawcode Here 
+	///////////////////////////////////
+	
 	int shaderTimer = glGetUniformLocation(m_ProgramID, "timer");
 	glUniform1f(shaderTimer, m_fTimer);
 	
-	Cameratemp = m_vListofCameras[0]->getPosition();
+	glm::vec3 Cameratemp = m_vListofCameras[0]->getPosition();
 	int cameraPos = glGetUniformLocation(m_ProgramID, "cameraPos");
 	glUniform3f(cameraPos, Cameratemp.x, Cameratemp.y, Cameratemp.z);
 
@@ -155,39 +129,26 @@ void BasicTexturing::draw()
 	glBindTexture(GL_TEXTURE_2D, m_Texture);
 	int diffuseLocation = glGetUniformLocation(m_ProgramID, "diffuse");
 	glUniform1i(diffuseLocation, 0);
-
-	// missing code here $$$
-
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(m_VAO);
-	glDrawElements(GL_TRIANGLES, m_index_count, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(m_gl_data.m_VAO);
+	glDrawElements(GL_TRIANGLES, m_gl_data.m_index_count, GL_UNSIGNED_INT, 0);
 	
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-
-	if (m_vListofCameras[0]->m_bIsSelected)
-	{
-		Gizmos::draw(m_vListofCameras[0]->getProjectionView());
-	}
-	else
-	{
-		Gizmos::draw(m_vListofCameras[1]->getProjectionView());
-	}
-
-
+	//////////////////////
+	//! End of Draw Code 
+	//////////////////////
 	Application::draw();
-
 	glfwSwapBuffers(this->window);
 	glfwPollEvents();
-
 }
 
 void BasicTexturing::generateQuad(float a_size)
 {
 	Vertex vertex_data[4];
 	unsigned int index_data[6] = { 0, 2, 1, 0, 3, 2 };
-	m_index_count = 6;
+	m_gl_data.m_index_count = 6;
 	vertex_data[0].Position = glm::vec4(-a_size, 1, -a_size, 1);
 	vertex_data[1].Position = glm::vec4(-a_size, 1, a_size, 1);
 	vertex_data[2].Position = glm::vec4(a_size, 1, a_size, 1);
@@ -204,16 +165,16 @@ void BasicTexturing::generateQuad(float a_size)
 	vertex_data[3].UV = glm::vec2(1, 0);
 
 
-	glGenVertexArrays(1, &m_VAO);
+	glGenVertexArrays(1, &m_gl_data.m_VAO);
 
-	glGenBuffers(1, &m_VBO);
-	glGenBuffers(1, &m_IBO);
-	glBindVertexArray(m_VAO);
+	glGenBuffers(1, &m_gl_data.m_VBO);
+	glGenBuffers(1, &m_gl_data.m_IBO);
+	glBindVertexArray(m_gl_data.m_VAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO );
+	glBindBuffer(GL_ARRAY_BUFFER, m_gl_data.m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)* 4, vertex_data, GL_STATIC_DRAW);
 	
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_gl_data.m_IBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)* 6, index_data, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0); // Position
@@ -244,7 +205,7 @@ void BasicTexturing::generateGrid(unsigned rows, unsigned cols)
 			//vertex_array[c + r * (cols + 1)].Normal = glm::vec4(1);
 		}
 	}
-	m_index_count = rows*cols * 6;
+	m_gl_data.m_index_count = rows*cols * 6;
 	unsigned *index_array = new unsigned[rows*cols * 6];
 	int index_Location = 0;
 	for (unsigned r = 0; r < rows; ++r)
@@ -263,13 +224,13 @@ void BasicTexturing::generateGrid(unsigned rows, unsigned cols)
 		}
 	}
 
-	glGenBuffers(1, &m_VBO);
-	glGenBuffers(1, &m_IBO);
-	glGenVertexArrays(1, &m_VAO);
+	glGenBuffers(1, &m_gl_data.m_VBO);
+	glGenBuffers(1, &m_gl_data.m_IBO);
+	glGenVertexArrays(1, &m_gl_data.m_VAO);
 
-	glBindVertexArray(m_VAO);
+	glBindVertexArray(m_gl_data.m_VAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_gl_data.m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, (cols + 1)*(rows + 1)*sizeof(Vertex), vertex_array, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0); // Position
@@ -283,8 +244,8 @@ void BasicTexturing::generateGrid(unsigned rows, unsigned cols)
 	//glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(glm::vec4) * 2);
 	//glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec4) * 2 ) + (sizeof(glm::vec2);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_index_count * sizeof(unsigned int), index_array, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_gl_data.m_IBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_gl_data.m_index_count * sizeof(unsigned int), index_array, GL_STATIC_DRAW);
 	glBindVertexArray(0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
