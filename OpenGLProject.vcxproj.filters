@@ -79,6 +79,9 @@
     <Filter Include="Resource Files\shaders">
       <UniqueIdentifier>{b7834e83-6abb-4bdf-958f-286a37691d95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Projects\AdamUlbrichtModelTests">
+      <UniqueIdentifier>{49845512-1e85-4db6-9ce4-cc4968e99fea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Gizmos.cpp">
@@ -122,6 +125,9 @@
     <ClCompile Include="src\Utility.cpp" />
     <ClCompile Include="src\AdvancedTexturing.cpp">
       <Filter>Projects\06 Advanced Texturing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AdamUlbricht.cpp">
+      <Filter>Projects\AdamUlbrichtModelTests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +176,9 @@
     <ClInclude Include="src\AdvancedTexturing.h">
       <Filter>Projects\06 Advanced Texturing</Filter>
     </ClInclude>
+    <ClInclude Include="src\AdamUlbricht.h">
+      <Filter>Projects\AdamUlbrichtModelTests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Hotkeys.txt" />
@@ -198,6 +207,12 @@
     </None>
     <None Include="data\shaders\TexturedVertex.glsl">
       <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="data\shaders\GrubVertex.glsl">
+      <Filter>Projects\AdamUlbrichtModelTests</Filter>
+    </None>
+    <None Include="data\shaders\GrubFragment.glsl">
+      <Filter>Projects\AdamUlbrichtModelTests</Filter>
     </None>
   </ItemGroup>
 </Project>

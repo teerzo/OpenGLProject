@@ -39,7 +39,7 @@ bool BasicLighting::startup()
 	std::vector <tinyobj::shape_t> shapes;
 	std::vector <tinyobj::material_t> materials;
 
-	std::string err = tinyobj::LoadObj(shapes, materials, "../data/models/stanford/bunny.obj");
+	std::string err = tinyobj::LoadObj(shapes, materials, "../data/models/AdamUlbricht/Grub.obj");
 	printf("Mesh load error %s\n", err);
 	if (err.size() != 0)
 	{

@@ -119,10 +119,11 @@ GLFWwindow* Application::getWindow()
 
 void Application::_DrawGrid()
 {
-	for (int i = 0; i <= 20; ++i)
+	int max = 20000;
+	for (int i = 0; i <= max; ++i)
 	{
-		Gizmos::addLine(glm::vec3(-10 + i, 0, -10), glm::vec3(-10 + i, 0, 10), i == 10 ? color.White : color.Gray);
-		Gizmos::addLine(glm::vec3(-10, 0, -10 + i), glm::vec3(10, 0, -10 + i), i == 10 ? color.White : color.Gray);
+		Gizmos::addLine(glm::vec3(-(max / 2) + i, 0, -(max / 2)), glm::vec3(-(max / 2) + i, 0, (max / 2)), i == (max / 2) ? color.White : color.Gray);
+		Gizmos::addLine(glm::vec3(-(max / 2), 0, -(max / 2) + i), glm::vec3((max / 2), 0, -(max / 2) + i), i == (max / 2) ? color.White : color.Gray);
 	}
 }
 

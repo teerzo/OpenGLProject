@@ -35,18 +35,23 @@ bool LoadShader(char* vertex_filename, char* fragment_filename, GLuint* Program 
 		vertex_file_length = fread(vs_source, 1, vertex_file_length, vertex_file);
 		fragment_file_length = fread(fs_source, 1, fragment_file_length, fragment_file);
 
-		// $$ Shader Load code here
+		// declare opengl shader containers
 		unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 		unsigned int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
+		// give shader source code to opengl containers
 		glShaderSource(vertex_shader, 1, &vs_source, &vertex_file_length);
+		// compile shader code 
 		glCompileShader(vertex_shader);
+
 		glShaderSource(fragment_shader, 1, &fs_source, &fragment_file_length);
 		glCompileShader(fragment_shader);
 
 		*Program = glCreateProgram();
+		// attach shader to program
 		glAttachShader(*Program, vertex_shader);
 		glAttachShader(*Program, fragment_shader);
+		// link shaders to program 
 		glLinkProgram(*Program);
 
 		// Error Checking

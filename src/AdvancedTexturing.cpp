@@ -178,18 +178,20 @@ void AdvancedTexturing::draw()
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, m_specular_texture);
 
-	int diffuseLocation = glGetUniformLocation(m_ProgramID, "diffuse");
+	int diffuseLocation = glGetUniformLocation(m_ProgramID, "diffuse_tex");
 	glUniform1i(diffuseLocation, 0);
-	int normalLocation = glGetUniformLocation(m_ProgramID, "normal");
+	int normalLocation = glGetUniformLocation(m_ProgramID, "normal_tex");
 	glUniform1i(normalLocation, 1);
-	int specularLocation = glGetUniformLocation(m_ProgramID, "specular");
+	int specularLocation = glGetUniformLocation(m_ProgramID, "specular_tex");
 	glUniform1i(specularLocation, 2);
 
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	//
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(m_quad.m_VAO);
 	glDrawElements(GL_TRIANGLES, m_quad.m_index_count, GL_UNSIGNED_INT, 0);
 	
+
 	//////////////////////
 	//! End of Draw Code 
 	//////////////////////
@@ -348,6 +350,7 @@ void AdvancedTexturing::cleanupOpenGLBuffers()
 void AdvancedTexturing::reloadShader()
 {
 	glDeleteProgram(m_ProgramID);
+	printf("reloaded Shaders\n");
 	LoadShader("../data/shaders/NormalMapVertex.glsl", "../data/shaders/NormalMapFragment.glsl", (GLuint*)&m_ProgramID);
 }
 

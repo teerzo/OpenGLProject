@@ -7,6 +7,9 @@
 
 #include "AdvancedTexturing.h"		// Project 06
 
+//#include "AdamUlbricht.h"
+
+
 int main(int argc, char *argv[])
 {
 	//TemplateApplication app;
@@ -17,6 +20,10 @@ int main(int argc, char *argv[])
 	//BasicLighting app;
 
 	AdvancedTexturing app;
+
+
+	// Artist Specific 
+	//AdamUlbricht app;
 
 	// sets the name and screen size of the app
 	app.setDefaults();

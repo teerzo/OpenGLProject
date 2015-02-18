@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AdamUlbricht.cpp" />
     <ClCompile Include="src\AdvancedTexturing.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\BasicLighting.cpp" />
@@ -102,6 +103,7 @@
     <ClCompile Include="src\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AdamUlbricht.h" />
     <ClInclude Include="src\AdvancedTexturing.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\BasicLighting.h" />
@@ -126,6 +128,8 @@
   <ItemGroup>
     <None Include="data\shaders\BasicFragment.glsl" />
     <None Include="data\shaders\BasicVertex.glsl" />
+    <None Include="data\shaders\GrubFragment.glsl" />
+    <None Include="data\shaders\GrubVertex.glsl" />
     <None Include="data\shaders\Lighting_fragment.glsl" />
     <None Include="data\shaders\Lighting_vertex.glsl" />
     <None Include="data\shaders\NormalMapFragment.glsl" />
