@@ -7,6 +7,33 @@
 
 #include "Camera.h"
 
+void OnMouseButton(GLFWwindow* window, int button, int pressed, int mod_keys)
+{
+	TwEventMouseButtonGLFW(button, pressed);
+}
+void OnMousePosition(GLFWwindow* a_window, double x, double y)
+{
+	TwEventMousePosGLFW((int)x, (int)y);
+}
+void OnMouseScroll(GLFWwindow* window, double x, double y)
+{
+	TwEventMouseWheelGLFW((int)y);
+}
+void OnKey(GLFWwindow* window, int key, int scancode, int pressed, int mod_keys)
+{
+	TwEventKeyGLFW(key, pressed);
+}
+void OnChar(GLFWwindow* window, unsigned int ch)
+{
+	TwEventCharGLFW(ch, GLFW_PRESS);
+}
+void OnWindowResize(GLFWwindow* window, int width, int height)
+{
+	TwWindowSize(width, height);
+	glViewport(0, 0, width, height);
+}
+
+
 Application::Application()
 {
 
@@ -52,6 +79,18 @@ bool Application::startup()
 
 	printf("Opengl Version: %d.%d Loaded\n", Major_Version, Minor_Version);
 
+	TwInit(TW_OPENGL_CORE, nullptr);
+	TwWindowSize(this->ScreenSize.Width, this->ScreenSize.Height);
+	m_bar = TwNewBar("TweakBar");
+	printf("TweakBar Loaded\n");
+
+	glfwSetMouseButtonCallback(this->window, OnMouseButton);
+	glfwSetCursorPosCallback(this->window, OnMousePosition);
+	glfwSetScrollCallback(this->window, OnMouseScroll);
+	glfwSetKeyCallback(this->window, OnKey);
+	glfwSetCharCallback(this->window, OnChar);
+	glfwSetWindowSizeCallback(this->window, OnWindowResize);
+
 	ActiveCamera = 0; 
 	AddFlyCamera();
 
@@ -63,9 +102,15 @@ bool Application::startup()
 	m_fDelayTimer = 0.0f;
 	m_fDelayMax = 1.0f;
 
-	printf("************\n%s Init Complete\n", this->AppName);
+	m_BackGroundColor = glm::vec4(0.2, 0.2, 0.2, 1);
 
-	
+	// TweakBar Variables
+	//TwAddSeparator(m_bar, "General", "");
+	TwAddVarRW(m_bar, "Fps ", TW_TYPE_FLOAT, &m_fps, "group=General precision=2");
+	TwAddVarRW(m_bar, "Clear Colour", TW_TYPE_COLOR4F, &m_BackGroundColor, "group=General");
+	TwAddVarRW(m_bar, "Debug ", TW_TYPE_BOOL8, &mode.Debug, "group=Modes");
+
+	printf("************\n%s Init Complete\n", this->AppName);
 	return true;
 }
 
@@ -75,6 +120,11 @@ void Application::shutdown()
 	{
 		glfwDestroyWindow(this->window);
 	}
+	// Close TweakBar
+	TwDeleteAllBars();
+	TwTerminate();
+
+	// Close Gizmos
 	Gizmos::destroy();
 	glfwTerminate();
 }
@@ -89,6 +139,8 @@ bool Application::update()
 	m_fTimer = (float)glfwGetTime();
 	m_fdeltaTime = m_fTimer - m_fPreviousTime; // prev of last frame
 	m_fPreviousTime = m_fTimer;
+
+	m_fps = 1 / m_fdeltaTime;
 
 	if (m_fDelayTimer < m_fDelayMax)
 	{
@@ -110,6 +162,7 @@ void Application::draw()
 {
 	// Base Draw Code
 	Gizmos::draw(m_vListofCameras[ActiveCamera]->getProjectionView());
+	TwDraw();
 }
 
 GLFWwindow* Application::getWindow()

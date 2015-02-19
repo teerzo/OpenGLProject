@@ -39,15 +39,16 @@ void main()
 	
 	vec3 material_color = texture( diffuse_tex, frag_uv).xyz; // 
 	
+	vec3 ambient = material_color * ambient_light;
+	
 	vec3 L = normalize(light_dir); // 
 
-	vec3 ambient = material_color * ambient_light;
 
 	float d = max(0.0, dot(N,L));
 	vec3 diffuse = vec3(d)  * light_color * material_color;
 
 	vec3 E = normalize(eye_pos - frag_position.xyz);
-	vec3 R = reflect(L, N);
+	vec3 R = reflect(-L, N);
 
 	float s = max(0, dot(R, E));
 

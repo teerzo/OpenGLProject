@@ -71,6 +71,9 @@ bool AdvancedTexturing::startup()
 	m_light_color = glm::vec3(1.0f, 1.0f, 1.0f);
 	//material_color = glm::vec3(1);
 			
+	TwAddVarRW(m_bar, "Light Color", TW_TYPE_COLOR4F, &m_light_color, "group=Light");
+	TwAddVarRW(m_bar, "Specular Power", TW_TYPE_FLOAT, &m_specular_power, "group=Light min=0 max=100 step=0.05");
+
 
 	return true;
 }
@@ -110,7 +113,7 @@ bool AdvancedTexturing::update()
 
 void AdvancedTexturing::draw()
 {
-	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+	glClearColor(m_BackGroundColor.x, m_BackGroundColor.y, m_BackGroundColor.z, m_BackGroundColor.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(m_ProgramID);
 
@@ -207,7 +210,7 @@ void AdvancedTexturing::loadTextures()
 
 	unsigned char *data;
 
-	data = stbi_load("../data/textures/rock_diffuse.tga", &width, &height, &channels, STBI_default);
+	data = stbi_load("../data/textures/four_diffuse.tga", &width, &height, &channels, STBI_default);
 	glGenTextures(1, &m_diffuse_texture);
 	glBindTexture(GL_TEXTURE_2D, m_diffuse_texture);
 
@@ -218,7 +221,7 @@ void AdvancedTexturing::loadTextures()
 
 	stbi_image_free(data);
 
-	data = stbi_load("../data/textures/rock_normal.tga", &width, &height, &channels, STBI_default);
+	data = stbi_load("../data/textures/four_normal.tga", &width, &height, &channels, STBI_default);
 	glGenTextures(1, &m_normal_texture);
 	glBindTexture(GL_TEXTURE_2D, m_normal_texture);
 
@@ -229,7 +232,7 @@ void AdvancedTexturing::loadTextures()
 
 	stbi_image_free(data);
 
-	data = stbi_load("../data/textures/rock_specular.tga", &width, &height, &channels, STBI_default);
+	data = stbi_load("../data/textures/four_specular.tga", &width, &height, &channels, STBI_default);
 	glGenTextures(1, &m_specular_texture);
 	glBindTexture(GL_TEXTURE_2D, m_specular_texture);
 
@@ -501,3 +504,53 @@ void AdvancedTexturing::generateGrid(unsigned rows, unsigned cols)
 	//delete[] index_array;
 }
 
+void AdvancedTexturing::generateSphere(float radius, int rows, int cols)
+{
+	//OpenGLData result = {};
+
+	//VertexTexCoord * verts = new VertexTexCoord[cols + 1];
+
+	//verts[0].Position = glm::vec4(0, 0, 0, 1);
+	//verts[0].tex_coord = glm::vec2(0.5, 0.5);
+	////
+
+	//verts[0].Position = glm::vec4(0, 0, 0, 1);
+
+	//for (int i = 0; i < cols; ++i)
+	//{
+	//	verts[i + 1].Position = glm::vec4(sinf(i / (float)cols * 2 * 3.14159), 0, cosf(i / (float)cols * 2 * 3.14159), 1);
+	//}
+	//unsigned int* indices = new unsigned int[3 * cols];
+
+	//for (int i = 0; i < rows; ++i )
+	//{
+
+	//}
+
+	//	glGenVertexArrays(1, &m_quad.m_VAO);
+
+	//glGenBuffers(1, &m_quad.m_VBO);
+	//glGenBuffers(1, &m_quad.m_IBO);
+	//glBindVertexArray(m_quad.m_VAO);
+
+	//glBindBuffer(GL_ARRAY_BUFFER, m_quad.m_VBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(VertexNormal)* (cols + 1), vertex_data, GL_STATIC_DRAW);
+
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_quad.m_IBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)* (cols * 3), index_data, GL_STATIC_DRAW);
+
+	//glEnableVertexAttribArray(0); // Position
+	//glEnableVertexAttribArray(1); // Normal
+	//glEnableVertexAttribArray(2); // Tangent
+	//glEnableVertexAttribArray(3); // UV
+
+	//glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(VertexNormal), 0);
+	//glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(VertexNormal), (void*)(sizeof(glm::vec4) * 1));
+	//glVertexAttribPointer(2, 4, GL_FLOAT, GL_TRUE, sizeof(VertexNormal), (void*)(sizeof(glm::vec4) * 2));
+	//glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(VertexNormal), (void*)(sizeof(glm::vec4) * 3));
+
+	//glBindVertexArray(0);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+}

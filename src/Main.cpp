@@ -4,9 +4,8 @@
 //#include "RenderingGeometry.h"		// Project 03
 //#include "BasicTexturing.h"			// Project 04
 //#include "BasicLighting.h"			// Project 05
-
-#include "AdvancedTexturing.h"		// Project 06
-
+//#include "AdvancedTexturing.h"		// Project 06
+#include "Quaternions.h" // Project 07.5
 //#include "AdamUlbricht.h"
 
 
@@ -18,8 +17,8 @@ int main(int argc, char *argv[])
 	//RenderingGeometry app;
 	//BasicTexturing app;
 	//BasicLighting app;
-
-	AdvancedTexturing app;
+	//AdvancedTexturing app;
+	Quaternions app;
 
 
 	// Artist Specific 

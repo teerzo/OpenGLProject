@@ -49,6 +49,7 @@ public:
 	void loadTexture(const char* a_fileName);
 	void generateQuad(float a_size);
 	void generateGrid(unsigned int rows, unsigned int cols);
+	void generateSphere( float radius, int rows, int cols);
 };
 
 #endif // _BASIC_LIGHTING_H_

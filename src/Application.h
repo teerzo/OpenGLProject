@@ -2,6 +2,8 @@
 #define _APPLICATION_H_
 
 #include "glm_header.h"
+//#include "../deps/AntTweakBar/include/AntTweakBar.h"
+#include "AntTweakBar.h"
 
 #include <vector>
 
@@ -19,6 +21,7 @@ struct Mode
 	bool Debug;
 	bool Wireframe;
 	bool HideObjects;
+	bool HideUI;
 };
 
 struct OpenGLData
@@ -42,6 +45,9 @@ private:
 	void _CheckKeys();
 	void _DisableOtherCameras();
 
+	float m_fps;
+	
+
 protected:
 	std::vector<Camera*> m_vListofCameras;
 	signed int ActiveCamera;
@@ -53,6 +59,11 @@ protected:
 
 	OpenGLData m_quad;
 	OpenGLData m_grid;
+
+	glm::vec4 m_BackGroundColor;
+
+	// Tweak Bar
+	TwBar* m_bar;
 
 	// timer/deltatime
 	float m_fTimer;

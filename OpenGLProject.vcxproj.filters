@@ -82,6 +82,9 @@
     <Filter Include="Projects\AdamUlbrichtModelTests">
       <UniqueIdentifier>{49845512-1e85-4db6-9ce4-cc4968e99fea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Projects\07.5 Quaternions">
+      <UniqueIdentifier>{60fc4520-5edc-4112-ad16-24884092b1b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Gizmos.cpp">
@@ -128,6 +131,9 @@
     </ClCompile>
     <ClCompile Include="src\AdamUlbricht.cpp">
       <Filter>Projects\AdamUlbrichtModelTests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Quaternions.cpp">
+      <Filter>Projects\07.5 Quaternions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="src\AdamUlbricht.h">
       <Filter>Projects\AdamUlbrichtModelTests</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Quaternions.h">
+      <Filter>Projects\07.5 Quaternions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
