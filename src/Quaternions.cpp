@@ -7,6 +7,8 @@
 #include "Gizmos.h"
 #include "Camera.h"
 
+#include "FBXFile.h"
+
 Quaternions::~Quaternions()
 {
 

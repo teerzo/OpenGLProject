@@ -23,8 +23,6 @@ void Camera::updateProjectionViewTransform()
 
 void Camera::update(float a_deltaTime)
 {
-
-
 	m_mViewTransform = glm::inverse(m_mWorldTransform);
 	updateProjectionViewTransform();
 }

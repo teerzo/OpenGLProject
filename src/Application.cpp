@@ -106,7 +106,7 @@ bool Application::startup()
 
 	// TweakBar Variables
 	//TwAddSeparator(m_bar, "General", "");
-	TwAddVarRW(m_bar, "Fps ", TW_TYPE_FLOAT, &m_fps, "group=General precision=2");
+	TwAddVarRO(m_bar, "Fps ", TW_TYPE_FLOAT, &m_fps, "group=General precision=2");
 	TwAddVarRW(m_bar, "Clear Colour", TW_TYPE_COLOR4F, &m_BackGroundColor, "group=General");
 	TwAddVarRW(m_bar, "Debug ", TW_TYPE_BOOL8, &mode.Debug, "group=Modes");
 
@@ -142,6 +142,9 @@ bool Application::update()
 
 	m_fps = 1 / m_fdeltaTime;
 
+	m_sin_wave = sinf(m_fTimer * 5) * 0.5f + 0.5f;
+
+
 	if (m_fDelayTimer < m_fDelayMax)
 	{
 		m_fDelayTimer += m_fdeltaTime;
@@ -172,7 +175,7 @@ GLFWwindow* Application::getWindow()
 
 void Application::_DrawGrid()
 {
-	int max = 20000;
+	int max = 100;
 	for (int i = 0; i <= max; ++i)
 	{
 		Gizmos::addLine(glm::vec3(-(max / 2) + i, 0, -(max / 2)), glm::vec3(-(max / 2) + i, 0, (max / 2)), i == (max / 2) ? color.White : color.Gray);

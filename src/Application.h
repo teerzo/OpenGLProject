@@ -46,7 +46,6 @@ private:
 	void _DisableOtherCameras();
 
 	float m_fps;
-	
 
 protected:
 	std::vector<Camera*> m_vListofCameras;
@@ -72,6 +71,8 @@ protected:
 	float m_fDelayMax;
 	float m_fDelayTimer;
 
+	// Testing Time Wave
+	float m_sin_wave;
 	// Textures // 
 	unsigned int m_Texture;
 	// Combined Program Object, Contains m_VBO/m_IBO etc

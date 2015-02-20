@@ -135,6 +135,9 @@
     <ClCompile Include="src\Quaternions.cpp">
       <Filter>Projects\07.5 Quaternions</Filter>
     </ClCompile>
+    <ClCompile Include="src\Animation.cpp">
+      <Filter>Projects\07 Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Gizmos.h">
@@ -188,6 +191,9 @@
     <ClInclude Include="src\Quaternions.h">
       <Filter>Projects\07.5 Quaternions</Filter>
     </ClInclude>
+    <ClInclude Include="src\Animation.h">
+      <Filter>Projects\07 Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Hotkeys.txt" />
@@ -222,6 +228,12 @@
     </None>
     <None Include="data\shaders\GrubFragment.glsl">
       <Filter>Projects\AdamUlbrichtModelTests</Filter>
+    </None>
+    <None Include="data\shaders\SkinnedFragment.glsl">
+      <Filter>Projects\07 Animation</Filter>
+    </None>
+    <None Include="data\shaders\SkinnedVertex.glsl">
+      <Filter>Projects\07 Animation</Filter>
     </None>
   </ItemGroup>
 </Project>
