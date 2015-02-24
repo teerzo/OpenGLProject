@@ -1,31 +1,25 @@
 #ifndef _ENTITY_H_
 #define _ENTITY_H_
 
-#include <glfw3.h>
-#include "glm/glm.hpp"
-#include "glm/ext.hpp"
-
 
 #include "Object.h"
 
-struct Vertex {
-	glm::vec4 position;
-	glm::vec4 colour;
-};
+
+struct OpenGLData;
 
 class Entity : public Object
 {
+private:
+	OpenGLData m_cube;
+
 public:
 	Entity();
 
 	virtual void Update();
 	virtual void Draw();
-		
 
-
-
-void generateGrid(unsigned int rows, unsigned int cols);
-
+	void GenerateCube();
+	
 
 };
 

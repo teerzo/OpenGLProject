@@ -2,6 +2,9 @@
 #include <glfw3.h>
 #include "Gizmos.h"
 
+#include "glm_header.h"
+
+
 Camera::Camera()
 {
 	printf("$Camera Created\n");
@@ -45,7 +48,11 @@ void Camera::setPosition(glm::vec3 a_position)
 }
 glm::mat4 Camera::getWorldTransform()
 {
-	return m_mWorldTransform;
+	glm::mat4 temp = m_mWorldTransform;
+	temp[1] *= -1;
+	//temp[2] *= -1;
+	temp[3].xyz = getPosition();
+	return temp;
 }
 glm::mat4 Camera::getViewTransform()
 {
@@ -61,14 +68,14 @@ glm::mat4 Camera::getProjectionView()
 }
 glm::vec3 Camera::getPosition()
 {
-	return m_mWorldTransform[3].xyz;	
+	return m_mWorldTransform[3].xyz;
 }
 
 glm::vec3 Camera::getForward()
 {
 	glm::vec3 temp;
 	temp = m_mWorldTransform[2].xyz;
-	temp.z *= 1;
+	temp *= -1;
 	return temp;
 }
 
@@ -81,7 +88,7 @@ glm::vec3 Camera::getRight()
 }
 
 // FLY Camera
-FlyCamera::FlyCamera( unsigned int a_CameraID )
+FlyCamera::FlyCamera(unsigned int a_CameraID)
 {
 	m_fSpeed = 2.0f;
 	m_CameraID = a_CameraID;
@@ -89,17 +96,25 @@ FlyCamera::FlyCamera( unsigned int a_CameraID )
 
 void FlyCamera::update(float a_deltaTime)
 {
-	Camera::update( a_deltaTime );
+	Camera::update(a_deltaTime);
 
-	glm::mat4 temp = this->getWorldTransform();
-	//temp[2][2] += 20.0f;
-	temp[3].xyz += (this->getForward() * -2); // + (this->getRight() * 1.5);
-	temp *= -1;
-	Gizmos::addTransform(temp, 1.0f);
+	if (!m_bIsSelected)
+	{
+		glm::mat4 temp = this->getWorldTransform();
+		//temp[3].xyz += (this->getForward() * 2); // + (this->getRight() * 1.5);
+		temp *= -1;
+		temp[3].xyz = this->getPosition();
+		Gizmos::addTransform(temp, 1.0f);
+		Gizmos::addSphere(this->getPosition(), 1.0f, 8, 8, color.Clear);
+		Gizmos::addLine(this->getPosition(), this->getPosition() + this->getForward() * 3, color.Blue);
+	}
+
+
+	//Gizmos::addAABB(this->getPosition(), glm::vec3(1.2, 1.2, 1.2), color.Red);
 
 	//Gizmos::addLine(getPosition(), getPosition() + (getForward() * -2), color.Blue);
 
-	CheckKeys(a_deltaTime);	
+	CheckKeys(a_deltaTime);
 }
 void FlyCamera::setSpeed(float a_speed)
 {

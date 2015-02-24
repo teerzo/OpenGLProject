@@ -1,10 +1,10 @@
 #ifndef _OBJECT_H_
 #define _OBJECT_H_
 
-
+#include "gl_core_4_4.h"
 #include <glfw3.h>
-#include "glm/glm.hpp"
-#include "glm/ext.hpp"
+#include "Vertex.h"
+
 
 class  Object
 {
@@ -19,11 +19,16 @@ public:
 	virtual void Draw();
 
 	// Get Globals
-	glm::vec4 GetGlobalPosition();
+	glm::vec3 GetGlobalPosition();
+
+	// Set Globals
+	void SetGlobalPosition(glm::vec3 a_position);
 
 	// Get Locals
-	glm::vec4 GetLocalPosition();
+	glm::vec3 GetLocalPosition();
 
+	// Set Locals
+	void SetLocalPosition(glm::vec3 a_position);
 };
 
 

@@ -20,7 +20,6 @@ protected:
 	void updateProjectionViewTransform();
 public:
 	Camera();
-	
 	void DestroyCamera();
 
 	virtual void update(float a_deltaTime);
@@ -37,17 +36,20 @@ public:
 
 	// Controls Camera WASD controls if true
 	bool m_bIsSelected;
+	float m_fSpeed;
 };
 
 class FlyCamera : public Camera
 {
 private:
-	float m_fSpeed;
 	
 	
 	void _DebugCurrentPos();
 
 public:
+	
+
+
 	FlyCamera(unsigned int a_CameraID);
 	void update(float a_deltaTime);
 	void setSpeed(float a_speed);

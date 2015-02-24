@@ -4,7 +4,10 @@
 #include "Application.h"
 
 #include "../deps/FBXLoader/FBXFile.h"
+#include "Vertex.h"
 //#include "FBXFile.h"
+
+class Entity;
 
 struct TestObject
 {
@@ -22,6 +25,7 @@ private:
 	// Project Specific
 	FBXFile* m_file;
 	TestObject m_pyro; 
+	Entity* m_cube;
 
 public:
 	virtual ~Animation();

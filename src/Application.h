@@ -5,9 +5,12 @@
 //#include "../deps/AntTweakBar/include/AntTweakBar.h"
 #include "AntTweakBar.h"
 
+#include "Vertex.h"
+
 #include <vector>
 
 class Camera;
+class Line;
 
 struct Screen
 {	
@@ -15,44 +18,58 @@ struct Screen
 	int Height;
 };
 
+
+
 struct Mode
 {
 	bool LockCamera;
 	bool Debug;
 	bool Wireframe;
-	bool HideObjects;
-	bool HideUI;
+	bool ShowObjects;
+	bool ShowLines;
+	bool CastLines;
+	bool ShowGrid;
+	bool ShowUI;
 };
 
-struct OpenGLData
-{
-	// Vertex Array Object
-	unsigned int m_VAO;
-	// Vertex Buffer Object
-	unsigned int m_VBO;
-	// Index Buffer Object
-	unsigned int m_IBO;
-	unsigned int m_index_count;
-};
+//struct OpenGLData
+//{
+//	// Vertex Array Object
+//	unsigned int m_VAO;
+//	// Vertex Buffer Object
+//	unsigned int m_VBO;
+//	// Index Buffer Object
+//	unsigned int m_IBO;
+//	unsigned int m_index_count;
+//};
 
 struct GLFWwindow;
 
 class Application
 {
 private:
+	// Grid Functions
 	void _DrawGrid();
+	// Line Functions 
+	void _DrawLines();
+	void _UpdateLines();
+	void _ClearLines();
+
 	void _UpdateCameras();
 	void _CheckKeys();
 	void _DisableOtherCameras();
 
+	// Project Default Variables
 	float m_fps;
 
+	// Debug Variables
+	int _ui_GridSize;
+	std::vector<Line*> d_vec_RayLines;
 protected:
 	std::vector<Camera*> m_vListofCameras;
 	signed int ActiveCamera;
 	char* AppName;
 	Screen ScreenSize;
-	Color color;
 	Mode mode;
 	GLFWwindow* window;
 
@@ -97,6 +114,9 @@ public:
 	void DestroyActiveCamera();
 
 	GLFWwindow* getWindow();
+
+
+	// Tweak Bar
 };
 
 

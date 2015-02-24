@@ -151,7 +151,7 @@ void AdamUlbricht::draw()
 
 	for (unsigned int mesh_index = 0; mesh_index < m_grub.m_gl_data.size(); ++mesh_index)
 	{
-		glBindVertexArray(m_grub.m_gl_data[mesh_index].m_VAO);
+		glBindVertexArray( m_grub.m_gl_data[mesh_index].m_VAO);
 		glDrawElements(GL_TRIANGLES, m_grub.m_gl_data[mesh_index].m_index_count, GL_UNSIGNED_INT, 0);
 	}
 

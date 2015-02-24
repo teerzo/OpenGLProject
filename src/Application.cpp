@@ -3,7 +3,10 @@
 #include "gl_core_4_4.h"
 #include <glfw3.h>
 #include <cstdio>
+#include <string>
 #include "Gizmos.h"
+
+#include "Line.h"
 
 #include "Camera.h"
 
@@ -34,6 +37,12 @@ void OnWindowResize(GLFWwindow* window, int width, int height)
 }
 
 
+void TW_CALL ClearLines()
+{
+	
+}
+
+
 Application::Application()
 {
 
@@ -49,13 +58,11 @@ void Application::setDefaults()
 	this->AppName = "Application Default";
 	this->ScreenSize.Width = 1280;
 	this->ScreenSize.Height = 720;
-
 	
 }
 
 bool Application::startup()
 {
-
 	if (!glfwInit())
 	{
 		return false;
@@ -91,24 +98,40 @@ bool Application::startup()
 	glfwSetCharCallback(this->window, OnChar);
 	glfwSetWindowSizeCallback(this->window, OnWindowResize);
 
-	ActiveCamera = 0; 
-	AddFlyCamera();
+	
 
 	mode.LockCamera = false;
 	mode.Debug = true;
 	mode.Wireframe = false;
-	mode.HideObjects = false;
+	mode.ShowLines = true;
+	mode.ShowGrid = true;
+	mode.CastLines = false;
 
 	m_fDelayTimer = 0.0f;
 	m_fDelayMax = 1.0f;
 
+
 	m_BackGroundColor = glm::vec4(0.2, 0.2, 0.2, 1);
+
+	_ui_GridSize = 1000;
 
 	// TweakBar Variables
 	//TwAddSeparator(m_bar, "General", "");
 	TwAddVarRO(m_bar, "Fps ", TW_TYPE_FLOAT, &m_fps, "group=General precision=2");
 	TwAddVarRW(m_bar, "Clear Colour", TW_TYPE_COLOR4F, &m_BackGroundColor, "group=General");
 	TwAddVarRW(m_bar, "Debug ", TW_TYPE_BOOL8, &mode.Debug, "group=Modes");
+	TwAddVarRW(m_bar, "Show Grid ", TW_TYPE_BOOL8, &mode.ShowGrid, "group=Grid");
+	TwAddVarRW(m_bar, "Size ", TW_TYPE_INT32, &_ui_GridSize, "group=Grid");
+
+	TwAddVarRW(m_bar, "Show Lines ", TW_TYPE_BOOL8, &mode.ShowLines, "group=Lines");
+	TwAddVarRW(m_bar, "Cast Lines ", TW_TYPE_BOOL8, &mode.CastLines, "group=Lines");
+	//TwAddButton(m_bar, "Clear Lines", ClearLines )
+	//TwAddVarRW(m_bar, "Max Length ", TW_TYPE_INT32, &_ui_GridSize, "group=Grid");
+
+	//TwAddVarRW(m_bar, "Speed", TW_TYPE_FLOAT, &m_vListofCameras[0]->m_fSpeed, "group=Camera0");
+
+	ActiveCamera = 0;
+	AddFlyCamera();
 
 	printf("************\n%s Init Complete\n", this->AppName);
 	return true;
@@ -152,18 +175,21 @@ bool Application::update()
 
 	Gizmos::clear();
 
-	_DrawGrid();
+
+	_UpdateLines();
 
 	_UpdateCameras();
-	
+
 	_CheckKeys();
-	
+
 	return true;
 }
 
 void Application::draw()
 {
 	// Base Draw Code
+	_DrawGrid();
+	_DrawLines();
 	Gizmos::draw(m_vListofCameras[ActiveCamera]->getProjectionView());
 	TwDraw();
 }
@@ -175,12 +201,44 @@ GLFWwindow* Application::getWindow()
 
 void Application::_DrawGrid()
 {
-	int max = 100;
-	for (int i = 0; i <= max; ++i)
+	if (mode.Debug)
 	{
-		Gizmos::addLine(glm::vec3(-(max / 2) + i, 0, -(max / 2)), glm::vec3(-(max / 2) + i, 0, (max / 2)), i == (max / 2) ? color.White : color.Gray);
-		Gizmos::addLine(glm::vec3(-(max / 2), 0, -(max / 2) + i), glm::vec3((max / 2), 0, -(max / 2) + i), i == (max / 2) ? color.White : color.Gray);
+		if (mode.ShowGrid)
+		{
+			for (int i = 0; i <= _ui_GridSize; ++i)
+			{
+				Gizmos::addLine(glm::vec3(-(_ui_GridSize / 2) + i, 0, -(_ui_GridSize / 2)), glm::vec3(-(_ui_GridSize / 2) + i, 0, (_ui_GridSize / 2)), i == (_ui_GridSize / 2) ? color.White : color.Gray);
+				Gizmos::addLine(glm::vec3(-(_ui_GridSize / 2), 0, -(_ui_GridSize / 2) + i), glm::vec3((_ui_GridSize / 2), 0, -(_ui_GridSize / 2) + i), i == (_ui_GridSize / 2) ? color.White : color.Gray);
+			}
+		}
 	}
+}
+
+void Application::_DrawLines()
+{
+	if (mode.Debug)
+	{
+		if (mode.ShowLines)
+		{
+			for (unsigned int i = 0; i < d_vec_RayLines.size(); ++i)
+			{
+				d_vec_RayLines[i]->Draw();
+			}
+		}
+	}
+}
+
+void Application::_UpdateLines()
+{
+	for (unsigned int i = 0; i < d_vec_RayLines.size(); ++i)
+	{
+		d_vec_RayLines[i]->Update();
+	}
+}
+
+void Application::_ClearLines()
+{
+	d_vec_RayLines.clear();
 }
 
 void Application::_UpdateCameras()
@@ -190,8 +248,7 @@ void Application::_UpdateCameras()
 		m_vListofCameras[i]->update(m_fdeltaTime);
 		if (mode.Debug)
 		{
-			Gizmos::addAABB(m_vListofCameras[i]->getPosition(), glm::vec3(1.2, 1.2, 1.2), color.Red);
-			Gizmos::addLine(m_vListofCameras[i]->getPosition(), m_vListofCameras[i]->getPosition() + (m_vListofCameras[i]->getForward() * -2), color.Blue);
+			
 		}
 	}
 }
@@ -199,6 +256,14 @@ void Application::_UpdateCameras()
 void Application::_CheckKeys()
 {
 	// hotkeys.... move to own function
+	if (glfwGetMouseButton(window, 0) && mode.CastLines)
+	{
+		if (m_fDelayTimer >= m_fDelayMax )
+		{
+			m_fDelayTimer = 0.0f;
+			d_vec_RayLines.push_back(new Line(m_vListofCameras[ActiveCamera]->getPosition(), m_vListofCameras[ActiveCamera]->getForward()));
+		}
+	}
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 	{
 		if (m_fDelayTimer >= m_fDelayMax)
@@ -222,7 +287,7 @@ void Application::_CheckKeys()
 	}
 	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
 	{
-		if ((unsigned int)ActiveCamera + 1 < m_vListofCameras.size() )
+		if ((unsigned int)ActiveCamera + 1 < m_vListofCameras.size())
 		{
 			if (m_fDelayTimer >= m_fDelayMax)
 			{
@@ -274,17 +339,22 @@ void Application::_DisableOtherCameras()
 				m_vListofCameras[i]->m_bIsSelected = false;
 			}
 		}
-	} 
+	}
 }
 
 void Application::AddFlyCamera()
 {
 	
 	this->m_vListofCameras.push_back(new FlyCamera(m_vListofCameras.size()));
-	ActiveCamera = m_vListofCameras.size()-1;
-	printf("~New Camera : %d\n", ActiveCamera);
+	ActiveCamera = m_vListofCameras.size() - 1;
+	std::string tempG = "group=Camera" + std::to_string(ActiveCamera); 
+	std::string tempS = "Cam" + std::to_string(ActiveCamera) + " Speed "; 
+	char const* speed = tempS.c_str();
+	char const* group = tempG.c_str();
+	TwAddVarRW(m_bar, speed, TW_TYPE_FLOAT, &m_vListofCameras[ActiveCamera]->m_fSpeed, group); // +tostring(ActiveCamera);
+	printf("~New Camera : %s\n", group);
 	_DisableOtherCameras();
-	
+
 }
 
 void Application::DestroyActiveCamera()

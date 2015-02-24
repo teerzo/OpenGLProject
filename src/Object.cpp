@@ -2,21 +2,36 @@
 
 void Object::Update()
 {
-	
+	// Base Update
+
 }
 
 void Object::Draw()
 {
+	// Base Draw
 
 }
 
-glm::vec4 Object::GetGlobalPosition()
+// Get Globals
+glm::vec3 Object::GetGlobalPosition()
 {
-	m_WorldMatrix;
-	return glm::vec4(0);
+	return m_WorldMatrix[3].xyz;
 }
-glm::vec4 Object::GetLocalPosition()
+
+// Set Globals
+void Object::SetGlobalPosition(glm::vec3 a_position)
 {
-	m_LocalMatrix;
-	return glm::vec4(0);
+	m_WorldMatrix[3].xyz = a_position;
+}
+
+// Get Locals
+glm::vec3 Object::GetLocalPosition()
+{
+	return m_LocalMatrix[3].xyz;
+}
+
+// Set Locals
+void Object::SetLocalPosition(glm::vec3 a_position)
+{
+	m_LocalMatrix[3].xyz = a_position;
 }

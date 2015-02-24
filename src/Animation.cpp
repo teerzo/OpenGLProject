@@ -9,6 +9,7 @@
 
 #include "Utility.h"
 
+#include "Entity.h"
 
 
 Animation::~Animation()
@@ -34,12 +35,15 @@ bool Animation::startup()
 	Gizmos::create();
 	glfwSetTime(0.0);
 
+	m_cube = new Entity;
+
 	m_file = new FBXFile;
 	m_file->load("./models/characters/Pyro/pyro.fbx");
 	//m_file->load("./models/all.fbx");
 	m_file->initialiseOpenGLTextures();
 	GenerateGLMeshes(m_file, m_pyro);
-	LoadShader("../data/shaders/SkinnedVertex.glsl", "../data/shaders/SkinnedFragment.glsl", (GLuint*)&m_ProgramID);
+	//LoadShader("../data/shaders/SkinnedVertex.glsl", "../data/shaders/SkinnedFragment.glsl", (GLuint*)&m_ProgramID);
+	LoadShader("../data/shaders/BasicVertex.glsl", "../data/shaders/BasicFragment.glsl", (GLuint*)&m_ProgramID);
 
 	return true;
 }
@@ -78,6 +82,8 @@ bool Animation::update()
 			Gizmos::addLine(node_pos, m_pyro.skeleton->m_nodes[i]->m_parent->m_globalTransform[3].xyz, color.Green);
 		}
 	}
+
+	m_cube->Update();
 
 	///////////////////////
 	//! End of Update Code
@@ -130,6 +136,7 @@ void Animation::draw()
 		glDrawElements(GL_TRIANGLES, m_pyro.meshes[i].m_index_count, GL_UNSIGNED_INT, 0);
 	}
 
+	m_cube->Draw();
 
 	//////////////////////
 	//! End of Draw Code 
