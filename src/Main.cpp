@@ -5,8 +5,9 @@
 //#include "BasicTexturing.h"			// Project 04
 //#include "BasicLighting.h"			// Project 05
 //#include "AdvancedTexturing.h"		// Project 06
-#include "Animation.h" // Project 07
+//#include "Animation.h" // Project 07
 //#include "Quaternions.h" // Project 07.5
+#include "ParticleSystems.h" // Project 08
 //#include "AdamUlbricht.h"
 
 
@@ -19,9 +20,10 @@ int main(int argc, char *argv[])
 	//BasicTexturing app;
 	//BasicLighting app;
 	//AdvancedTexturing app;
-	Animation app;
+	//Animation app;
 	//Quaternions app;
 
+	ParticleSystems app;
 
 	// Artist Specific 
 	//AdamUlbricht app;

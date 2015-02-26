@@ -92,8 +92,9 @@ protected:
 	float m_sin_wave;
 	// Textures // 
 	unsigned int m_Texture;
-	// Combined Program Object, Contains m_VBO/m_IBO etc
+	
 	unsigned int m_ProgramID;	
+	unsigned int m_Basic_Program;
 
 	// Shaders // 
 	const char* vertexShader_Source;

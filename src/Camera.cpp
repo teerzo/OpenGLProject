@@ -70,6 +70,13 @@ glm::vec3 Camera::getPosition()
 {
 	return m_mWorldTransform[3].xyz;
 }
+glm::vec3 Camera::getUp()
+{
+	glm::vec3 temp;
+	temp = m_mWorldTransform[1].xyz;
+	//temp *= -1;
+	return temp;
+}
 
 glm::vec3 Camera::getForward()
 {

@@ -86,11 +86,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\AdamUlbricht.cpp" />
+    <ClCompile Include="src\AdamUlbricht.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\AdvancedTexturing.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\Animation.cpp" />
+    <ClCompile Include="src\Animation.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\BasicLighting.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -102,6 +106,7 @@
     <ClCompile Include="src\CameraAndProjections.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\Emitter.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Gizmos.cpp" />
     <ClCompile Include="src\gl_core_4_4.c" />
@@ -110,7 +115,10 @@
     </ClCompile>
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Object.cpp" />
-    <ClCompile Include="src\Quaternions.cpp" />
+    <ClCompile Include="src\ParticleSystems.cpp" />
+    <ClCompile Include="src\Quaternions.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\RenderingGeometry.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -121,11 +129,15 @@
     <ClCompile Include="src\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\AdamUlbricht.h" />
+    <ClInclude Include="src\AdamUlbricht.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\AdvancedTexturing.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="src\Animation.h" />
+    <ClInclude Include="src\Animation.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\BasicLighting.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -138,6 +150,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\Cube.h" />
+    <ClInclude Include="src\Emitter.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Gizmos.h" />
     <ClInclude Include="src\glm_header.h" />
@@ -147,7 +160,10 @@
     </ClInclude>
     <ClInclude Include="src\Line.h" />
     <ClInclude Include="src\Object.h" />
-    <ClInclude Include="src\Quaternions.h" />
+    <ClInclude Include="src\ParticleSystems.h" />
+    <ClInclude Include="src\Quaternions.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\RenderingGeometry.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
@@ -162,18 +178,28 @@
     <Text Include="Hotkeys.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\shaders\BasicFragment.glsl" />
-    <None Include="data\shaders\BasicVertex.glsl" />
-    <None Include="data\shaders\GrubFragment.glsl" />
-    <None Include="data\shaders\GrubVertex.glsl" />
-    <None Include="data\shaders\Lighting_fragment.glsl" />
-    <None Include="data\shaders\Lighting_vertex.glsl" />
-    <None Include="data\shaders\NormalMapFragment.glsl" />
-    <None Include="data\shaders\NormalMapVertex.glsl" />
-    <None Include="data\shaders\SkinnedFragment.glsl" />
-    <None Include="data\shaders\SkinnedVertex.glsl" />
-    <None Include="data\shaders\TexturedFragment.glsl" />
-    <None Include="data\shaders\TexturedVertex.glsl" />
+    <None Include="data\shaders\basic_fragment.glsl" />
+    <None Include="data\shaders\basic_vertex.glsl" />
+    <None Include="data\shaders\GrubFragment.glsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="data\shaders\GrubVertex.glsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="data\shaders\lighting_fragment.glsl" />
+    <None Include="data\shaders\lighting_vertex.glsl" />
+    <None Include="data\shaders\normalmap_fragment.glsl" />
+    <None Include="data\shaders\normalmap_vertex.glsl" />
+    <None Include="data\shaders\particle_fragment.glsl" />
+    <None Include="data\shaders\particle_vertex.glsl" />
+    <None Include="data\shaders\skinned_fragment.glsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="data\shaders\skinned_vertex.glsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="data\shaders\textured_fragment.glsl" />
+    <None Include="data\shaders\textured_vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

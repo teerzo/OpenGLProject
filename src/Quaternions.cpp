@@ -40,7 +40,7 @@ bool Quaternions::startup()
 
 
 
-	float PI = 3.14159;
+	float PI = 3.14159f;
 
 	m_hip_frames[0].position = glm::vec3(0, 5, 0);
 	m_hip_frames[0].rotation = glm::quat(glm::vec3(-1, 0, 0));

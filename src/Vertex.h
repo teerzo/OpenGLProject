@@ -20,6 +20,13 @@ struct VertexNormal
 
 };
 
+struct VertexParticle
+{
+	glm::vec4 Position;
+	glm::vec4 Color;
+
+};
+
 struct OpenGLData
 {
 	// Vertex Array Object

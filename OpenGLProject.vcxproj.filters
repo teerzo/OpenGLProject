@@ -138,6 +138,12 @@
     <ClCompile Include="src\Animation.cpp">
       <Filter>Projects\07 Animation</Filter>
     </ClCompile>
+    <ClCompile Include="src\ParticleSystems.cpp">
+      <Filter>Projects\08 Particle Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Emitter.cpp">
+      <Filter>Projects\08 Particle Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Gizmos.h">
@@ -200,45 +206,57 @@
     <ClInclude Include="src\Cube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ParticleSystems.h">
+      <Filter>Projects\08 Particle Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Emitter.h">
+      <Filter>Projects\08 Particle Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Hotkeys.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\shaders\BasicFragment.glsl">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="data\shaders\BasicVertex.glsl">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="data\shaders\Lighting_fragment.glsl">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="data\shaders\Lighting_vertex.glsl">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="data\shaders\NormalMapFragment.glsl">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="data\shaders\NormalMapVertex.glsl">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="data\shaders\TexturedFragment.glsl">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="data\shaders\TexturedVertex.glsl">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
     <None Include="data\shaders\GrubVertex.glsl">
       <Filter>Projects\AdamUlbrichtModelTests</Filter>
     </None>
     <None Include="data\shaders\GrubFragment.glsl">
       <Filter>Projects\AdamUlbrichtModelTests</Filter>
     </None>
-    <None Include="data\shaders\SkinnedFragment.glsl">
+    <None Include="data\shaders\particle_fragment.glsl">
+      <Filter>Projects\08 Particle Systems</Filter>
+    </None>
+    <None Include="data\shaders\particle_vertex.glsl">
+      <Filter>Projects\08 Particle Systems</Filter>
+    </None>
+    <None Include="data\shaders\basic_vertex.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="data\shaders\basic_fragment.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="data\shaders\lighting_fragment.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="data\shaders\lighting_vertex.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="data\shaders\normalmap_fragment.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="data\shaders\normalmap_vertex.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="data\shaders\textured_fragment.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="data\shaders\textured_vertex.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="data\shaders\skinned_fragment.glsl">
       <Filter>Projects\07 Animation</Filter>
     </None>
-    <None Include="data\shaders\SkinnedVertex.glsl">
+    <None Include="data\shaders\skinned_vertex.glsl">
       <Filter>Projects\07 Animation</Filter>
     </None>
   </ItemGroup>

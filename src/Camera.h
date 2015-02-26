@@ -32,6 +32,7 @@ public:
 	glm::mat4 getProjectionView();
 	glm::vec3 getPosition();
 	glm::vec3 getForward();
+	glm::vec3 getUp();
 	glm::vec3 getRight();
 
 	// Controls Camera WASD controls if true

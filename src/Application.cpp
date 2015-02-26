@@ -3,7 +3,7 @@
 #include "gl_core_4_4.h"
 #include <glfw3.h>
 #include <cstdio>
-#include <string>
+#include "Utility.h"
 #include "Gizmos.h"
 
 #include "Line.h"
@@ -98,7 +98,11 @@ bool Application::startup()
 	glfwSetCharCallback(this->window, OnChar);
 	glfwSetWindowSizeCallback(this->window, OnWindowResize);
 
-	
+	// load default shader
+	if (!LoadShader("basic", (GLuint*)&m_Basic_Program))
+	{
+		return false;
+	}
 
 	mode.LockCamera = false;
 	mode.Debug = true;
@@ -330,7 +334,7 @@ void Application::_DisableOtherCameras()
 		if (!mode.LockCamera)
 		{
 			m_vListofCameras[ActiveCamera]->m_bIsSelected = true;
-			printf("~Camera : %d\n", ActiveCamera);
+			printf("~Active Camera : %d\n", ActiveCamera);
 		}
 		for (unsigned int i = 0; i < m_vListofCameras.size(); ++i)
 		{
