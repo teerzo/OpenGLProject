@@ -144,6 +144,12 @@
     <ClCompile Include="src\Emitter.cpp">
       <Filter>Projects\08 Particle Systems</Filter>
     </ClCompile>
+    <ClCompile Include="src\GPUParticleSystems.cpp">
+      <Filter>Projects\09 GPU Particle Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPUEmitter.cpp">
+      <Filter>Projects\09 GPU Particle Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Gizmos.h">
@@ -212,6 +218,12 @@
     <ClInclude Include="src\Emitter.h">
       <Filter>Projects\08 Particle Systems</Filter>
     </ClInclude>
+    <ClInclude Include="src\GPUParticleSystems.h">
+      <Filter>Projects\09 GPU Particle Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GPUEmitter.h">
+      <Filter>Projects\09 GPU Particle Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Hotkeys.txt" />
@@ -258,6 +270,18 @@
     </None>
     <None Include="data\shaders\skinned_vertex.glsl">
       <Filter>Projects\07 Animation</Filter>
+    </None>
+    <None Include="data\shaders\gpu_particle_vertex.glsl">
+      <Filter>Projects\09 GPU Particle Systems</Filter>
+    </None>
+    <None Include="data\shaders\gpu_particle_fragment.glsl">
+      <Filter>Projects\09 GPU Particle Systems</Filter>
+    </None>
+    <None Include="data\shaders\gpu_particle_geometry.glsl">
+      <Filter>Projects\09 GPU Particle Systems</Filter>
+    </None>
+    <None Include="data\shaders\particle_update_vertex.glsl">
+      <Filter>Projects\09 GPU Particle Systems</Filter>
     </None>
   </ItemGroup>
 </Project>

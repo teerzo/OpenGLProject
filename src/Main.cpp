@@ -7,7 +7,8 @@
 //#include "AdvancedTexturing.h"		// Project 06
 //#include "Animation.h" // Project 07
 //#include "Quaternions.h" // Project 07.5
-#include "ParticleSystems.h" // Project 08
+//#include "ParticleSystems.h" // Project 08
+#include "GPUParticleSystems.h" // Project 09
 //#include "AdamUlbricht.h"
 
 
@@ -23,7 +24,8 @@ int main(int argc, char *argv[])
 	//Animation app;
 	//Quaternions app;
 
-	ParticleSystems app;
+	//ParticleSystems app;
+	GPUParticleSystems app;
 
 	// Artist Specific 
 	//AdamUlbricht app;

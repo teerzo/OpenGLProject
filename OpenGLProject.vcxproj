@@ -110,6 +110,8 @@
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Gizmos.cpp" />
     <ClCompile Include="src\gl_core_4_4.c" />
+    <ClCompile Include="src\GPUEmitter.cpp" />
+    <ClCompile Include="src\GPUParticleSystems.cpp" />
     <ClCompile Include="src\IntroToOpenGL.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -155,6 +157,8 @@
     <ClInclude Include="src\Gizmos.h" />
     <ClInclude Include="src\glm_header.h" />
     <ClInclude Include="src\gl_core_4_4.h" />
+    <ClInclude Include="src\GPUEmitter.h" />
+    <ClInclude Include="src\GPUParticleSystems.h" />
     <ClInclude Include="src\IntroToOpenGL.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
@@ -180,6 +184,9 @@
   <ItemGroup>
     <None Include="data\shaders\basic_fragment.glsl" />
     <None Include="data\shaders\basic_vertex.glsl" />
+    <None Include="data\shaders\gpu_particle_fragment.glsl" />
+    <None Include="data\shaders\gpu_particle_geometry.glsl" />
+    <None Include="data\shaders\gpu_particle_vertex.glsl" />
     <None Include="data\shaders\GrubFragment.glsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </None>
@@ -191,6 +198,7 @@
     <None Include="data\shaders\normalmap_fragment.glsl" />
     <None Include="data\shaders\normalmap_vertex.glsl" />
     <None Include="data\shaders\particle_fragment.glsl" />
+    <None Include="data\shaders\particle_update_vertex.glsl" />
     <None Include="data\shaders\particle_vertex.glsl" />
     <None Include="data\shaders\skinned_fragment.glsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
