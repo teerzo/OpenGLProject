@@ -30,7 +30,7 @@ GPUPointEmitter::~GPUPointEmitter()
 	glDeleteProgram(m_draw_shader);
 }
 
-void GPUPointEmitter::Initialise( unsigned int a_max_particles, glm::vec4 a_position, float a_emit_rate,
+void GPUPointEmitter::Initialise( unsigned int a_max_particles, glm::vec3 a_position, float a_emit_rate,
 	float a_min_lifespan, float a_max_lifespan,
 	float a_min_velocity, float a_max_velocity,
 	float a_start_size, float a_end_size,
@@ -53,19 +53,6 @@ void GPUPointEmitter::Initialise( unsigned int a_max_particles, glm::vec4 a_posi
 	CreateUpdateShader();
 	CreateDrawShader();
 	
-	m_Weight = 1.0f;
-	// gravity variables
-	m_gravity_bool = true;
-	m_gravity_value = 10.0f;
-	m_gravity_direction = vec4(0, -1, 0, 1);
-	// Wind Variables
-	m_wind_bool = true;
-	m_wind_value = 10.0f;
-	m_wind_direction = vec4(-1, 0, 0, 1);
-	
-	glEnableVertexAttribArray(0); // Position
-	glEnableVertexAttribArray(1); // Color
-		
 } 
 
 void GPUPointEmitter::CreateBuffers()
@@ -84,10 +71,10 @@ void GPUPointEmitter::CreateBuffers()
 		glEnableVertexAttribArray(2); // lifetime
 		glEnableVertexAttribArray(3); // lifespan
 
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(GPUParticle), 0);
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(GPUParticle), (void*)(16));
-		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(GPUParticle), (void*)(32));
-		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(GPUParticle), (void*)(36));
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GPUParticle), 0);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GPUParticle), (void*)(12));
+		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(GPUParticle), (void*)(24));
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(GPUParticle), (void*)(28));
 	}
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -97,6 +84,9 @@ void GPUPointEmitter::CreateUpdateShader()
 {
 	unsigned int vertex_shader;
 	LoadShaderType("../data/shaders/particle_update_vertex.glsl", GL_VERTEX_SHADER, &vertex_shader);
+
+
+	//LoadShader((GLuint*)&m_update_shader, "../data/shaders/particle_update_vertex.glsl", nullptr, nullptr);
 
 	m_update_shader = glCreateProgram();
 	glAttachShader(m_update_shader, vertex_shader);
@@ -163,24 +153,24 @@ void GPUPointEmitter::Draw(float a_current_time, mat4 a_camera_transform, mat4 a
 
 	glEndTransformFeedback();
 	glDisable(GL_RASTERIZER_DISCARD);
-	glBindBufferBase(GL_TRANSFORM_FEEDBACK, 0, 0);
+	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, 0);
 
 	// render pass
 	glUseProgram(m_draw_shader);
 
 
 	// projection view
-	unsigned int uniform_projection_view = glGetUniformLocation(m_update_shader, "projection_view");
+	unsigned int uniform_projection_view = glGetUniformLocation(m_draw_shader, "projection_view");
 	// camera world
-	unsigned int uniform_camera_world = glGetUniformLocation(m_update_shader, "camera_world");
+	unsigned int uniform_camera_world = glGetUniformLocation(m_draw_shader, "camera_world");
 	// start size
-	unsigned int uniform_start_size = glGetUniformLocation(m_update_shader, "start_size");
+	unsigned int uniform_start_size = glGetUniformLocation(m_draw_shader, "start_size");
 	// end size
-	unsigned int uniform_end_size = glGetUniformLocation(m_update_shader, "end_size");
+	unsigned int uniform_end_size = glGetUniformLocation(m_draw_shader, "end_size");
 	// start Color
-	unsigned int uniform_start_color = glGetUniformLocation(m_update_shader, "start_color");
+	unsigned int uniform_start_color = glGetUniformLocation(m_draw_shader, "start_color");
 	// end Color
-	unsigned int uniform_end_color = glGetUniformLocation(m_update_shader, "end_color");
+	unsigned int uniform_end_color = glGetUniformLocation(m_draw_shader, "end_color");
 
 	glUniformMatrix4fv(uniform_projection_view, 1, GL_FALSE, (float*)&a_projection_view);
 	glUniformMatrix4fv(uniform_camera_world, 1, GL_FALSE, (float*)&a_camera_transform);
@@ -191,6 +181,8 @@ void GPUPointEmitter::Draw(float a_current_time, mat4 a_camera_transform, mat4 a
 
 	glBindVertexArray(m_vao[other_buffer]);
 	glDrawArrays(GL_POINTS, 0, m_max_particles);
+
+	m_last_draw_time = a_current_time;
 
 	// swap to next frame
 	m_active_buffer = other_buffer;

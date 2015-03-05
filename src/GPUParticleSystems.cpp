@@ -37,7 +37,7 @@ bool GPUParticleSystems::startup()
 	LoadShader("particle", (GLuint*)&m_ProgramID);
 
 	m_emitter = new GPUPointEmitter();
-	m_emitter->Initialise( 100000, glm::vec4(0, 0, 0, 1), 100, 20, 30, 10, 15, 0.5f, 0.8f, color.Green, color.GreenClear);
+	m_emitter->Initialise( 100000, glm::vec3(0, 0, 0), 100, 20, 30, 10, 15, 0.5f, 0.8f, color.Green, color.Red);
 
 	return true;
 }

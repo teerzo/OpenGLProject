@@ -10,7 +10,7 @@ bool LoadShaderType(char* filename, GLenum shader_type, unsigned int* output)
 	FILE* shader_file = fopen(filename, "r");
 	if (shader_file == nullptr)
 	{
-		return false;
+		result = false;
 	}
 	else if (shader_file == 0)
 	{
@@ -34,10 +34,21 @@ bool LoadShaderType(char* filename, GLenum shader_type, unsigned int* output)
 		glCompileShader(shader);
 
 		// Error Checking
-		
+		int success = GL_FALSE;
+		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+		if (success == GL_FALSE)
+		{
+			int log_length = 0;
+			glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_length);
+			char* log = new char[log_length];
+			glGetShaderInfoLog(shader, log_length, 0, log);
+			printf("Error: loadShaders() failed\n ");
+			printf("%s", log);
+			result = false;
+			delete[] log;
+		}
 		*output = shader;
 
-		glDeleteShader(shader);
 		// $$ end of shader code here 
 
 		delete[] shader_source;
@@ -215,6 +226,7 @@ bool LoadShader(GLuint* Program, char* vertex_filename, char* fragment_filename 
 		glGetProgramInfoLog(*Program, log_length, 0, log);
 		printf("Error: GPU SHIT FAILED \n ");
 		printf("%s", log);
+		result = false;
 
 		delete[] log;
 	}

@@ -42,8 +42,8 @@ bool Animation::startup()
 	//m_file->load("./models/all.fbx");
 	m_file->initialiseOpenGLTextures();
 	GenerateGLMeshes(m_file, m_pyro);
-	//LoadShader("../data/shaders/SkinnedVertex.glsl", "../data/shaders/SkinnedFragment.glsl", (GLuint*)&m_ProgramID);
-	LoadShader("../data/shaders/BasicVertex.glsl", "../data/shaders/BasicFragment.glsl", (GLuint*)&m_ProgramID);
+	LoadShader((GLuint*)&m_ProgramID,"../data/shaders/skinned_vertex.glsl", "../data/shaders/skinned_fragment.glsl", nullptr );
+	//LoadShader("../data/shaders/BasicVertex.glsl", "../data/shaders/BasicFragment.glsl", (GLuint*)&m_ProgramID);
 
 	return true;
 }

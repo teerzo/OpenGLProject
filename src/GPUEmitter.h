@@ -21,8 +21,8 @@ static enum emitter_type
 struct GPUParticle
 {
 	GPUParticle() : lifespan(0),lifetime(1) {}
-	glm::vec4 position;
-	glm::vec4 velocity;
+	glm::vec3 position;
+	glm::vec3 velocity;
 	float lifetime;
 	float lifespan;
 };
@@ -51,7 +51,7 @@ private:
 
 
 	// Emitter data
-	glm::vec4 m_position;
+	glm::vec3 m_position;
 	float m_emit_rate;
 	float m_emit_timer;
 
@@ -67,22 +67,12 @@ private:
 	glm::vec4 m_start_color;
 	glm::vec4 m_end_color;
 
-	// Gravity Variables
-	float m_Weight;
-	bool m_gravity_bool;
-	float m_gravity_value;
-	vec4 m_gravity_direction;
-
-	// Force Variables
-	bool m_wind_bool;
-	float m_wind_value;
-	vec4 m_wind_direction;
 
 public:
 	GPUPointEmitter();
 	~GPUPointEmitter();
 
-	void Initialise(unsigned int a_max_particles, glm::vec4 a_position, float a_emit_rate,
+	void Initialise(unsigned int a_max_particles, glm::vec3 a_position, float a_emit_rate,
 		float m_min_lifespan, float m_max_lifespan,
 		float a_min_velocity, float m_max_velocity,
 		float a_start_size, float a_end_size,
@@ -93,21 +83,6 @@ public:
 	void CreateBuffers();
 	void CreateUpdateShader();
 	void CreateDrawShader();
-
-
-
-
-	void EmitParticles();
-	void UpdateVertexData(glm::vec3 a_camera_position, glm::vec3 a_camera_up);
-	void Update(float a_delta_time);
-	void Render();
-
-	void SetDirection(vec4 a_direction);
-	void SetWeight(float a_weight);
-	void SetGravityBool(bool a_bool);
-	void SetGravityValue(float a_gravity);
-	void SetGravityDirection(vec3 a_direction);
-
 };
 
 
