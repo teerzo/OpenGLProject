@@ -16,62 +16,8 @@
     <Filter Include="Projects">
       <UniqueIdentifier>{270386b8-605e-4212-b17d-a25bb3acfe1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Projects\01IntroToOpenGL">
-      <UniqueIdentifier>{50a86e46-af0e-43d5-97b3-26e431413a10}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\02CamerasAndProjections">
-      <UniqueIdentifier>{9c80129f-00a8-46c3-acb1-8953884f094d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\03RenderingGeometry">
-      <UniqueIdentifier>{539e70de-11e4-4767-88c8-237cd3670ee4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\04BasicTexturing">
-      <UniqueIdentifier>{43d07c04-23e7-4d7c-ac95-9136aecdf3eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\05Lighting">
-      <UniqueIdentifier>{12535df6-f25f-4887-b23c-6a10181b8c25}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Projects\00Template">
       <UniqueIdentifier>{9a21c5de-bf21-4c14-bbec-f450ce23773e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\06 Advanced Texturing">
-      <UniqueIdentifier>{33616142-b997-42af-86ef-2805d16045c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\07 Animation">
-      <UniqueIdentifier>{6d954b5b-b366-4c6e-bb00-400c2129d138}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\08 Particle Systems">
-      <UniqueIdentifier>{f39de31a-92d8-4f54-b189-cdad1144adbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\09 GPU Particle Systems">
-      <UniqueIdentifier>{7c0c80ac-89ef-43b5-8799-7bedb3b028ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\10 Scene Management">
-      <UniqueIdentifier>{108a24f9-bbf4-434f-bf27-7dd16b0d70ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\11 Render Targets">
-      <UniqueIdentifier>{452ca53f-ce28-4745-b70b-6323d742a5bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\12 Post-Processing">
-      <UniqueIdentifier>{dc887094-4897-4c13-80f0-c26ab6c8e593}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\13 Shadows">
-      <UniqueIdentifier>{d9c272f6-cb04-4cd2-af63-74d833fe7af7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\14 Deferred Rendering">
-      <UniqueIdentifier>{72e7e679-c218-407c-bc88-9d684efcb219}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\15 Procedural Generation">
-      <UniqueIdentifier>{7e05228c-ed69-48a4-a3aa-fc4f500e63b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\16 Physically-Based Lighting">
-      <UniqueIdentifier>{2fda9105-e8db-424d-a99b-0f8ca1717f1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\17 Image-Based Lighting">
-      <UniqueIdentifier>{4ecf3407-7b60-45e6-97ae-185773df28d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projects\18 Bonus - GUI Interfaces">
-      <UniqueIdentifier>{a476b69d-cca6-464e-bf80-4b4707d8a170}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\models">
       <UniqueIdentifier>{5f3b4a2a-9717-4088-8b96-7bb2e7d6972d}</UniqueIdentifier>
@@ -79,11 +25,80 @@
     <Filter Include="Resource Files\shaders">
       <UniqueIdentifier>{b7834e83-6abb-4bdf-958f-286a37691d95}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Projects\AdamUlbrichtModelTests">
+    <Filter Include="Projects\Complex Game Systems">
+      <UniqueIdentifier>{662eb817-7633-4ef1-9bf3-7e896f9c7ef2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics">
+      <UniqueIdentifier>{e0753186-bbe6-488d-b859-ff04818bc4e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\01IntroToOpenGL">
+      <UniqueIdentifier>{50a86e46-af0e-43d5-97b3-26e431413a10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\02CamerasAndProjections">
+      <UniqueIdentifier>{9c80129f-00a8-46c3-acb1-8953884f094d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\03RenderingGeometry">
+      <UniqueIdentifier>{539e70de-11e4-4767-88c8-237cd3670ee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\04BasicTexturing">
+      <UniqueIdentifier>{43d07c04-23e7-4d7c-ac95-9136aecdf3eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\05Lighting">
+      <UniqueIdentifier>{12535df6-f25f-4887-b23c-6a10181b8c25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\06 Advanced Texturing">
+      <UniqueIdentifier>{33616142-b997-42af-86ef-2805d16045c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\07 Animation">
+      <UniqueIdentifier>{6d954b5b-b366-4c6e-bb00-400c2129d138}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\08 Particle Systems">
+      <UniqueIdentifier>{f39de31a-92d8-4f54-b189-cdad1144adbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\09 GPU Particle Systems">
+      <UniqueIdentifier>{7c0c80ac-89ef-43b5-8799-7bedb3b028ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\10 Scene Management">
+      <UniqueIdentifier>{108a24f9-bbf4-434f-bf27-7dd16b0d70ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\11 Render Targets">
+      <UniqueIdentifier>{452ca53f-ce28-4745-b70b-6323d742a5bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\12 Post-Processing">
+      <UniqueIdentifier>{dc887094-4897-4c13-80f0-c26ab6c8e593}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\13 Shadows">
+      <UniqueIdentifier>{d9c272f6-cb04-4cd2-af63-74d833fe7af7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\14 Deferred Rendering">
+      <UniqueIdentifier>{72e7e679-c218-407c-bc88-9d684efcb219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\15 Procedural Generation">
+      <UniqueIdentifier>{7e05228c-ed69-48a4-a3aa-fc4f500e63b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\16 Physically-Based Lighting">
+      <UniqueIdentifier>{2fda9105-e8db-424d-a99b-0f8ca1717f1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\17 Image-Based Lighting">
+      <UniqueIdentifier>{4ecf3407-7b60-45e6-97ae-185773df28d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Computer Graphics\18 Bonus - GUI Interfaces">
+      <UniqueIdentifier>{a476b69d-cca6-464e-bf80-4b4707d8a170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Artists">
+      <UniqueIdentifier>{c5cdc9fd-10fe-406e-9774-7fa8534b83d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Artists\AdamUlbrichtModelTests">
       <UniqueIdentifier>{49845512-1e85-4db6-9ce4-cc4968e99fea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Projects\07.5 Quaternions">
+    <Filter Include="Projects\Complex Game Systems\01 Quaternions">
       <UniqueIdentifier>{60fc4520-5edc-4112-ad16-24884092b1b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Complex Game Systems\02 Threading">
+      <UniqueIdentifier>{85d9abfb-1b22-4092-8646-0c1fe019c134}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Complex Game Systems\03 Cache Coherence">
+      <UniqueIdentifier>{397859a4-2af6-4cdf-993b-5e33b41b247e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,13 +115,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CameraAndProjections.cpp">
-      <Filter>Projects\02CamerasAndProjections</Filter>
+      <Filter>Projects\Computer Graphics\02CamerasAndProjections</Filter>
     </ClCompile>
     <ClCompile Include="src\IntroToOpenGL.cpp">
-      <Filter>Projects\01IntroToOpenGL</Filter>
+      <Filter>Projects\Computer Graphics\01IntroToOpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\RenderingGeometry.cpp">
-      <Filter>Projects\03RenderingGeometry</Filter>
+      <Filter>Projects\Computer Graphics\03RenderingGeometry</Filter>
     </ClCompile>
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\gl_core_4_4.c">
@@ -119,36 +134,39 @@
       <Filter>Projects\00Template</Filter>
     </ClCompile>
     <ClCompile Include="src\BasicTexturing.cpp">
-      <Filter>Projects\04BasicTexturing</Filter>
+      <Filter>Projects\Computer Graphics\04BasicTexturing</Filter>
     </ClCompile>
     <ClCompile Include="src\BasicLighting.cpp">
-      <Filter>Projects\05Lighting</Filter>
+      <Filter>Projects\Computer Graphics\05Lighting</Filter>
     </ClCompile>
     <ClCompile Include="src\tiny_obj_loader.cc" />
     <ClCompile Include="src\Utility.cpp" />
     <ClCompile Include="src\AdvancedTexturing.cpp">
-      <Filter>Projects\06 Advanced Texturing</Filter>
+      <Filter>Projects\Computer Graphics\06 Advanced Texturing</Filter>
     </ClCompile>
     <ClCompile Include="src\AdamUlbricht.cpp">
-      <Filter>Projects\AdamUlbrichtModelTests</Filter>
+      <Filter>Projects\Artists\AdamUlbrichtModelTests</Filter>
     </ClCompile>
     <ClCompile Include="src\Quaternions.cpp">
-      <Filter>Projects\07.5 Quaternions</Filter>
+      <Filter>Projects\Complex Game Systems\01 Quaternions</Filter>
     </ClCompile>
     <ClCompile Include="src\Animation.cpp">
-      <Filter>Projects\07 Animation</Filter>
+      <Filter>Projects\Computer Graphics\07 Animation</Filter>
     </ClCompile>
     <ClCompile Include="src\ParticleSystems.cpp">
-      <Filter>Projects\08 Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\08 Particle Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Emitter.cpp">
-      <Filter>Projects\08 Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\08 Particle Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\GPUParticleSystems.cpp">
-      <Filter>Projects\09 GPU Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\09 GPU Particle Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\GPUEmitter.cpp">
-      <Filter>Projects\09 GPU Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\09 GPU Particle Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Threading.cpp">
+      <Filter>Projects\Complex Game Systems\02 Threading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -156,10 +174,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\CameraAndProjections.h">
-      <Filter>Projects\02CamerasAndProjections</Filter>
+      <Filter>Projects\Computer Graphics\02CamerasAndProjections</Filter>
     </ClInclude>
     <ClInclude Include="src\IntroToOpenGL.h">
-      <Filter>Projects\01IntroToOpenGL</Filter>
+      <Filter>Projects\Computer Graphics\01IntroToOpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Entity.h">
       <Filter>Header Files</Filter>
@@ -168,7 +186,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderingGeometry.h">
-      <Filter>Projects\03RenderingGeometry</Filter>
+      <Filter>Projects\Computer Graphics\03RenderingGeometry</Filter>
     </ClInclude>
     <ClInclude Include="src\TemplateApplication.h">
       <Filter>Projects\00Template</Filter>
@@ -183,10 +201,10 @@
       <Filter>Projects\00Template</Filter>
     </ClInclude>
     <ClInclude Include="src\BasicTexturing.h">
-      <Filter>Projects\04BasicTexturing</Filter>
+      <Filter>Projects\Computer Graphics\04BasicTexturing</Filter>
     </ClInclude>
     <ClInclude Include="src\BasicLighting.h">
-      <Filter>Projects\05Lighting</Filter>
+      <Filter>Projects\Computer Graphics\05Lighting</Filter>
     </ClInclude>
     <ClInclude Include="src\gl_core_4_4.h">
       <Filter>Header Files</Filter>
@@ -195,16 +213,16 @@
     <ClInclude Include="src\Vertex.h" />
     <ClInclude Include="src\Utility.h" />
     <ClInclude Include="src\AdvancedTexturing.h">
-      <Filter>Projects\06 Advanced Texturing</Filter>
+      <Filter>Projects\Computer Graphics\06 Advanced Texturing</Filter>
     </ClInclude>
     <ClInclude Include="src\AdamUlbricht.h">
-      <Filter>Projects\AdamUlbrichtModelTests</Filter>
+      <Filter>Projects\Artists\AdamUlbrichtModelTests</Filter>
     </ClInclude>
     <ClInclude Include="src\Quaternions.h">
-      <Filter>Projects\07.5 Quaternions</Filter>
+      <Filter>Projects\Complex Game Systems\01 Quaternions</Filter>
     </ClInclude>
     <ClInclude Include="src\Animation.h">
-      <Filter>Projects\07 Animation</Filter>
+      <Filter>Projects\Computer Graphics\07 Animation</Filter>
     </ClInclude>
     <ClInclude Include="src\Line.h">
       <Filter>Header Files</Filter>
@@ -213,16 +231,19 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ParticleSystems.h">
-      <Filter>Projects\08 Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\08 Particle Systems</Filter>
     </ClInclude>
     <ClInclude Include="src\Emitter.h">
-      <Filter>Projects\08 Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\08 Particle Systems</Filter>
     </ClInclude>
     <ClInclude Include="src\GPUParticleSystems.h">
-      <Filter>Projects\09 GPU Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\09 GPU Particle Systems</Filter>
     </ClInclude>
     <ClInclude Include="src\GPUEmitter.h">
-      <Filter>Projects\09 GPU Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\09 GPU Particle Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Threading.h">
+      <Filter>Projects\Complex Game Systems\02 Threading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -230,16 +251,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\GrubVertex.glsl">
-      <Filter>Projects\AdamUlbrichtModelTests</Filter>
+      <Filter>Projects\Artists\AdamUlbrichtModelTests</Filter>
     </None>
     <None Include="data\shaders\GrubFragment.glsl">
-      <Filter>Projects\AdamUlbrichtModelTests</Filter>
+      <Filter>Projects\Artists\AdamUlbrichtModelTests</Filter>
     </None>
     <None Include="data\shaders\particle_fragment.glsl">
-      <Filter>Projects\08 Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\08 Particle Systems</Filter>
     </None>
     <None Include="data\shaders\particle_vertex.glsl">
-      <Filter>Projects\08 Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\08 Particle Systems</Filter>
     </None>
     <None Include="data\shaders\basic_vertex.glsl">
       <Filter>Resource Files\shaders</Filter>
@@ -266,22 +287,22 @@
       <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="data\shaders\skinned_fragment.glsl">
-      <Filter>Projects\07 Animation</Filter>
+      <Filter>Projects\Computer Graphics\07 Animation</Filter>
     </None>
     <None Include="data\shaders\skinned_vertex.glsl">
-      <Filter>Projects\07 Animation</Filter>
+      <Filter>Projects\Computer Graphics\07 Animation</Filter>
     </None>
     <None Include="data\shaders\gpu_particle_vertex.glsl">
-      <Filter>Projects\09 GPU Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\09 GPU Particle Systems</Filter>
     </None>
     <None Include="data\shaders\gpu_particle_fragment.glsl">
-      <Filter>Projects\09 GPU Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\09 GPU Particle Systems</Filter>
     </None>
     <None Include="data\shaders\gpu_particle_geometry.glsl">
-      <Filter>Projects\09 GPU Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\09 GPU Particle Systems</Filter>
     </None>
     <None Include="data\shaders\particle_update_vertex.glsl">
-      <Filter>Projects\09 GPU Particle Systems</Filter>
+      <Filter>Projects\Computer Graphics\09 GPU Particle Systems</Filter>
     </None>
   </ItemGroup>
 </Project>

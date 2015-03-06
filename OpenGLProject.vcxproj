@@ -127,6 +127,7 @@
     <ClCompile Include="src\TemplateApplication.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\Threading.cpp" />
     <ClCompile Include="src\tiny_obj_loader.cc" />
     <ClCompile Include="src\Utility.cpp" />
   </ItemGroup>
@@ -174,6 +175,7 @@
     <ClInclude Include="src\TemplateApplication.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="src\Threading.h" />
     <ClInclude Include="src\tiny_obj_loader.h" />
     <ClInclude Include="src\Utility.h" />
     <ClInclude Include="src\Vertex.h" />
