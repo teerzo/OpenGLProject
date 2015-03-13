@@ -168,6 +168,18 @@
     <ClCompile Include="src\Threading.cpp">
       <Filter>Projects\Complex Game Systems\02 Threading</Filter>
     </ClCompile>
+    <ClCompile Include="src\SceneManagement.cpp">
+      <Filter>Projects\Computer Graphics\10 Scene Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderTargets.cpp">
+      <Filter>Projects\Computer Graphics\11 Render Targets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderTarget.cpp">
+      <Filter>Projects\Computer Graphics\11 Render Targets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PostProcessing.cpp">
+      <Filter>Projects\Computer Graphics\12 Post-Processing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Gizmos.h">
@@ -245,6 +257,24 @@
     <ClInclude Include="src\Threading.h">
       <Filter>Projects\Complex Game Systems\02 Threading</Filter>
     </ClInclude>
+    <ClInclude Include="src\BoundingShapes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManagement.h">
+      <Filter>Projects\Computer Graphics\10 Scene Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderTargets.h">
+      <Filter>Projects\Computer Graphics\11 Render Targets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderTarget.h">
+      <Filter>Projects\Computer Graphics\11 Render Targets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PostProcessing.h">
+      <Filter>Projects\Computer Graphics\12 Post-Processing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Hotkeys.txt" />
@@ -303,6 +333,12 @@
     </None>
     <None Include="data\shaders\particle_update_vertex.glsl">
       <Filter>Projects\Computer Graphics\09 GPU Particle Systems</Filter>
+    </None>
+    <None Include="data\shaders\reflected_vertex.glsl">
+      <Filter>Projects\Computer Graphics\11 Render Targets</Filter>
+    </None>
+    <None Include="data\shaders\reflected_fragment.glsl">
+      <Filter>Projects\Computer Graphics\11 Render Targets</Filter>
     </None>
   </ItemGroup>
 </Project>

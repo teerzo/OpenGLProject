@@ -9,14 +9,12 @@
 
 #include <vector>
 
+#include "Utility.h"
+
 class Camera;
 class Line;
 
-struct Screen
-{	
-	int Width;
-	int Height;
-};
+
 
 
 
@@ -48,10 +46,7 @@ struct GLFWwindow;
 class Application
 {
 private:
-	// Grid Functions
-	void _DrawGrid();
-	// Line Functions 
-	void _DrawLines();
+
 	void _UpdateLines();
 	void _ClearLines();
 
@@ -66,6 +61,12 @@ private:
 	int _ui_GridSize;
 	std::vector<Line*> d_vec_RayLines;
 protected:
+
+	// Grid Functions
+	void _DrawGrid();
+	// Line Functions 
+	void _DrawLines();
+
 	std::vector<Camera*> m_vListofCameras;
 	signed int ActiveCamera;
 	char* AppName;
@@ -110,6 +111,8 @@ public:
 	virtual bool update();
 	virtual void draw();
 	//virtual void checkKeys();
+
+
 
 	void AddFlyCamera();
 	void DestroyActiveCamera();

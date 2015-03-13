@@ -29,7 +29,8 @@ public:
 	}
 	void Draw()
 	{
-		Gizmos::addLine(start, end, color.Green);
+		
+		Gizmos::addLine(start, end, glm::sin( color.Green * length ));
 	}
 };
 

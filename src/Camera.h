@@ -8,21 +8,28 @@
 class Camera
 {
 protected:
-	glm::mat4 m_mWorldTransform;
-	glm::mat4 m_mViewTransform;
-	glm::mat4 m_mProjectionTransform;
-	glm::mat4 m_mProjectionViewTransform;
+	
 
 
 	// Shitty camera number for printf's
 	unsigned int m_CameraID;
 
+	glm::vec4 m_FrustrumPlanes[6];
+
 	void updateProjectionViewTransform();
 public:
+
+	glm::mat4 m_mWorldTransform;
+	glm::mat4 m_mViewTransform;
+	glm::mat4 m_mProjectionTransform;
+	glm::mat4 m_mProjectionViewTransform;
+
 	Camera();
 	void DestroyCamera();
 
 	virtual void update(float a_deltaTime);
+
+	void SetViewProjection(glm::mat4 a_Matrix);
 	void setPerspective(float a_FOV, float a_aspectRatio, float a_near, float a_far);
 	void setLookAt(glm::vec3 a_from, glm::vec3 a_to, glm::vec3 a_up);
 	void setPosition(glm::vec3 a_position);
@@ -34,6 +41,8 @@ public:
 	glm::vec3 getForward();
 	glm::vec3 getUp();
 	glm::vec3 getRight();
+
+	void GetFrustrumPlanes();
 
 	// Controls Camera WASD controls if true
 	bool m_bIsSelected;
@@ -57,6 +66,16 @@ public:
 	float getSpeed();
 	void CheckKeys(float a_deltaTime);
 	
+};
+
+class RenderTargetCamera : public Camera
+{
+public:
+	Camera* m_Target;
+
+	void update(float a_deltaTime);
+	void SetTargetCamera(Camera* a_Camera);
+
 };
 
 class SpotLightCamera : public FlyCamera

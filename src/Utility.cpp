@@ -3,6 +3,8 @@
 #include "gl_core_4_4.h"
 #include <cstdio>
 
+
+
 bool LoadShaderType(char* filename, GLenum shader_type, unsigned int* output)
 {
 	bool result = true;
@@ -51,7 +53,8 @@ bool LoadShaderType(char* filename, GLenum shader_type, unsigned int* output)
 
 		// $$ end of shader code here 
 
-		delete[] shader_source;
+		// Causes the shader to be empty before linking
+		//delete[] shader_source;
 	}
 
 	fclose(shader_file);

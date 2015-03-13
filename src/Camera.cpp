@@ -9,14 +9,20 @@ Camera::Camera()
 {
 	printf("$Camera Created\n");
 
-	m_mViewTransform = glm::lookAt(glm::vec3(0, 0, 0), glm::vec3(-1, 0, 0), glm::vec3(0, 1, 0));
+	m_mViewTransform = glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(1, 0, 0), glm::vec3(0, 1, 0));
 	m_mProjectionTransform = glm::perspective(glm::radians(80.0f), 1280.0f / 720.0f, 0.1f, 1000.0f);
 	setPosition(glm::vec3(0));
+	GetFrustrumPlanes();
 }
 
 void Camera::DestroyCamera()
 {
 
+}
+
+void Camera::SetViewProjection(mat4 a_Matrix)
+{
+	m_mProjectionViewTransform = a_Matrix;
 }
 
 void Camera::updateProjectionViewTransform()
@@ -94,6 +100,42 @@ glm::vec3 Camera::getRight()
 	return temp;
 }
 
+void Camera::GetFrustrumPlanes()
+{
+	// right side
+	m_FrustrumPlanes[0] = vec4(m_mProjectionViewTransform[0][3] - m_mProjectionViewTransform[1][0],
+		m_mProjectionViewTransform[1][3] - m_mProjectionViewTransform[1][0],
+		m_mProjectionViewTransform[2][3] - m_mProjectionViewTransform[2][0],
+		m_mProjectionViewTransform[3][3] - m_mProjectionViewTransform[3][0]);
+	// left side
+	m_FrustrumPlanes[1] = vec4(m_mProjectionViewTransform[0][3] + m_mProjectionViewTransform[0][0],
+		m_mProjectionViewTransform[1][3] + m_mProjectionViewTransform[1][0],
+		m_mProjectionViewTransform[2][3] + m_mProjectionViewTransform[2][0],
+		m_mProjectionViewTransform[3][3] + m_mProjectionViewTransform[3][0]);
+	// top
+	m_FrustrumPlanes[2] = vec4(m_mProjectionViewTransform[0][3] - m_mProjectionViewTransform[0][1],
+		m_mProjectionViewTransform[1][3] - m_mProjectionViewTransform[1][1],
+		m_mProjectionViewTransform[2][3] - m_mProjectionViewTransform[2][1],
+		m_mProjectionViewTransform[3][3] - m_mProjectionViewTransform[3][1]);
+	// bottom
+	m_FrustrumPlanes[3] = vec4(m_mProjectionViewTransform[0][3] + m_mProjectionViewTransform[0][1],
+		m_mProjectionViewTransform[1][3] + m_mProjectionViewTransform[1][1],
+		m_mProjectionViewTransform[2][3] + m_mProjectionViewTransform[2][1],
+		m_mProjectionViewTransform[3][3] + m_mProjectionViewTransform[3][1]);
+	// far
+	m_FrustrumPlanes[4] = vec4(m_mProjectionViewTransform[0][3] - m_mProjectionViewTransform[0][2],
+		m_mProjectionViewTransform[1][3] - m_mProjectionViewTransform[1][2],
+		m_mProjectionViewTransform[2][3] - m_mProjectionViewTransform[2][2],
+		m_mProjectionViewTransform[3][3] - m_mProjectionViewTransform[3][2]);
+	// near
+	m_FrustrumPlanes[5] = vec4(m_mProjectionViewTransform[0][3] + m_mProjectionViewTransform[0][2],
+		m_mProjectionViewTransform[1][3] + m_mProjectionViewTransform[1][2],
+		m_mProjectionViewTransform[2][3] + m_mProjectionViewTransform[2][2],
+		m_mProjectionViewTransform[3][3] + m_mProjectionViewTransform[3][2]);
+	for (int i = 0; i < 6; i++)
+		m_FrustrumPlanes[i] = glm::normalize(m_FrustrumPlanes[i]);
+}
+
 // FLY Camera
 FlyCamera::FlyCamera(unsigned int a_CameraID)
 {
@@ -104,16 +146,22 @@ FlyCamera::FlyCamera(unsigned int a_CameraID)
 void FlyCamera::update(float a_deltaTime)
 {
 	Camera::update(a_deltaTime);
+	GetFrustrumPlanes(); 
 
 	if (!m_bIsSelected)
 	{
 		glm::mat4 temp = this->getWorldTransform();
-		//temp[3].xyz += (this->getForward() * 2); // + (this->getRight() * 1.5);
 		temp *= -1;
 		temp[3].xyz = this->getPosition();
 		Gizmos::addTransform(temp, 1.0f);
 		Gizmos::addSphere(this->getPosition(), 1.0f, 8, 8, color.Clear);
 		Gizmos::addLine(this->getPosition(), this->getPosition() + this->getForward() * 3, color.Blue);
+		Gizmos::addLine(this->getPosition() + m_FrustrumPlanes[0].xyz, this->getPosition() + (m_FrustrumPlanes[0].xyz * 5.0f), color.Yellow);
+		Gizmos::addLine(this->getPosition() + m_FrustrumPlanes[1].xyz, this->getPosition() + (m_FrustrumPlanes[1].xyz * 5.0f), color.Yellow);
+		Gizmos::addLine(this->getPosition() + m_FrustrumPlanes[2].xyz, this->getPosition() + (m_FrustrumPlanes[2].xyz * 5.0f), color.Yellow);
+		Gizmos::addLine(this->getPosition() + m_FrustrumPlanes[3].xyz, this->getPosition() + (m_FrustrumPlanes[3].xyz * 5.0f), color.Yellow);
+		Gizmos::addLine(this->getPosition() + m_FrustrumPlanes[4].xyz, this->getPosition() + (m_FrustrumPlanes[4].xyz * 5.0f), color.Yellow);
+		Gizmos::addLine(this->getPosition() + m_FrustrumPlanes[5].xyz, this->getPosition() + (m_FrustrumPlanes[5].xyz * 5.0f), color.Yellow);
 	}
 
 
@@ -220,4 +268,28 @@ void FlyCamera::CheckKeys(float a_deltaTime)
 void FlyCamera::_DebugCurrentPos()
 {
 	//printf 
+}
+
+void RenderTargetCamera::update(float a_deltaTime)
+{
+	if (m_Target != nullptr)
+	{
+		// move to be inverse of target Camera
+		vec3 position;
+		position = m_Target->getPosition() + m_Target->getForward() * 3;
+
+		this->setPosition(position);
+	}
+	/*glm::mat4 temp = this->getWorldTransform();
+	temp *= -1;
+	temp[3].xyz = this->getPosition();
+	Gizmos::addTransform(temp, 1.0f);
+	Gizmos::addSphere(this->getPosition(), 1.0f, 8, 8, color.Clear);*/
+
+
+}
+void RenderTargetCamera::SetTargetCamera(Camera* a_Camera)
+{
+	if (a_Camera != nullptr)
+		m_Target = a_Camera;
 }

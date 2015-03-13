@@ -4,6 +4,13 @@
 #include <string>
 #include "gl_core_4_4.h"
 
+struct Screen
+{
+	int Width;
+	int Height;
+};
+
+
 //typedef unsigned int GLuint;
 bool LoadShader(GLuint* Program, char* vertex_filename, char* fragment_filename );
 bool LoadShader(GLuint* Program, char* vertex_filename, char* fragment_filename, char* geometry_filename );

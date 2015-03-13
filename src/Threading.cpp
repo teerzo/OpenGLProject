@@ -36,7 +36,7 @@ bool Threading::startup()
 
 	
 
-	myThread.join();
+	//myThread.join();
 
 	return true;
 }

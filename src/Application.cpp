@@ -10,6 +10,9 @@
 
 #include "Camera.h"
 
+
+#include "BoundingShapes.h"
+
 void OnMouseButton(GLFWwindow* window, int button, int pressed, int mod_keys)
 {
 	TwEventMouseButtonGLFW(button, pressed);
@@ -266,7 +269,7 @@ void Application::_CheckKeys()
 	{
 		if (m_fDelayTimer >= m_fDelayMax )
 		{
-			m_fDelayTimer = 0.0f;
+			m_fDelayTimer = 1.0f;
 			d_vec_RayLines.push_back(new Line(m_vListofCameras[ActiveCamera]->getPosition(), m_vListofCameras[ActiveCamera]->getForward()));
 		}
 	}
