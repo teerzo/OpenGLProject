@@ -106,6 +106,9 @@
     <Filter Include="Projects\Complex Game Systems\03 Advanced Nav">
       <UniqueIdentifier>{c2fb2320-5db3-421e-bb5c-fa02e473e7f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Projects\_Assignments\Shaders">
+      <UniqueIdentifier>{a2eceace-0a4a-4a3e-8cac-9dac4c53d35f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Gizmos.cpp">
@@ -450,6 +453,36 @@
     </None>
     <None Include="data\shaders\sponza_vertex.glsl">
       <Filter>Projects\Complex Game Systems\03 Advanced Nav</Filter>
+    </None>
+    <None Include="data\shaders\ass1_gbuffer_vertex.glsl">
+      <Filter>Projects\_Assignments\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\ass1_gbuffer_fragment.glsl">
+      <Filter>Projects\_Assignments\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\ass1_composite_vertex.glsl">
+      <Filter>Projects\_Assignments\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\ass1_composite_fragment.glsl">
+      <Filter>Projects\_Assignments\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\ass1_directional_light_vertex.glsl">
+      <Filter>Projects\_Assignments\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\ass1_directional_light_fragment.glsl">
+      <Filter>Projects\_Assignments\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\ass1_point_light_vertex.glsl">
+      <Filter>Projects\_Assignments\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\ass1_point_light_fragment.glsl">
+      <Filter>Projects\_Assignments\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\ass1_perlin_fragment.glsl">
+      <Filter>Projects\_Assignments\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\ass1_perlin_vertex.glsl">
+      <Filter>Projects\_Assignments\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

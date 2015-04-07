@@ -48,7 +48,7 @@ bool ProceduralGeneration::ApplicationStartup()
 	std::vector <tinyobj::shape_t> shapes;
 	std::vector <tinyobj::material_t> materials;
 
-	std::string err = tinyobj::LoadObj(shapes, materials, "../data/models/stanford/bunny.obj");
+	std::string err = tinyobj::LoadObj(shapes, materials, "stanford/bunny.obj");
 	if (err.size() != 0)
 	{
 		printf("Mesh load error %s\n", err);
@@ -93,10 +93,6 @@ bool ProceduralGeneration::Update()
 
 void ProceduralGeneration::Draw()
 {
-	
-
-
-
 	//glCullFace(GL_BACK);
 
 	//glEnable(GL_DEPTH_TEST);
@@ -144,7 +140,6 @@ void ProceduralGeneration::RenderGeometry()
 	glUniform1i(uniform_perlin_rock_texture, 0);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, perlinRockTexture);
-
 
 
 	glBindVertexArray(gridMesh.m_VAO);
@@ -233,7 +228,7 @@ void ProceduralGeneration::CreateOpenGLBuffers(std::vector<tinyobj::shape_t>& a_
 
 void ProceduralGeneration::LoadShaders()
 {
-	LoadShader((GLuint*)&perlinProgramID, "../data/shaders/perlin_vertex.glsl", "../data/shaders/perlin_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&perlinProgramID, "perlin_vertex.glsl", "perlin_fragment.glsl", nullptr);
 
 }
 
@@ -413,11 +408,3 @@ bool ProceduralGeneration::BuildPerlinTexture( unsigned int* a_texture, const gl
 	return result;
 }
 
-
-double perlin(double x, double y, double z)
-{
-	
-
-
-	return 0;
-}

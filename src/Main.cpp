@@ -15,11 +15,11 @@
 //#include "ShadowsApp.h" // Project 13
 //#include "DeferredRendering.h" // Project 14
 //#include "ProceduralGeneration.h" // project 15
-#include "AdvancedNavigation.h" 
+//#include "AdvancedNavigation.h" 
 
 //#include "AdamUlbricht.h"
 
-//#include "ProceduralEnvironment.h"
+#include "ProceduralEnvironment.h" // Assignment 1
 
 // Threading 
 #include<thread>
@@ -44,11 +44,9 @@ int main(int argc, char *argv[])
 	//RenderingGeometry app;
 	//BasicTexturing app;
 	//BasicLighting app;
-	//AdvancedTexturing app;
-	
+	//AdvancedTexturing app;	
 	//Animation app;
 	//Quaternions app;
-
 	//ParticleSystems app;
 	//GPUParticleSystems app;
 	//SceneManagement app;
@@ -57,9 +55,9 @@ int main(int argc, char *argv[])
 	//ShadowsApp app;
 	//DeferredRendering app;
 	//ProceduralGeneration app; 
-	//ProceduralEnvironment app;
+	//AdvancedNavigation app;
 
-	AdvancedNavigation app;
+	ProceduralEnvironment app;
 
 	// Artist Specific 
 	//AdamUlbricht app;

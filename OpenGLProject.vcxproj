@@ -251,6 +251,16 @@
     <Text Include="Hotkeys.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="data\shaders\ass1_composite_fragment.glsl" />
+    <None Include="data\shaders\ass1_composite_vertex.glsl" />
+    <None Include="data\shaders\ass1_directional_light_fragment.glsl" />
+    <None Include="data\shaders\ass1_directional_light_vertex.glsl" />
+    <None Include="data\shaders\ass1_gbuffer_fragment.glsl" />
+    <None Include="data\shaders\ass1_gbuffer_vertex.glsl" />
+    <None Include="data\shaders\ass1_perlin_fragment.glsl" />
+    <None Include="data\shaders\ass1_perlin_vertex.glsl" />
+    <None Include="data\shaders\ass1_point_light_fragment.glsl" />
+    <None Include="data\shaders\ass1_point_light_vertex.glsl" />
     <None Include="data\shaders\basic_fragment.glsl" />
     <None Include="data\shaders\basic_vertex.glsl" />
     <None Include="data\shaders\composite_fragment.glsl" />

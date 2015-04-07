@@ -33,8 +33,8 @@ bool PostProcessing::ApplicationStartup()
 	Gizmos::create();
 	glfwSetTime(0.0);
 
-	LoadShader((GLuint*)&post_programID, "../data/shaders/post_vertex.glsl", "../data/shaders/post_fragment.glsl", nullptr);
-	LoadShader((GLuint*)&m_ProgramID, "../data/shaders/normalmap_vertex.glsl", "../data/shaders/normalmap_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&post_programID, "post_vertex.glsl", "post_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&m_ProgramID, "normalmap_vertex.glsl", "normalmap_fragment.glsl", nullptr);
 	LoadTextures();
 
 	frameBuffer.SetWindowSize(1280, 720);
@@ -302,6 +302,6 @@ void PostProcessing::ReloadShaders()
 	glDeleteProgram(m_ProgramID);
 	glDeleteProgram(post_programID);
 	printf("reloaded Shaders\n");
-	LoadShader((GLuint*)&post_programID, "../data/shaders/post_vertex.glsl", "../data/shaders/post_fragment.glsl", nullptr);
-	LoadShader((GLuint*)&m_ProgramID, "../data/shaders/normalmap_vertex.glsl", "../data/shaders/normalmap_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&post_programID, "post_vertex.glsl", "post_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&m_ProgramID, "normalmap_vertex.glsl", "normalmap_fragment.glsl", nullptr);
 }

@@ -275,12 +275,12 @@ void AdvancedNavigation::CheckInput()
 
 void AdvancedNavigation::LoadShaders()
 {
-	LoadShader((GLuint*)&gBufferProgramID, "../data/shaders/gbuffer_vertex.glsl", "../data/shaders/gbuffer_fragment.glsl", nullptr);
-	LoadShader((GLuint*)&compositeProgramID, "../data/shaders/composite_vertex.glsl", "../data/shaders/composite_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&gBufferProgramID, "gbuffer_vertex.glsl", "gbuffer_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&compositeProgramID, "composite_vertex.glsl", "composite_fragment.glsl", nullptr);
 
-	LoadShader((GLuint*)&directionalLightProgramID, "../data/shaders/directional_light_vertex.glsl", "../data/shaders/directional_light_fragment.glsl", nullptr);
-	LoadShader((GLuint*)&pointLightProgramID, "../data/shaders/point_light_vertex.glsl", "../data/shaders/point_light_fragment.glsl", nullptr);
-	LoadShader((GLuint*)&spotLightProgramID, "../data/shaders/shadow_map_vertex.glsl", "../data/shaders/shadow_map_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&directionalLightProgramID, "directional_light_vertex.glsl", "directional_light_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&pointLightProgramID, "point_light_vertex.glsl", "point_light_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&spotLightProgramID, "shadow_map_vertex.glsl", "shadow_map_fragment.glsl", nullptr);
 }
 
 void AdvancedNavigation::ReloadShaders()

@@ -100,7 +100,7 @@ bool Application::ApplicationStartup()
 	glfwSetCharCallback(this->window, OnChar);
 	glfwSetWindowSizeCallback(this->window, OnWindowResize);
 
-	if (!LoadShader(&basicProgram, "../data/shaders/basic_vertex.glsl", "../data/shaders/basic_fragment.glsl", nullptr ))
+	if (!LoadShader(&basicProgram, "basic_vertex.glsl", "basic_fragment.glsl", nullptr ))
 	{
 		return false;
 	}

@@ -42,8 +42,8 @@ bool ShadowsApp::ApplicationStartup()
 	// Load Mesh
 	std::vector <tinyobj::shape_t> shapes;
 	std::vector <tinyobj::material_t> materials;
-
-	std::string err = tinyobj::LoadObj(shapes, materials, "../data/models/stanford/bunny.obj");
+	//												"../data/models/.....
+	std::string err = tinyobj::LoadObj(shapes, materials, "stanford/bunny.obj");
 	printf("Mesh load error %s\n", err);
 	if (err.size() != 0)
 	{
@@ -270,8 +270,8 @@ void ShadowsApp::CreateOpenGLBuffers(std::vector<tinyobj::shape_t>& a_shapes)
 
 void ShadowsApp::LoadShaders()
 {
-	LoadShader((GLuint*)&shadowsProgramID, "../data/shaders/shadows_vertex.glsl", "../data/shaders/shadows_fragment.glsl", nullptr);
-	LoadShader((GLuint*)&shadowMapProgramID, "../data/shaders/shadow_map_vertex.glsl", "../data/shaders/shadow_map_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&shadowsProgramID, "shadows_vertex.glsl", "shadows_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&shadowMapProgramID, "shadow_map_vertex.glsl", "shadow_map_fragment.glsl", nullptr);
 }
 
 void ShadowsApp::ReloadShaders()

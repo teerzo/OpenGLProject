@@ -43,7 +43,7 @@ public:
 
 	OpenGLData BuildGrid(glm::vec2 real_dims, glm::ivec2 dims);
 	bool BuildPerlinTexture(unsigned int* a_texture, const glm::ivec2 dims, const int octaves, const float persistance, const float offset);
-	double perlin(double x, double y, double z);
+	
 
 	OpenGLData GeneratePlane();
 	OpenGLData GenerateCube();

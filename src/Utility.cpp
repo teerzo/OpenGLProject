@@ -184,32 +184,79 @@ bool LoadShader(std::string filename, GLuint* Program)
 	return result;
 }
 
-bool LoadShader(GLuint* Program, char* vertex_filename, char* fragment_filename = nullptr, char* geometry_filename = nullptr)
+//bool LoadShader( GLuint* Program, char* vertex_filename, char* fragment_filename = nullptr, char* geometry_filename = nullptr ) {
+//	bool result = true;
+//	*Program = glCreateProgram();
+//	if( vertex_filename != nullptr ) {
+//		unsigned int vertex_shader;
+//		if( LoadShaderType( vertex_filename, GL_VERTEX_SHADER, &vertex_shader ) ) {
+//			glAttachShader( *Program, vertex_shader );
+//			glDeleteShader( vertex_shader );
+//		}
+//	}
+//	if( fragment_filename != nullptr ) {
+//		unsigned int fragment_shader;
+//		if( LoadShaderType( fragment_filename, GL_FRAGMENT_SHADER, &fragment_shader ) ) {
+//			glAttachShader( *Program, fragment_shader );
+//			glDeleteShader( fragment_shader );
+//		}
+//	}
+//	if( geometry_filename != nullptr ) {
+//		unsigned int geometry_shader;
+//		if( LoadShaderType( geometry_filename, GL_GEOMETRY_SHADER, &geometry_shader ) ) {
+//			glAttachShader( *Program, geometry_shader );
+//			glDeleteShader( geometry_shader );
+//		}
+//	}
+//	// link shaders to program 
+//	glLinkProgram( *Program );
+//
+//	// Error Checking
+//	int success = GL_FALSE;
+//	glGetProgramiv( *Program, GL_LINK_STATUS, &success );
+//	if( success == GL_FALSE ) {
+//		int log_length = 0;
+//		glGetProgramiv( *Program, GL_INFO_LOG_LENGTH, &log_length );
+//		char* log = new char[log_length];
+//		glGetProgramInfoLog( *Program, log_length, 0, log );
+//		printf( "Error: GPU SHIT FAILED \n " );
+//		printf( "%s", log );
+//		result = false;
+//
+//		delete[] log;
+//	}
+//
+//	return result;
+//}
+
+
+bool LoadShader( GLuint* Program, char* vertex_filename = nullptr, char* fragment_filename = nullptr, char* geometry_filename = nullptr )
 {
 	bool result = true;
 	*Program = glCreateProgram();
-	if (vertex_filename != nullptr)
-	{
+	if ( vertex_filename != nullptr ) {
+	
+		std::string vertex_path = "../data/shaders/" + (std::string)vertex_filename;
 		unsigned int vertex_shader;
-		if (LoadShaderType(vertex_filename, GL_VERTEX_SHADER, &vertex_shader))
+		if( LoadShaderType( (char*)vertex_path.c_str(), GL_VERTEX_SHADER, &vertex_shader ) )
 		{
 			glAttachShader(*Program, vertex_shader);
 			glDeleteShader(vertex_shader);
 		}
 	}
-	if (fragment_filename != nullptr)
-	{
+	if( fragment_filename != nullptr ) {
+		std::string fragment_path = "../data/shaders/" + ( std::string )fragment_filename;
 		unsigned int fragment_shader;
-		if (LoadShaderType(fragment_filename, GL_FRAGMENT_SHADER, &fragment_shader))
+		if( LoadShaderType( (char*)fragment_path.c_str(), GL_FRAGMENT_SHADER, &fragment_shader ) )
 		{
 			glAttachShader(*Program, fragment_shader);
 			glDeleteShader(fragment_shader);
 		}
 	}
-	if (geometry_filename != nullptr)
-	{
+	if( geometry_filename != nullptr ) {
+		std::string geometry_path = "../data/shaders/" + ( std::string )geometry_filename;
 		unsigned int geometry_shader;
-		if (LoadShaderType(geometry_filename, GL_GEOMETRY_SHADER, &geometry_shader))
+		if( LoadShaderType( ( char* ) geometry_path.c_str() , GL_GEOMETRY_SHADER, &geometry_shader ) )
 		{
 			glAttachShader(*Program, geometry_shader);
 			glDeleteShader(geometry_shader);
@@ -227,7 +274,7 @@ bool LoadShader(GLuint* Program, char* vertex_filename, char* fragment_filename 
 		glGetProgramiv(*Program, GL_INFO_LOG_LENGTH, &log_length);
 		char* log = new char[log_length];
 		glGetProgramInfoLog(*Program, log_length, 0, log);
-		printf("Error: GPU SHIT FAILED \n ");
+		printf("Error: Shaders SHIT FAILED \n ");
 		printf("%s", log);
 		result = false;
 
