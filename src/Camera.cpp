@@ -1,18 +1,14 @@
 #include "Camera.h"
+//#include "Utility.h"
 #include <glfw3.h>
 #include "Gizmos.h"
-
 #include "glm_header.h"
-
 
 Camera::Camera()
 {
-	printf("$Camera Created\n");
-
-	m_mViewTransform = glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(1, 0, 0), glm::vec3(0, 1, 0));
-	m_mProjectionTransform = glm::perspective(glm::radians(80.0f), 1280.0f / 720.0f, 0.1f, 1000.0f);
-	setPosition(glm::vec3(0));
-	GetFrustrumPlanes();
+	printf("+ Camera Created\n");
+	viewTransform = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	projectionTransform = glm::perspective(glm::radians(70.0f), 1280.0f/720.0f, 0.10f, 1000.0f);
 }
 
 void Camera::DestroyCamera()
@@ -20,276 +16,182 @@ void Camera::DestroyCamera()
 
 }
 
-void Camera::SetViewProjection(mat4 a_Matrix)
+void Camera::SetViewProjection(glm::mat4 a_Matrix)
 {
-	m_mProjectionViewTransform = a_Matrix;
+	projectionViewTransform = a_Matrix;
 }
 
-void Camera::updateProjectionViewTransform()
+void Camera::UpdateProjectionView()
 {
-	m_mProjectionViewTransform = m_mProjectionTransform * m_mViewTransform;
+	projectionViewTransform = projectionTransform * viewTransform;
 }
 
-void Camera::update(float a_deltaTime)
+void Camera::Update(float a_deltaTime)
 {
-	m_mViewTransform = glm::inverse(m_mWorldTransform);
-	updateProjectionViewTransform();
+	viewTransform = glm::inverse(worldTransform);
+	UpdateProjectionView();
 }
-void Camera::setPerspective(float a_FOV, float a_aspectRatio, float a_near, float a_far)
+void Camera::SetPerspective(const float a_FOV, const float a_aspectRatio, const float a_near, const float a_far)
 {
-	m_mProjectionTransform = glm::perspective(glm::radians(a_FOV), a_aspectRatio, a_near, a_far);
-	updateProjectionViewTransform();
+	projectionTransform = glm::perspective(glm::radians(a_FOV), a_aspectRatio, a_near, a_far);
+	UpdateProjectionView();
 }
-void Camera::setLookAt(glm::vec3 a_from, glm::vec3 a_to, glm::vec3 a_up)
+void Camera::SetLookAt(glm::vec3 a_from, glm::vec3 a_to, glm::vec3 a_up)
 {
-	//
-	m_mViewTransform = glm::lookAt(a_from, a_to, a_up);
-	m_mWorldTransform = glm::inverse(m_mViewTransform);
+	viewTransform = glm::lookAt(a_from, a_to, a_up);
+	worldTransform = glm::inverse(viewTransform);
 }
-void Camera::setPosition(glm::vec3 a_position)
+void Camera::SetPosition(glm::vec3 a_position)
 {
-	//
-	m_mWorldTransform = glm::translate(a_position);
-	m_mViewTransform = glm::inverse(m_mWorldTransform);
+	worldTransform = glm::translate(a_position);
+	viewTransform = glm::inverse(worldTransform);
 }
-glm::mat4 Camera::getWorldTransform()
+glm::mat4 Camera::GetWorld()
 {
-	glm::mat4 temp = m_mWorldTransform;
+	glm::mat4 temp = worldTransform;
 	temp[1] *= -1;
-	//temp[2] *= -1;
-	temp[3].xyz = getPosition();
+	temp[3].xyz = GetPosition();
 	return temp;
 }
-glm::mat4 Camera::getViewTransform()
-{
-	return m_mViewTransform;
-}
-glm::mat4 Camera::getProjection()
-{
-	return m_mProjectionTransform;
-}
-glm::mat4 Camera::getProjectionView()
-{
-	return m_mProjectionViewTransform;
-}
-glm::vec3 Camera::getPosition()
-{
-	return m_mWorldTransform[3].xyz;
-}
-glm::vec3 Camera::getUp()
-{
-	glm::vec3 temp;
-	temp = m_mWorldTransform[1].xyz;
-	//temp *= -1;
-	return temp;
-}
+//glm::mat4 Camera::GetView()				{ return viewTransform; }
+glm::mat4 Camera::GetView()				{ return glm::inverse(worldTransform); }
+glm::mat4 Camera::GetProjection()		{ return projectionTransform; }
+glm::mat4 Camera::GetProjectionView()	{ return projectionViewTransform; }
+glm::vec3 Camera::GetPosition()			{ return worldTransform[3].xyz; }
+glm::vec3 Camera::GetUp()				{ return worldTransform[1].xyz; }
+glm::vec3 Camera::GetForward()			{ return glm::vec3(-worldTransform[2].x, -worldTransform[2].y, -worldTransform[2].z); }
+glm::vec3 Camera::GetRight()			{ return worldTransform[0].xyz; }
 
-glm::vec3 Camera::getForward()
-{
-	glm::vec3 temp;
-	temp = m_mWorldTransform[2].xyz;
-	temp *= -1;
-	return temp;
-}
-
-glm::vec3 Camera::getRight()
-{
-	glm::vec3 temp;
-	temp = m_mWorldTransform[0].xyz;
-	temp.x *= 1;
-	return temp;
-}
-
-void Camera::GetFrustrumPlanes()
+void Camera::GetFrustumPlanes()
 {
 	// right side
-	m_FrustrumPlanes[0] = vec4(m_mProjectionViewTransform[0][3] - m_mProjectionViewTransform[1][0],
-		m_mProjectionViewTransform[1][3] - m_mProjectionViewTransform[1][0],
-		m_mProjectionViewTransform[2][3] - m_mProjectionViewTransform[2][0],
-		m_mProjectionViewTransform[3][3] - m_mProjectionViewTransform[3][0]);
+	frustumPlanes[0] = glm::vec4(projectionViewTransform[0][3] - projectionViewTransform[1][0],
+		projectionViewTransform[1][3] - projectionViewTransform[1][0],
+		projectionViewTransform[2][3] - projectionViewTransform[2][0],
+		projectionViewTransform[3][3] - projectionViewTransform[3][0]);
 	// left side
-	m_FrustrumPlanes[1] = vec4(m_mProjectionViewTransform[0][3] + m_mProjectionViewTransform[0][0],
-		m_mProjectionViewTransform[1][3] + m_mProjectionViewTransform[1][0],
-		m_mProjectionViewTransform[2][3] + m_mProjectionViewTransform[2][0],
-		m_mProjectionViewTransform[3][3] + m_mProjectionViewTransform[3][0]);
+	frustumPlanes[1] = glm::vec4(projectionViewTransform[0][3] + projectionViewTransform[0][0],
+		projectionViewTransform[1][3] + projectionViewTransform[1][0],
+		projectionViewTransform[2][3] + projectionViewTransform[2][0],
+		projectionViewTransform[3][3] + projectionViewTransform[3][0]);
 	// top
-	m_FrustrumPlanes[2] = vec4(m_mProjectionViewTransform[0][3] - m_mProjectionViewTransform[0][1],
-		m_mProjectionViewTransform[1][3] - m_mProjectionViewTransform[1][1],
-		m_mProjectionViewTransform[2][3] - m_mProjectionViewTransform[2][1],
-		m_mProjectionViewTransform[3][3] - m_mProjectionViewTransform[3][1]);
+	frustumPlanes[2] = glm::vec4(projectionViewTransform[0][3] - projectionViewTransform[0][1],
+		projectionViewTransform[1][3] - projectionViewTransform[1][1],
+		projectionViewTransform[2][3] - projectionViewTransform[2][1],
+		projectionViewTransform[3][3] - projectionViewTransform[3][1]);
 	// bottom
-	m_FrustrumPlanes[3] = vec4(m_mProjectionViewTransform[0][3] + m_mProjectionViewTransform[0][1],
-		m_mProjectionViewTransform[1][3] + m_mProjectionViewTransform[1][1],
-		m_mProjectionViewTransform[2][3] + m_mProjectionViewTransform[2][1],
-		m_mProjectionViewTransform[3][3] + m_mProjectionViewTransform[3][1]);
+	frustumPlanes[3] = glm::vec4(projectionViewTransform[0][3] + projectionViewTransform[0][1],
+		projectionViewTransform[1][3] + projectionViewTransform[1][1],
+		projectionViewTransform[2][3] + projectionViewTransform[2][1],
+		projectionViewTransform[3][3] + projectionViewTransform[3][1]);
 	// far
-	m_FrustrumPlanes[4] = vec4(m_mProjectionViewTransform[0][3] - m_mProjectionViewTransform[0][2],
-		m_mProjectionViewTransform[1][3] - m_mProjectionViewTransform[1][2],
-		m_mProjectionViewTransform[2][3] - m_mProjectionViewTransform[2][2],
-		m_mProjectionViewTransform[3][3] - m_mProjectionViewTransform[3][2]);
+	frustumPlanes[4] = glm::vec4(projectionViewTransform[0][3] - projectionViewTransform[0][2],
+		projectionViewTransform[1][3] - projectionViewTransform[1][2],
+		projectionViewTransform[2][3] - projectionViewTransform[2][2],
+		projectionViewTransform[3][3] - projectionViewTransform[3][2]);
 	// near
-	m_FrustrumPlanes[5] = vec4(m_mProjectionViewTransform[0][3] + m_mProjectionViewTransform[0][2],
-		m_mProjectionViewTransform[1][3] + m_mProjectionViewTransform[1][2],
-		m_mProjectionViewTransform[2][3] + m_mProjectionViewTransform[2][2],
-		m_mProjectionViewTransform[3][3] + m_mProjectionViewTransform[3][2]);
-	for (int i = 0; i < 6; i++)
-		m_FrustrumPlanes[i] = glm::normalize(m_FrustrumPlanes[i]);
+	frustumPlanes[5] = glm::vec4(projectionViewTransform[0][3] + projectionViewTransform[0][2],
+		projectionViewTransform[1][3] + projectionViewTransform[1][2],
+		projectionViewTransform[2][3] + projectionViewTransform[2][2],
+		projectionViewTransform[3][3] + projectionViewTransform[3][2]);
+	for (int i = 0; i < 6; i++) {
+		frustumPlanes[i] = glm::normalize(frustumPlanes[i]);
+	}
+	//return &frustumPlanes;
 }
 
 // FLY Camera
-FlyCamera::FlyCamera(unsigned int a_CameraID)
+FlyCamera::FlyCamera(const unsigned int a_ID)
 {
-	m_fSpeed = 2.0f;
-	m_CameraID = a_CameraID;
+	movementSpeed = 2.0f;
+	rotationSpeed = 2.0f;
+	cameraID = a_ID;
+	isActive = true;
 }
 
-void FlyCamera::update(float a_deltaTime)
+void FlyCamera::Update(float a_deltaTime)
 {
-	Camera::update(a_deltaTime);
-	GetFrustrumPlanes(); 
+	Camera::Update(a_deltaTime);
+	//frustumPlanes = GetFrustumPlanes(); 
 
-	if (!m_bIsSelected)
+	if (!isSelected)
 	{
-		glm::mat4 temp = this->getWorldTransform();
-		temp *= -1;
-		temp[3].xyz = this->getPosition();
-		Gizmos::addTransform(temp, 1.0f);
-		Gizmos::addSphere(this->getPosition(), 1.0f, 8, 8, color.Clear);
-		Gizmos::addLine(this->getPosition(), this->getPosition() + this->getForward() * 3, color.Blue);
-		Gizmos::addLine(this->getPosition() + m_FrustrumPlanes[0].xyz, this->getPosition() + (m_FrustrumPlanes[0].xyz * 5.0f), color.Yellow);
-		Gizmos::addLine(this->getPosition() + m_FrustrumPlanes[1].xyz, this->getPosition() + (m_FrustrumPlanes[1].xyz * 5.0f), color.Yellow);
-		Gizmos::addLine(this->getPosition() + m_FrustrumPlanes[2].xyz, this->getPosition() + (m_FrustrumPlanes[2].xyz * 5.0f), color.Yellow);
-		Gizmos::addLine(this->getPosition() + m_FrustrumPlanes[3].xyz, this->getPosition() + (m_FrustrumPlanes[3].xyz * 5.0f), color.Yellow);
-		Gizmos::addLine(this->getPosition() + m_FrustrumPlanes[4].xyz, this->getPosition() + (m_FrustrumPlanes[4].xyz * 5.0f), color.Yellow);
-		Gizmos::addLine(this->getPosition() + m_FrustrumPlanes[5].xyz, this->getPosition() + (m_FrustrumPlanes[5].xyz * 5.0f), color.Yellow);
+		//glm::mat4 temp = this->getWorldTransform();
+		//temp *= -1;
+		//temp[3].xyz = this->getPosition();
+		Gizmos::addTransform(this->GetWorld(), 1.0f);
+		Gizmos::addSphere(this->GetPosition(), 1.0f, 8, 8, color.Clear);
+		Gizmos::addLine(this->GetPosition(), this->GetPosition() + this->GetForward() * 3, color.Blue);
 	}
-
-
-	//Gizmos::addAABB(this->getPosition(), glm::vec3(1.2, 1.2, 1.2), color.Red);
-
-	//Gizmos::addLine(getPosition(), getPosition() + (getForward() * -2), color.Blue);
-
-	CheckKeys(a_deltaTime);
-}
-void FlyCamera::setSpeed(float a_speed)
-{
-	m_fSpeed = a_speed;
-}
-float FlyCamera::getSpeed()
-{
-	return m_fSpeed;
+	CheckInput(a_deltaTime);
 }
 
-void FlyCamera::CheckKeys(float a_deltaTime)
+void FlyCamera::CheckInput(float a_deltaTime)
 {
-	if (m_bIsSelected)
+	if (isSelected)
 	{
-		// Check w,a,s,d and mouse
-		// move camera
 		GLFWwindow* window = glfwGetCurrentContext();
-
+		int width, height;
+		glfwGetWindowSize(window, &width, &height);
 		double x_delta, y_delta;
-		float width = 1280.0f;
-		float height = 720.0f;
-
 		glfwGetCursorPos(window, &x_delta, &y_delta);
-
 		x_delta -= (width / 2);
 		y_delta -= (height / 2);
-
 		x_delta /= (width / 2);
 		y_delta /= (height / 2);
-
 		x_delta *= -100 * a_deltaTime;
 		y_delta *= -100 * a_deltaTime;
-
-
-		//x_delta -= ()
 
 		if (glfwGetMouseButton(window, 1))
 		{
 			glfwSetCursorPos(window, width / 2.0f, height / 2.0f);
-			glm::vec3 camera_right = (glm::vec3)m_mWorldTransform[0];
+			glm::vec3 camera_right = (glm::vec3)worldTransform[0];
 
 			glm::mat4 yaw = glm::rotate((float)x_delta, glm::vec3(0, 1, 0));
 			glm::mat4 pitch = glm::rotate((float)y_delta, camera_right);
 			glm::mat4 rot = yaw * pitch;
 
-			m_mWorldTransform[0] = rot * m_mWorldTransform[0];
-			m_mWorldTransform[1] = rot * m_mWorldTransform[1];
-			m_mWorldTransform[2] = rot * m_mWorldTransform[2];
+			worldTransform[0] = rot * worldTransform[0];
+			worldTransform[1] = rot * worldTransform[1];
+			worldTransform[2] = rot * worldTransform[2];
 		}
-		if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-		{
-			// Reset
-			m_mViewTransform = glm::lookAt(glm::vec3(10, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+		if ( glfwGetKey( window, GLFW_KEY_W) == GLFW_PRESS ) {
+			worldTransform[3] -= worldTransform[2] * movementSpeed * a_deltaTime;
+		} 
+		if ( glfwGetKey( window, GLFW_KEY_S) == GLFW_PRESS ) {
+			worldTransform[3] += worldTransform[2] * movementSpeed * a_deltaTime;
 		}
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		{
-			// move forward
-			m_mWorldTransform[3] -= m_mWorldTransform[2] * m_fSpeed * a_deltaTime;
+		if ( glfwGetKey( window, GLFW_KEY_A) == GLFW_PRESS ) {
+			worldTransform[3] -= worldTransform[0] * movementSpeed * a_deltaTime;
 		}
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		{
-			// move forward
-			m_mWorldTransform[3] += m_mWorldTransform[2] * m_fSpeed * a_deltaTime;
+		if ( glfwGetKey( window, GLFW_KEY_D) == GLFW_PRESS ) {
+			worldTransform[3] += worldTransform[0] * movementSpeed * a_deltaTime;
 		}
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		{
-			// move forward
-			m_mWorldTransform[3] -= m_mWorldTransform[0] * m_fSpeed * a_deltaTime;
+		if ( glfwGetKey( window, GLFW_KEY_Q) == GLFW_PRESS ) {
+			worldTransform[3] -= worldTransform[1] * movementSpeed * a_deltaTime;
 		}
-		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		{
-			// move forward
-			m_mWorldTransform[3] += m_mWorldTransform[0] * m_fSpeed * a_deltaTime;
+		if ( glfwGetKey( window, GLFW_KEY_E) == GLFW_PRESS ) {
+			worldTransform[3] += worldTransform[1] * movementSpeed * a_deltaTime;
 		}
-		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-		{
-			// move forward
-			m_mWorldTransform[3] -= m_mWorldTransform[1] * m_fSpeed * a_deltaTime;
+		if ( glfwGetKey( window, GLFW_KEY_SPACE) == GLFW_PRESS ) {
+			worldTransform[3].y += movementSpeed * a_deltaTime;
 		}
-		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-		{
-			// move forward
-			m_mWorldTransform[3] += m_mWorldTransform[1] * m_fSpeed * a_deltaTime;
-		}
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		{
-			m_mWorldTransform[3].y += m_fSpeed * a_deltaTime;
-		}
-	}
-	else
-	{
-
 	}
 }
 
-void FlyCamera::_DebugCurrentPos()
-{
-	//printf 
-}
 
-void RenderTargetCamera::update(float a_deltaTime)
+void RenderTargetCamera::Update(float a_deltaTime)
 {
-	if (m_Target != nullptr)
-	{
+	if (target != nullptr) {
 		// move to be inverse of target Camera
 		vec3 position;
-		position = m_Target->getPosition() + m_Target->getForward() * 3;
-
-		this->setPosition(position);
+		position = target->GetPosition() + target->GetForward() * 3;
+		this->SetPosition(position);
 	}
-	/*glm::mat4 temp = this->getWorldTransform();
-	temp *= -1;
-	temp[3].xyz = this->getPosition();
-	Gizmos::addTransform(temp, 1.0f);
-	Gizmos::addSphere(this->getPosition(), 1.0f, 8, 8, color.Clear);*/
-
-
 }
 void RenderTargetCamera::SetTargetCamera(Camera* a_Camera)
 {
-	if (a_Camera != nullptr)
-		m_Target = a_Camera;
+	if (a_Camera != nullptr) {
+		target = a_Camera;
+	}
 }

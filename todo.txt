@@ -1,0 +1,10 @@
+ToDo
+
+Fix naming conventions, add km infront of helper/utility functions i write
+
+
+Fix Camera Class inheritance
+Add Light classes, inherit off basic camera
+Fix Render Target class
+
+

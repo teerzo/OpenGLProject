@@ -10,9 +10,16 @@
 //#include "ParticleSystems.h"		// Project 08
 //#include "GPUParticleSystems.h"	// Project 09
 //#include "SceneManagement.h"	//Project 10
-#include "RenderTargets.h" // Project 11
+//#include "RenderTargets.h" // Project 11
 //#include "PostProcessing.h" // Project 12
+//#include "ShadowsApp.h" // Project 13
+//#include "DeferredRendering.h" // Project 14
+//#include "ProceduralGeneration.h" // project 15
+#include "AdvancedNavigation.h" 
+
 //#include "AdamUlbricht.h"
+
+//#include "ProceduralEnvironment.h"
 
 // Threading 
 #include<thread>
@@ -45,9 +52,14 @@ int main(int argc, char *argv[])
 	//ParticleSystems app;
 	//GPUParticleSystems app;
 	//SceneManagement app;
-	RenderTargets app;
-
+	//RenderTargets app;
 	//PostProcessing app;
+	//ShadowsApp app;
+	//DeferredRendering app;
+	//ProceduralGeneration app; 
+	//ProceduralEnvironment app;
+
+	AdvancedNavigation app;
 
 	// Artist Specific 
 	//AdamUlbricht app;
@@ -80,18 +92,18 @@ int main(int argc, char *argv[])
 	
 
 	// sets the name and screen size of the app
-	app.setDefaults();
+	app.SetApplicationDefaults();
 
-	if (!app.startup())
+	if (!app.ApplicationStartup())
 	{
 		return -1;
 	}	
 
-	while (app.update())
+	while (app.Update())
 	{
-		app.draw();
+		app.Draw();
 	}
 	
-	app.shutdown();
+	app.ApplicationShutdown();
 	return 0;
 }

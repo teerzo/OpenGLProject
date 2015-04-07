@@ -6,22 +6,17 @@
 class TemplateApplication : public Application
 {
 private:
-	// Base Variables
-
-	// Project Specific
-
+	
 public:
 	virtual ~TemplateApplication();
-
-	// Base Functions 
-	virtual void setDefaults();
-	virtual bool startup();
-	virtual void shutdown();
-	virtual bool update();
-	virtual void draw();
-	//virtual void checkKeys();
-
-	// Project Specific 
+	
+	virtual void SetApplicationDefaults();
+	virtual bool ApplicationStartup();
+	virtual void ApplicationShutdown();
+	virtual void CheckInput();
+	virtual bool Update();
+	virtual void Draw();
+	virtual void DebugDraw();
 
 };
 

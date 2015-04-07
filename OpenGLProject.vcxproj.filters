@@ -97,8 +97,14 @@
     <Filter Include="Projects\Complex Game Systems\02 Threading">
       <UniqueIdentifier>{85d9abfb-1b22-4092-8646-0c1fe019c134}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Projects\Complex Game Systems\03 Cache Coherence">
+    <Filter Include="Projects\_Assignments">
+      <UniqueIdentifier>{9231586b-6cd3-4ab7-b6fa-804038190790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Complex Game Systems\04 Cache Coherence">
       <UniqueIdentifier>{397859a4-2af6-4cdf-993b-5e33b41b247e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\Complex Game Systems\03 Advanced Nav">
+      <UniqueIdentifier>{c2fb2320-5db3-421e-bb5c-fa02e473e7f3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +185,33 @@
     </ClCompile>
     <ClCompile Include="src\PostProcessing.cpp">
       <Filter>Projects\Computer Graphics\12 Post-Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShadowsApp.cpp">
+      <Filter>Projects\Computer Graphics\13 Shadows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DeferredRendering.cpp">
+      <Filter>Projects\Computer Graphics\14 Deferred Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProceduralGeneration.cpp">
+      <Filter>Projects\Computer Graphics\15 Procedural Generation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\kmGUIManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProceduralEnvironment.cpp">
+      <Filter>Projects\_Assignments</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Building.cpp">
+      <Filter>Projects\_Assignments</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AdvancedNavigation.cpp">
+      <Filter>Projects\Complex Game Systems\03 Advanced Nav</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PBR.cpp">
+      <Filter>Projects\Computer Graphics\16 Physically-Based Lighting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,6 +308,30 @@
     <ClInclude Include="src\PostProcessing.h">
       <Filter>Projects\Computer Graphics\12 Post-Processing</Filter>
     </ClInclude>
+    <ClInclude Include="src\ShadowsApp.h">
+      <Filter>Projects\Computer Graphics\13 Shadows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DeferredRendering.h">
+      <Filter>Projects\Computer Graphics\14 Deferred Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProceduralGeneration.h">
+      <Filter>Projects\Computer Graphics\15 Procedural Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\kmGUIManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProceduralEnvironment.h">
+      <Filter>Projects\_Assignments</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Building.h">
+      <Filter>Projects\_Assignments</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AdvancedNavigation.h">
+      <Filter>Projects\Complex Game Systems\03 Advanced Nav</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PBR.h">
+      <Filter>Projects\Computer Graphics\16 Physically-Based Lighting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Hotkeys.txt" />
@@ -339,6 +396,60 @@
     </None>
     <None Include="data\shaders\reflected_fragment.glsl">
       <Filter>Projects\Computer Graphics\11 Render Targets</Filter>
+    </None>
+    <None Include="data\shaders\post_vertex.glsl">
+      <Filter>Projects\Computer Graphics\12 Post-Processing</Filter>
+    </None>
+    <None Include="data\shaders\post_fragment.glsl">
+      <Filter>Projects\Computer Graphics\12 Post-Processing</Filter>
+    </None>
+    <None Include="data\shaders\shadows_vertex.glsl">
+      <Filter>Projects\Computer Graphics\13 Shadows</Filter>
+    </None>
+    <None Include="data\shaders\shadows_fragment.glsl">
+      <Filter>Projects\Computer Graphics\13 Shadows</Filter>
+    </None>
+    <None Include="data\shaders\shadow_map_vertex.glsl">
+      <Filter>Projects\Computer Graphics\13 Shadows</Filter>
+    </None>
+    <None Include="data\shaders\shadow_map_fragment.glsl">
+      <Filter>Projects\Computer Graphics\13 Shadows</Filter>
+    </None>
+    <None Include="data\shaders\gbuffer_vertex.glsl">
+      <Filter>Projects\Computer Graphics\14 Deferred Rendering</Filter>
+    </None>
+    <None Include="data\shaders\gbuffer_fragment.glsl">
+      <Filter>Projects\Computer Graphics\14 Deferred Rendering</Filter>
+    </None>
+    <None Include="data\shaders\composite_vertex.glsl">
+      <Filter>Projects\Computer Graphics\14 Deferred Rendering</Filter>
+    </None>
+    <None Include="data\shaders\composite_fragment.glsl">
+      <Filter>Projects\Computer Graphics\14 Deferred Rendering</Filter>
+    </None>
+    <None Include="data\shaders\directional_light_vertex.glsl">
+      <Filter>Projects\Computer Graphics\14 Deferred Rendering</Filter>
+    </None>
+    <None Include="data\shaders\directional_light_fragment.glsl">
+      <Filter>Projects\Computer Graphics\14 Deferred Rendering</Filter>
+    </None>
+    <None Include="data\shaders\point_light_vertex.glsl">
+      <Filter>Projects\Computer Graphics\14 Deferred Rendering</Filter>
+    </None>
+    <None Include="data\shaders\point_light_fragment.glsl">
+      <Filter>Projects\Computer Graphics\14 Deferred Rendering</Filter>
+    </None>
+    <None Include="data\shaders\perlin_vertex.glsl">
+      <Filter>Projects\Computer Graphics\15 Procedural Generation</Filter>
+    </None>
+    <None Include="data\shaders\perlin_fragment.glsl">
+      <Filter>Projects\Computer Graphics\15 Procedural Generation</Filter>
+    </None>
+    <None Include="data\shaders\sponza_fragment.glsl">
+      <Filter>Projects\Complex Game Systems\03 Advanced Nav</Filter>
+    </None>
+    <None Include="data\shaders\sponza_vertex.glsl">
+      <Filter>Projects\Complex Game Systems\03 Advanced Nav</Filter>
     </None>
   </ItemGroup>
 </Project>

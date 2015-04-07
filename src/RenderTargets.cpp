@@ -15,14 +15,14 @@ RenderTargets::~RenderTargets()
 
 void RenderTargets::setDefaults()
 {
-	this->AppName = "RenderTargets";
-	this->ScreenSize.Width = 1280;
-	this->ScreenSize.Height = 720;
+	this->applicationName = "RenderTargets";
+	this->screenSize.Width = 1280;
+	this->screenSize.Height = 720;
 }
 
-bool RenderTargets::startup()
+bool RenderTargets::ApplicationStartup()
 {
-	if (!Application::startup())
+	if (!Application::ApplicationStartup())
 	{
 		return false;
 	}
@@ -45,14 +45,14 @@ bool RenderTargets::startup()
 	return true;
 }
 
-void RenderTargets::shutdown()
+void RenderTargets::ApplicationShutdown()
 {
-	Application::shutdown();
+	Application::ApplicationShutdown();
 }
 
-bool RenderTargets::update()
+bool RenderTargets::Update()
 {
-	if (!Application::update())
+	if (!Application::Update())
 	{
 		return false;
 	}
@@ -63,7 +63,7 @@ bool RenderTargets::update()
 
 	Gizmos::addSphere(vec3(0, 5, 0), 0.5f, 12, 12, color.Red);
 
-	m_Front_Target.Update(m_fdeltaTime, m_vListofCameras[0]);
+	m_Front_Target.Update(deltaTime, cameraVector[0]);
 
 
 	///////////////////////
@@ -82,7 +82,7 @@ void RenderTargets::draw()
 	glBindFramebuffer(GL_FRAMEBUFFER, m_Front_Target.m_fbo);
 	glViewport(0, 0, m_Front_Target.m_screen.Width, m_Front_Target.m_screen.Height);
 
-	glClearColor(0.2f, 0.2f, 0.2f, 1);
+	glClearColor(0.4f, 0.4f, 0.4f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	_DrawGrid();

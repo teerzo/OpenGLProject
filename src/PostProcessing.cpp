@@ -12,16 +12,16 @@ PostProcessing::~PostProcessing()
 
 }
 
-void PostProcessing::setDefaults()
+void PostProcessing::SetApplicationDefaults()
 {
-	this->AppName = "PostProcessing";
-	this->ScreenSize.Width = 1280;
-	this->ScreenSize.Height = 720;
+	this->applicationName = "PostProcessing";
+	this->screenSize.Width = 1280;
+	this->screenSize.Height = 720;
 }
 
-bool PostProcessing::startup()
+bool PostProcessing::ApplicationStartup()
 {
-	if (!Application::startup())
+	if (!Application::ApplicationStartup())
 	{
 		return false;
 	}
@@ -33,24 +33,30 @@ bool PostProcessing::startup()
 	Gizmos::create();
 	glfwSetTime(0.0);
 
-	LoadShader((GLuint*)&m_reflected_program, "../data/shaders/reflected_vertex.glsl", "../data/shaders/reflected_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&post_programID, "../data/shaders/post_vertex.glsl", "../data/shaders/post_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&m_ProgramID, "../data/shaders/normalmap_vertex.glsl", "../data/shaders/normalmap_fragment.glsl", nullptr);
+	LoadTextures();
 
-	m_Render_Target.SetWindowSize(1280, 720);
-	m_Render_Target.SetPlaneSize(1280, 720);
-	m_Render_Target.GenerateFrameBuffer();
-	m_Render_Target.m_plane = GeneratePlane(m_Render_Target.m_Width, m_Render_Target.m_Height);
+	frameBuffer.SetWindowSize(1280, 720);
+	frameBuffer.SetPlaneSize(1280, 720);
+	frameBuffer.m_plane = GeneratePlane(frameBuffer.m_Width, frameBuffer.m_Height);
+	frameBuffer.GenerateFrameBuffer();
+
+	cube = new Entity;
+	cube->GenerateCube();
 
 	return true;
 }
 
-void PostProcessing::shutdown()
+void PostProcessing::ApplicationShutdown()
 {
-	Application::shutdown();
+	Application::ApplicationShutdown();
 }
 
-bool PostProcessing::update()
+bool PostProcessing::Update()
 {
-	if (!Application::update())
+	CheckInput();
+	if (!Application::Update())
 	{
 		return false;
 	}
@@ -58,7 +64,9 @@ bool PostProcessing::update()
 	//! Project Specific Update Code Here
 	//////////////////////////////////////
 
+	cube->Update();
 
+	//frameBuffer.Update(deltaTime, cameraVector[currentCamera]);
 
 	///////////////////////
 	//! End of Update Code
@@ -68,41 +76,97 @@ bool PostProcessing::update()
 	return true;
 }
 
-void PostProcessing::draw()
+void PostProcessing::Draw()
 {
-	glClearColor(m_BackGroundColor.x, m_BackGroundColor.y, m_BackGroundColor.z, m_BackGroundColor.w);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glUseProgram(m_ProgramID);
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer.m_fbo);
+	glViewport(0, 0, frameBuffer.m_screen.Width, frameBuffer.m_screen.Height);
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glUseProgram(m_ProgramID);
 	int proj_view_handle = glGetUniformLocation(m_ProgramID, "ProjectionView");
 	if (proj_view_handle >= 0)
 	{
-		glUniformMatrix4fv(proj_view_handle, 1, GL_FALSE, (float*)&m_vListofCameras[ActiveCamera]->getProjectionView());
-
+		glUniformMatrix4fv(proj_view_handle, 1, GL_FALSE, (float*)&cameraVector[currentCamera]->GetProjectionView());
 	}
+	glUniform1f(glGetUniformLocation(m_ProgramID, "timer"), currentGameTime);
+	glUniform3fv(glGetUniformLocation(m_ProgramID, "eye_pos"),1 ,(float*)&cameraVector[currentCamera]->GetPosition());
+	glUniform3fv(glGetUniformLocation(m_ProgramID, "light_dir"), 1, (float*)&cameraVector[0]->GetForward());
+	glUniform1f(glGetUniformLocation(m_ProgramID, "specular_power"), 20.0f);
+	glUniform3fv(glGetUniformLocation(m_ProgramID, "ambient_light"), 1, (float*)&glm::vec3( 0.2f,0.2f,0.2f) );
+	glUniform3fv(glGetUniformLocation(m_ProgramID, "light_color"), 1, (float*)&glm::vec3(1,1,1));
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_diffuse_texture);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_normal_texture);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, m_specular_texture);
+
+	glUniform1i(glGetUniformLocation(m_ProgramID, "diffuse_tex"), 0);
+	glUniform1i(glGetUniformLocation(m_ProgramID, "normal_tex"), 1);
+	glUniform1i(glGetUniformLocation(m_ProgramID, "specular_tex"), 2);
+
+	// DRAW CODE
+	DebugDraw();
+	cube->Draw();
+
+	////
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	glUseProgram(post_programID);
+
+	//frameBuffer.Draw((GLuint*)&post_programID);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, frameBuffer.m_fbo_texture);
+	glUniform1i(glGetUniformLocation(post_programID, "input_texture"), 0);
+	glUniform1f(glGetUniformLocation(post_programID, "timer"), currentGameTime);
+	glBindVertexArray(frameBuffer.m_plane.m_VAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+	/*int proj_view_handle = glGetUniformLocation(post_programID, "ProjectionView");
+	if (proj_view_handle >= 0)
+	{
+		glUniformMatrix4fv(proj_view_handle, 1, GL_FALSE, (float*)&cameraVector[currentCamera]->GetProjectionView());
+
+	}*/
+	
+
+	//glClearColor(defaultBackgroundColour.x, defaultBackgroundColour.y, defaultBackgroundColour.z, defaultBackgroundColour.w);
+
+	
 	///////////////////////////////////
 	//! Project Specific Drawcode Here 
 	///////////////////////////////////
 
 
 
+
 	//////////////////////
 	//! End of Draw Code 
 	//////////////////////
-	Application::draw();
+	//Application::DebugDraw();
+	Application::Draw();
 	glfwSwapBuffers(this->window);
 	glfwPollEvents();
 }
+
 
 OpenGLData PostProcessing::GeneratePlane(float a_Width, float a_Height)
 {
 	OpenGLData temp;
 	temp.m_index_count = 6;
+
+	glm::vec2 half_texel = 1.0f / glm::vec2(a_Width, a_Height);
+
 	float vertexData[] = {
-		-a_Width / 100, 0, -5.1, 1, 0, 0,
-		a_Width / 100, 0, -5.1, 1, 1, 0,
-		a_Width / 100, a_Height / 100, -5.1, 1, 1, 1,
-		-a_Width / 100, a_Height / 100, -5.1, 1, 0, 1,
+		-1, -1,		 0, 1,	half_texel.x, half_texel.y,		// 0, 0,
+		-1, 1, 0, 1, half_texel.x, 1.0f - half_texel.y,		// 1, 0,
+		1, 1,		 0, 1,	1.0f - half_texel.x, 1.0f - half_texel.y,		// 1, 1,
+		1, -1, 0, 1, 1.0f - half_texel.x, half_texel.y		// 0, 1,
 	};
 	unsigned int indexData[] = {
 		0, 1, 2,
@@ -176,4 +240,68 @@ OpenGLData PostProcessing::GeneratePlane()
 	return temp;
 }
 
+void PostProcessing::DebugDraw()
+{
+	Application::DebugDraw();
+}
 
+void PostProcessing::CheckInput()
+{
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+	{
+		ReloadShaders();
+	}
+
+	Application::CheckInput();
+}
+
+void PostProcessing::LoadTextures()
+{
+	int width, height, channels;
+
+	unsigned char *data;
+
+	data = stbi_load("../data/textures/four_diffuse.tga", &width, &height, &channels, STBI_default);
+	glGenTextures(1, &m_diffuse_texture);
+	glBindTexture(GL_TEXTURE_2D, m_diffuse_texture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	stbi_image_free(data);
+
+	data = stbi_load("../data/textures/four_normal.tga", &width, &height, &channels, STBI_default);
+	glGenTextures(1, &m_normal_texture);
+	glBindTexture(GL_TEXTURE_2D, m_normal_texture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	stbi_image_free(data);
+
+	data = stbi_load("../data/textures/four_specular.tga", &width, &height, &channels, STBI_default);
+	glGenTextures(1, &m_specular_texture);
+	glBindTexture(GL_TEXTURE_2D, m_specular_texture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	stbi_image_free(data);
+
+}
+
+void PostProcessing::ReloadShaders()
+{ 
+	glfwSetTime(0.0);
+	currentGameTime = 0.0f;
+	glDeleteProgram(m_ProgramID);
+	glDeleteProgram(post_programID);
+	printf("reloaded Shaders\n");
+	LoadShader((GLuint*)&post_programID, "../data/shaders/post_vertex.glsl", "../data/shaders/post_fragment.glsl", nullptr);
+	LoadShader((GLuint*)&m_ProgramID, "../data/shaders/normalmap_vertex.glsl", "../data/shaders/normalmap_fragment.glsl", nullptr);
+}

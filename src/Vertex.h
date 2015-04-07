@@ -27,6 +27,42 @@ struct VertexParticle
 
 };
 
+struct VertexUV
+{
+	glm::vec4 Position;
+	glm::vec2 UV;
+};
+
+struct Rectangle
+{
+	float topLeft;
+	float bottomLeft;
+	float topRight;
+	float bottomRight;
+	Rectangle()
+	{
+		topLeft = 1.0f;
+		bottomLeft = 1.0f;
+		topRight = 1.0f;
+		bottomRight = 1.0f;
+	}
+	Rectangle(float square)
+	{
+		topLeft = square;
+		bottomLeft = square;
+		topRight = square;
+		bottomRight = square;
+	}
+	Rectangle(float a, float b, float c, float d)
+	{
+		topLeft = a;
+		bottomLeft = b;
+		topRight = c;
+		bottomRight = d;
+	}	
+};
+
+
 struct OpenGLData
 {
 	// Vertex Array Object

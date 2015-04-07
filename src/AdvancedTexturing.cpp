@@ -143,14 +143,16 @@ void AdvancedTexturing::draw()
 
 	}*/
 
-	int shaderTimer = glGetUniformLocation(m_ProgramID, "timer");
-	glUniform1f(shaderTimer, m_fTimer);
+	
 
 
 	/*Cameratemp = m_vListofCameras[0]->getPosition();
 	int cameraPos = glGetUniformLocation(m_ProgramID, "cameraPos");
 	glUniform3f(cameraPos, Cameratemp.x, Cameratemp.y, Cameratemp.z);
 	*/
+	int shaderTimer = glGetUniformLocation(m_ProgramID, "timer");
+	glUniform1f(shaderTimer, m_fTimer);
+
 	m_eye_pos = m_vListofCameras[ActiveCamera]->getPosition();
 	int eye_pos_uniform = glGetUniformLocation(m_ProgramID, "eye_pos");
 	glUniform3f(eye_pos_uniform, m_eye_pos.x, m_eye_pos.y, m_eye_pos.z);

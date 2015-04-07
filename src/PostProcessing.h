@@ -2,9 +2,11 @@
 #define _POST_PROCESSING_H
 
 #include "Application.h"
-
+#include "stb_image.h"
 
 #include "RenderTarget.h"
+
+#include "Entity.h"
 
 class PostProcessing : public Application
 {
@@ -12,22 +14,34 @@ private:
 	// Base Variables
 
 	// Project Specific
-	RenderTarget m_Render_Target;
+	unsigned int m_diffuse_texture;
+	unsigned int m_normal_texture;
+	unsigned int m_specular_texture;
 
-	unsigned int m_reflected_program;
+	RenderTarget frameBuffer;
+	Entity* cube;
+
+	unsigned int post_programID;
 
 public:
 	virtual ~PostProcessing();
 
 	// Base Functions 
-	virtual void setDefaults();
-	virtual bool startup();
-	virtual void shutdown();
-	virtual bool update();
-	virtual void draw();
-	//virtual void checkKeys();
+	virtual void SetApplicationDefaults();
+	virtual bool ApplicationStartup();
+	virtual void ApplicationShutdown();
+	virtual void CheckInput();
+	virtual bool Update();
+	virtual void Draw();
+	virtual	void DebugDraw();
 
-	// Project Specific 
+	// Project Specific
+	
+
+	void LoadTextures();
+
+	void ReloadShaders();
+
 	OpenGLData GeneratePlane(float a_Width, float a_Height);
 	OpenGLData GeneratePlane();
 };

@@ -1,8 +1,8 @@
 #include "TemplateApplication.h"
 
-#include "gl_core_4_4.h"
+//#include "gl_core_4_4.h"
 #include <glfw3.h>
-#include <cstdio>
+//#include <cstdio>
 
 #include "Gizmos.h"
 #include "Camera.h"
@@ -12,16 +12,16 @@ TemplateApplication::~TemplateApplication()
 
 }
 
-void TemplateApplication::setDefaults()
+void TemplateApplication::SetApplicationDefaults()
 {
-	this->AppName = "TemplateApplication";
-	this->ScreenSize.Width = 1280;
-	this->ScreenSize.Height = 720;
+	this->applicationName = "TemplateApplication";
+	this->screenSize.Width = 1280;
+	this->screenSize.Height = 720;
 }
 
-bool TemplateApplication::startup()
+bool TemplateApplication::ApplicationStartup()
 {
-	if (!Application::startup())
+	if (!Application::ApplicationStartup())
 	{
 		return false;
 	}
@@ -30,21 +30,21 @@ bool TemplateApplication::startup()
 	// enable transparency
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	Gizmos::create();
-	glfwSetTime(0.0);
+	
+	
 
 
 	return true;
 }
 
-void TemplateApplication::shutdown()
+void TemplateApplication::ApplicationShutdown()
 {
-	Application::shutdown();
+	Application::ApplicationShutdown();
 }
 
-bool TemplateApplication::update()
+bool TemplateApplication::Update()
 {
-	if (!Application::update())
+	if (!Application::Update())
 	{
 		return false;
 	}
@@ -62,16 +62,16 @@ bool TemplateApplication::update()
 	return true;
 }
 
-void TemplateApplication::draw()
+void TemplateApplication::Draw()
 {
-	glClearColor(m_BackGroundColor.x, m_BackGroundColor.y, m_BackGroundColor.z, m_BackGroundColor.w);
+	glClearColor(defaultBackgroundColour.x, defaultBackgroundColour.y, defaultBackgroundColour.z, defaultBackgroundColour.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(m_ProgramID);
 
 	int proj_view_handle = glGetUniformLocation(m_ProgramID, "ProjectionView");
 	if (proj_view_handle >= 0)
 	{
-		glUniformMatrix4fv(proj_view_handle, 1, GL_FALSE, (float*)&m_vListofCameras[ActiveCamera]->getProjectionView());
+		glUniformMatrix4fv(proj_view_handle, 1, GL_FALSE, (float*)&cameraVector[currentCamera]->GetProjectionView());
 
 	}
 	///////////////////////////////////
@@ -83,7 +83,18 @@ void TemplateApplication::draw()
 	//////////////////////
 	//! End of Draw Code 
 	//////////////////////
-	Application::draw();
+	DebugDraw();
+	Application::Draw();
 	glfwSwapBuffers(this->window);
 	glfwPollEvents();
+}
+
+void TemplateApplication::DebugDraw()
+{
+	Application::DebugDraw();
+}
+
+void TemplateApplication::CheckInput()
+{
+	
 }
