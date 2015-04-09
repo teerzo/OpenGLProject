@@ -35,6 +35,7 @@ public:
 	
 
 	OpenGLData BuildGrid( glm::vec2 real_dims, glm::ivec2 dims );
+	OpenGLData BuildVertexGrid( glm::vec2 real_dims, glm::ivec2 dims );
 	bool BuildPerlinTexture( unsigned int* a_texture, const glm::ivec2 dims, const int octaves, const float persistance, const float offset );
 
 
@@ -48,6 +49,8 @@ public:
 	virtual bool Update();
 	virtual void Draw();
 	virtual void DebugDraw();
+	void ReloadShaders();
+	void LoadShaders();
 
 	// Render Code
 	void RenderGeometry();
@@ -56,8 +59,7 @@ public:
 	void DrawPointLight(glm::vec3 a_position, float a_radius, glm::vec3 a_color);
 	void RenderComposite();
 	
-	void ReloadShaders();
-	void LoadShaders();
+	
 
 };
 

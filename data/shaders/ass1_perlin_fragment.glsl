@@ -31,6 +31,7 @@ void main()
 
 	//color *= frag_color;
 
-	frg_color = color;
+	//frg_color = color;
+	frg_color = vtx_color;
 	frg_color.a = 1;
 }

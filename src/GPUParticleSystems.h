@@ -7,24 +7,26 @@
 
 class GPUParticleSystems : public Application
 {
-private:
-	// Base Variables
-
-	// Project Specific
-
 public:
-	virtual ~GPUParticleSystems();
-
-	// Base Functions 
-	virtual void setDefaults();
-	virtual bool startup();
-	virtual void shutdown();
-	virtual bool update();
-	virtual void draw();
-	//virtual void checkKeys();
-
 	// Project Specific 
 	GPUPointEmitter* m_emitter;
+	unsigned int GPUProgramID;
+	unsigned int GPUUpdateProgramID;
+
+
+	virtual ~GPUParticleSystems();
+
+	virtual void SetApplicationDefaults();
+	virtual bool ApplicationStartup();
+	virtual void ApplicationShutdown();
+	virtual void CheckInput();
+	virtual bool Update();
+	virtual void Draw();
+	virtual void DebugDraw();
+	void ReloadShaders();
+	void LoadShaders();
+
+	
 };
 
 #endif // _GPU_PARTICLE_SYSTEMS_H_

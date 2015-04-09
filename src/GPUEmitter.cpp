@@ -86,7 +86,6 @@ void GPUPointEmitter::CreateUpdateShader()
 	LoadShaderType("../data/shaders/particle_update_vertex.glsl", GL_VERTEX_SHADER, &vertex_shader);
 
 
-	//LoadShader((GLuint*)&m_update_shader, "../data/shaders/particle_update_vertex.glsl", nullptr, nullptr);
 
 	m_update_shader = glCreateProgram();
 	glAttachShader(m_update_shader, vertex_shader);
@@ -104,9 +103,9 @@ void GPUPointEmitter::CreateDrawShader()
 {
 	
 	if (!LoadShader(&m_draw_shader,
-		"../data/shaders/gpu_particle_vertex.glsl",
-		"../data/shaders/gpu_particle_fragment.glsl",
-		"../data/shaders/gpu_particle_geometry.glsl"))
+		"gpu_particle_vertex.glsl",
+		"gpu_particle_fragment.glsl",
+		"gpu_particle_geometry.glsl"))
 	{
 		printf("itsfucked\n");
 	}
