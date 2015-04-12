@@ -11,7 +11,16 @@ class ProceduralEnvironment : public Application
 {
 public:
 
-	OpenGLData gridMesh;
+	//OpenGLData gridMesh[2];
+	unsigned int active_buffer;
+	unsigned int vao[2];
+	unsigned int vbo[2]; 
+	unsigned int grid_size;
+	float last_draw_time;
+
+	void CreateUpdateShader();
+	void DrawPerlin();
+
 
 	float *perlin_data;
 	unsigned int perlin_1_texture;
@@ -27,7 +36,8 @@ public:
 	unsigned int gBufferProgramID;
 	unsigned int compositeProgramID;
 
-	unsigned int perlinProgramID;
+	unsigned int perlinUpdateProgramID;
+	unsigned int perlinDrawProgramID;
 	
 	unsigned int directionalLightProgramID;
 	unsigned int pointLightProgramID;
@@ -35,7 +45,7 @@ public:
 	
 
 	OpenGLData BuildGrid( glm::vec2 real_dims, glm::ivec2 dims );
-	OpenGLData BuildVertexGrid( glm::vec2 real_dims, glm::ivec2 dims );
+	void BuildVertexGrid( glm::vec2 real_dims, glm::ivec2 dims );
 	bool BuildPerlinTexture( unsigned int* a_texture, const glm::ivec2 dims, const int octaves, const float persistance, const float offset );
 
 

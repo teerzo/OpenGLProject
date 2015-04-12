@@ -258,6 +258,8 @@
     <None Include="data\shaders\ass1_gbuffer_fragment.glsl" />
     <None Include="data\shaders\ass1_gbuffer_vertex.glsl" />
     <None Include="data\shaders\ass1_perlin_fragment.glsl" />
+    <None Include="data\shaders\ass1_perlin_geometry.glsl" />
+    <None Include="data\shaders\ass1_perlin_update_vertex.glsl" />
     <None Include="data\shaders\ass1_perlin_vertex.glsl" />
     <None Include="data\shaders\ass1_point_light_fragment.glsl" />
     <None Include="data\shaders\ass1_point_light_vertex.glsl" />

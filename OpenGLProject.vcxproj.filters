@@ -481,6 +481,12 @@
     <None Include="data\shaders\ass1_perlin_fragment.glsl">
       <Filter>Projects\_Assignments\Shaders</Filter>
     </None>
+    <None Include="data\shaders\ass1_perlin_geometry.glsl">
+      <Filter>Projects\_Assignments\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\ass1_perlin_update_vertex.glsl">
+      <Filter>Projects\_Assignments\Shaders</Filter>
+    </None>
     <None Include="data\shaders\ass1_perlin_vertex.glsl">
       <Filter>Projects\_Assignments\Shaders</Filter>
     </None>
