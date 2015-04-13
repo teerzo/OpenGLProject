@@ -142,9 +142,9 @@ void DeferredRendering::RenderLights()
 	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer.light_fbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//DrawDirectionLight(cameraVector[0]->GetForward(), color.White.xyz);
+	DrawDirectionLight(cameraVector[0]->GetForward(), color.White.xyz);
 
-	DrawPointLight(cameraVector[0]->GetPosition(), 10, color.White.xyz);
+	//DrawPointLight(cameraVector[0]->GetPosition(), 10, color.White.xyz);
 	
 }
 void DeferredRendering::DrawPointLight(glm::vec3 a_position, float a_radius, glm::vec3 a_color)

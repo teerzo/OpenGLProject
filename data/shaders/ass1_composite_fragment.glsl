@@ -12,7 +12,7 @@ void main()
 	vec3 light = texture(light_texture, vtx_uv).rgb;
 	vec3 albedo = texture(albedo_texture, vtx_uv).rgb;
 
-	FragColour = vec4( albedo, 1 );
+	//FragColour = vec4( albedo, 1 );
 	//FragColour = vec4( light, 1 );
-	//FragColour = vec4( albedo * light, 1 );	
+	FragColour = vec4( albedo * light, 1 );	
 }

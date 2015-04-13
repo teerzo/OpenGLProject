@@ -11,7 +11,7 @@ class ProceduralEnvironment : public Application
 {
 public:
 
-	//OpenGLData gridMesh[2];
+	OpenGLData gridMesh;
 	unsigned int active_buffer;
 	unsigned int vao[2];
 	unsigned int vbo[2]; 
@@ -27,6 +27,36 @@ public:
 
 	std::vector<Building*> buildings;
 
+
+	unsigned int dirt_texture;
+	unsigned int grass_texture;
+	unsigned int lava_texture;
+	unsigned int rock_texture;
+
+
+
+	TwBar* tweakBarLighting;	
+	// light tweak
+	glm::vec3 tweak_light_direction;
+	glm::vec3 tweak_light_color;
+	float tweak_light_intensity;
+
+
+	TwBar* tweakBarTerrain;
+	// Perlin tweak
+	glm::vec3 tweak_perlin_position;
+	float tweak_perlin_size;
+	float tweak_perlin_height;
+	float tweak_perlin_octaves;
+	float tweak_perlin_persistance;
+
+	// Lava tweak
+	glm::vec3 tweak_lava_direction;
+	float tweak_lava_speed;
+	float tweak_rock_height;
+	float tweak_grass_height;
+	float tweak_lava_height;
+	float tweak_dirt_height;
 
 
 	MeshGroup* buildingBase;
@@ -59,6 +89,7 @@ public:
 	virtual bool Update();
 	virtual void Draw();
 	virtual void DebugDraw();
+	void Reload();
 	void ReloadShaders();
 	void LoadShaders();
 

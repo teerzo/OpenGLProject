@@ -2,7 +2,7 @@ ToDo
 
 // Assignement
 
-Change vertex grid back into mesh with perlin textures
+Change vertex grid back into mesh with perlin textures ./
 
 water, grass, rock, snow similar to current shader code
 

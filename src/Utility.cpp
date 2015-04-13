@@ -2,7 +2,7 @@
 
 #include "gl_core_4_4.h"
 #include <cstdio>
-
+#include "stb_image.h"
 
 
 bool LoadShaderType(char* filename, GLenum shader_type, unsigned int* output)
@@ -281,5 +281,30 @@ bool LoadShader( GLuint* Program, char* vertex_filename = nullptr, char* fragmen
 		delete[] log;
 	}
 
+	return result;
+}
+
+bool LoadTexture( unsigned int* textureID, const char* filename)
+{
+	bool result = true;
+	int width;
+	int height;
+
+	int channels;
+
+	std::string texture_path = "../data/textures/" + (std::string)filename;
+
+	unsigned char* data = stbi_load(texture_path.c_str(), &width, &height, &channels, STBI_default);
+
+	glGenTextures(1, textureID);
+	glBindTexture(GL_TEXTURE_2D, *textureID);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	stbi_image_free(data);
 	return result;
 }

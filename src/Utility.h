@@ -17,4 +17,7 @@ bool LoadShader(GLuint* Program, char* vertex_filename, char* fragment_filename,
 bool LoadShader(std::string filename, GLuint* Program);
 bool LoadShaderType(char* filename, GLenum shader_type, unsigned int* output);
 
+
+bool LoadTexture(unsigned int* textureID, const char* filename);
+
 #endif // _UTILITY_H_

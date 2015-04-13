@@ -29,7 +29,9 @@ bool ProceduralEnvironment::ApplicationStartup() {
 	glEnable( GL_BLEND );
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
-	glEnable( GL_CULL_FACE );
+	
+
+	//glEnable( GL_CULL_FACE );
 
 	// Load Shadow Frame Buffer
 	gBuffer.SetWindowSize( 1280, 720 );
@@ -42,9 +44,56 @@ bool ProceduralEnvironment::ApplicationStartup() {
 	pointLight = GenerateCube();
 
 
-	//gridMesh = BuildGrid( glm::vec2( 128, 128 ), glm::ivec2( 128, 128 ) );
+
+	gridMesh = BuildGrid(glm::vec2(128, 128), glm::ivec2(128, 128));
+	
+
+	tweak_light_direction = glm::vec3(1, -1, 0);
+	tweak_light_color = glm::vec3(1, 1, 1);
+	tweak_light_intensity = 1.0f;
+	tweakBarLighting = TwNewBar("Lighting");
+	TwAddVarRW(tweakBarLighting, "Direction", TW_TYPE_DIR3F, &tweak_light_direction, "group=Light1");
+	TwAddVarRW(tweakBarLighting, "Color", TW_TYPE_COLOR3F, &tweak_light_color, "group=Light1");
+	TwAddVarRW(tweakBarLighting, "Intensity", TW_TYPE_FLOAT, &tweak_light_intensity, "group=Light1");
+
+
+	tweak_lava_direction = glm::vec3(0, 0, 1);
+	tweak_lava_speed = 10.0f;
+	tweak_lava_height = 0.0f;
+	tweak_perlin_position = glm::vec3(0, 0, 0);
+	tweak_perlin_size = 256.0f;
+	tweak_perlin_height = 50.0f;
+	tweak_perlin_octaves = 8.0f;
+	tweak_perlin_persistance = 0.5f;
+	tweakBarTerrain = TwNewBar("Terrain");
+	TwAddVarRW(tweakBarTerrain, "Position", TW_TYPE_DIR3F, &tweak_perlin_position, "group=Perlin");
+	
+	TwAddVarRW(tweakBarTerrain, "Size", TW_TYPE_FLOAT, &tweak_perlin_size, "group=Perlin");
+	TwAddVarRW(tweakBarTerrain, "Height", TW_TYPE_FLOAT, &tweak_perlin_height, "group=Perlin");
+	TwAddVarRW(tweakBarTerrain, "Octaves", TW_TYPE_FLOAT, &tweak_perlin_octaves, "group=Perlin");
+	TwAddVarRW(tweakBarTerrain, "Persistance", TW_TYPE_FLOAT, &tweak_perlin_persistance, "group=Perlin");
+
+	TwAddVarRW(tweakBarTerrain, "Direction", TW_TYPE_DIR3F, &tweak_lava_direction, "group=Lava");
+	TwAddVarRW(tweakBarTerrain, "Speed", TW_TYPE_FLOAT, &tweak_lava_speed, "group=Lava");
+	//TwAddVarRW(tweakBarTerrain, "Lava", TW_TYPE_FLOAT, &tweak_lava_height, "group=Heights precision 2");
+	TwAddVarRW(tweakBarTerrain, "LavaHeight", TW_TYPE_FLOAT, &tweak_lava_height, "group=Lava");
+
+
+	//glm::vec3 tweak_lava_direction;
+	//float tweak_lava_speed;
+	//float tweak_rock_height;
+	//float tweak_grass_height;
+	//float tweak_lava_height;
+	//float tweak_dirt_height;
+	
+
 	//gridMesh = BuildVertexGrid( glm::vec2( 128, 128 ), glm::ivec2( 128, 128 ) );
-	BuildPerlinTexture( &perlin_1_texture, glm::ivec2( 128, 128 ), 8, 0.3f, ( float )0.0f );
+	//BuildPerlinTexture( &perlin_1_texture, glm::ivec2( 128, 128 ), 16, 0.8f, ( float )0.0f );
+
+	LoadTexture(&dirt_texture,	"Assignment1/dirt512.png");
+	LoadTexture(&grass_texture,	"Assignment1/grass512.tga");
+	LoadTexture(&lava_texture,	"Assignment1/lava512.tga");
+	LoadTexture(&rock_texture,	"Assignment1/rock512.tga");
 
 	// Load Plane
 	//glPlane = GeneratePlane();
@@ -67,13 +116,14 @@ bool ProceduralEnvironment::ApplicationStartup() {
 		}
 	}
 	bunnyObject = new MeshGroup();
-	//if (!LoadOBJFile(bunnyObject, "stanford/bunny.obj")) {
-	//	return false;
-	//}
+	if (!LoadOBJFile(bunnyObject, "stanford/bunny.obj")) {
+		return false;
+	}
 	//CreateOpenGLBuffers(shapes);
 	// Load Shaders
-	LoadShaders();
-
+	
+	Reload();
+	ReloadShaders();
 
 	return true;
 }
@@ -150,12 +200,12 @@ void ProceduralEnvironment::RenderGeometry() {
 
 
 	//buildingBase->Draw();
-	//bunnyObject->Draw();
+	bunnyObject->Draw();
 	for( int i = 0; i < 9; ++i ) {
 		buildings[i]->Draw( gBufferProgramID );
 	}
 
-	DebugDraw();
+	
 
 	//glCullFace(GL_BACK); 
 	//glBindVertexArray(pointLight.m_VAO);
@@ -165,12 +215,13 @@ void ProceduralEnvironment::RenderGeometry() {
 
 	DrawPerlin();
 
+	DebugDraw();
 
 }
 
 void ProceduralEnvironment::DrawPerlin() {
 
-	glUseProgram( perlinUpdateProgramID );
+	/*glUseProgram( perlinUpdateProgramID );
 
 	int uniform_projection_view = glGetUniformLocation( perlinUpdateProgramID, "projection_view" );
 	int uniform_world = glGetUniformLocation( perlinUpdateProgramID, "world" );
@@ -193,36 +244,67 @@ void ProceduralEnvironment::DrawPerlin() {
 	glDrawArrays( GL_POINTS, 0, grid_size );
 	glEndTransformFeedback();
 	glDisable( GL_RASTERIZER_DISCARD );
-	glBindBufferBase( GL_TRANSFORM_FEEDBACK_BUFFER, 0, 0 );
+	glBindBufferBase( GL_TRANSFORM_FEEDBACK_BUFFER, 0, 0 );*/
 
 	// render pass
 	glUseProgram( perlinDrawProgramID );
 
-	uniform_projection_view = glGetUniformLocation( perlinDrawProgramID, "projection_view" );
-	uniform_world = glGetUniformLocation( perlinDrawProgramID, "world" );
-	uniform_timer = glGetUniformLocation( perlinDrawProgramID, "timer" );
+	int uniform_projection_view = glGetUniformLocation( perlinDrawProgramID, "projection_view" );
+	int uniform_world = glGetUniformLocation( perlinDrawProgramID, "world" );
+	int uniform_timer = glGetUniformLocation( perlinDrawProgramID, "timer" );
+	int uniform_position_offset = glGetUniformLocation(perlinDrawProgramID, "position_offset");
+	int uniform_lava_direction = glGetUniformLocation(perlinDrawProgramID, "lava_direction");
+	int uniform_lava_speed = glGetUniformLocation(perlinDrawProgramID, "lava_speed");
+	int uniform_lava_height = glGetUniformLocation(perlinDrawProgramID, "lava_height");
 
 	glUniformMatrix4fv( uniform_projection_view, 1, GL_FALSE, ( float* ) &cameraVector[currentCamera]->GetProjectionView() );
-	glUniformMatrix4fv( uniform_world, 1, GL_FALSE, ( float* ) &cameraVector[currentCamera]->GetWorld() );
-	glUniform1f( uniform_timer, currentGameTime );
+	glUniformMatrix4fv(uniform_world, 1, GL_FALSE, (float*)&cameraVector[currentCamera]->GetWorld());
+	glUniform1f(uniform_timer, currentGameTime);
+	glUniform3fv(uniform_position_offset, 1, (float*)&tweak_perlin_position);
+	glUniform3fv(uniform_lava_direction, 1, (float*)&tweak_lava_direction);
+	glUniform1f(uniform_lava_speed, tweak_lava_speed);
+	glUniform1f(uniform_lava_height, tweak_lava_height);
 
-	uniform_perlin_height_texture = glGetUniformLocation( perlinDrawProgramID, "perlin_1_texture" );
+	int uniform_perlin_height_texture = glGetUniformLocation( perlinDrawProgramID, "perlin_1_texture" );
 	glUniform1i( uniform_perlin_height_texture, 0 );
 	glActiveTexture( GL_TEXTURE0 );
 	glBindTexture( GL_TEXTURE_2D, perlin_1_texture );
 
-	glBindVertexArray( vao[other_buffer] );
+	int uniform_dirt_texture = glGetUniformLocation(perlinDrawProgramID, "dirt_texture");
+	glUniform1i(uniform_dirt_texture, 1);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, dirt_texture);
+
+	int uniform_grass_texture = glGetUniformLocation(perlinDrawProgramID, "grass_texture");
+	glUniform1i(uniform_grass_texture, 2);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, grass_texture);
+
+	int uniform_rock_texture = glGetUniformLocation(perlinDrawProgramID, "rock_texture");
+	glUniform1i(uniform_rock_texture, 3);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, rock_texture);
+
+	int uniform_lava_texture = glGetUniformLocation(perlinDrawProgramID, "lava_texture");
+	glUniform1i(uniform_lava_texture, 4);
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, lava_texture);
+
+	//glBindVertexArray(vao[other_buffer]);
 	glDrawArrays( GL_POINTS, 0, grid_size );
 
+	glBindVertexArray(gridMesh.m_VAO);
+	glDrawElements(GL_TRIANGLES, gridMesh.m_index_count, GL_UNSIGNED_INT, 0);
+
 	//last_draw_time = 
-	active_buffer = other_buffer;
+	//active_buffer = other_buffer;
 }
 
 void ProceduralEnvironment::RenderLights() {
 	glBindFramebuffer( GL_FRAMEBUFFER, gBuffer.light_fbo );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-	DrawDirectionLight( cameraVector[0]->GetForward(), color.White.xyz );
+	DrawDirectionLight(tweak_light_direction, tweak_light_color);
 
 	//DrawPointLight(cameraVector[0]->GetPosition(), 10, color.White.xyz);
 
@@ -271,11 +353,13 @@ void ProceduralEnvironment::DrawDirectionLight( const glm::vec3& a_direction, co
 	glUniform1i( uniform_position_texture, 0 );
 	glActiveTexture( GL_TEXTURE0 );
 	glBindTexture( GL_TEXTURE_2D, gBuffer.position_texture );
+
 	unsigned int uniform_normals_texture = glGetUniformLocation( directionalLightProgramID, "normals_texture" );
 	glUniform1i( uniform_normals_texture, 1 );
 	glActiveTexture( GL_TEXTURE1 );
 	glBindTexture( GL_TEXTURE_2D, gBuffer.normals_texture );
 
+	
 	glBindVertexArray( gBuffer.m_plane.m_VAO );
 	glDrawElements( GL_TRIANGLES, gBuffer.m_plane.m_index_count, GL_UNSIGNED_INT, 0 );
 }
@@ -307,7 +391,8 @@ void ProceduralEnvironment::DebugDraw() {
 
 void ProceduralEnvironment::CheckInput() {
 	if( glfwGetKey( window, GLFW_KEY_R ) == GLFW_PRESS ) {
-		ReloadShaders();
+		Reload();		
+		ReloadShaders();		
 	}
 	Application::CheckInput();
 }
@@ -323,8 +408,15 @@ void ProceduralEnvironment::LoadShaders() {
 	LoadShader( ( GLuint* ) &pointLightProgramID, "ass1_point_light_vertex.glsl", "ass1_point_light_fragment.glsl", nullptr );
 	LoadShader( ( GLuint* ) &spotLightProgramID, "shadow_map_vertex.glsl", "shadow_map_fragment.glsl", nullptr );
 
-	LoadShader( ( GLuint* ) &perlinDrawProgramID, "ass1_perlin_vertex.glsl", "ass1_perlin_fragment.glsl", "ass1_perlin_geometry.glsl" );
-	CreateUpdateShader();
+	LoadShader((GLuint*)&perlinDrawProgramID, "ass1_perlin_vertex.glsl", "ass1_perlin_fragment.glsl", "ass1_perlin_geometry.glsl");
+	//LoadShader((GLuint*)&perlinDrawProgramID, "ass1_perlin_vertex.glsl", "ass1_perlin_fragment.glsl", nullptr );
+	//CreateUpdateShader();
+}
+
+void ProceduralEnvironment::Reload()
+{
+	BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_size, tweak_perlin_size), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
+
 }
 
 void ProceduralEnvironment::ReloadShaders() {
@@ -332,7 +424,7 @@ void ProceduralEnvironment::ReloadShaders() {
 	//glfwSetTime( 0.0 );
 	//currentGameTime = 0.0f;
 
-	BuildPerlinTexture( &perlin_1_texture, glm::ivec2( 128, 128 ), 8, 0.3f, ( float )0.0f );
+	
 
 	glDeleteProgram( perlinUpdateProgramID );
 	glDeleteProgram( perlinDrawProgramID );
@@ -426,7 +518,7 @@ void ProceduralEnvironment::BuildVertexGrid( glm::vec2 real_dims, glm::ivec2 dim
 		float curr_x = -real_dims.x / 2.0f;
 		for( int x = 0; x < dims.x + 1; ++x ) {
 			vertex_data[y * ( dims.x + 1 ) + x].Position = glm::vec4( curr_x, 0, curr_y, 1 );
-			vertex_data[y * ( dims.x + 1 ) + x].UV = glm::vec2( ( float ) x / ( float ) dims.x, ( float ) y / ( float ) dims.y );
+			vertex_data[y * ( dims.x + 1 ) + x].UV = glm::vec2( ( float ) x / ( float ) dims.x , ( float ) y / ( float ) dims.y );
 			curr_x += real_dims.x / ( float ) dims.x;
 		}
 		curr_y += real_dims.y / ( float ) dims.y;

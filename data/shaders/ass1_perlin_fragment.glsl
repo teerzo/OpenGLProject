@@ -1,37 +1,48 @@
 #version 410
 
+in vec4 vtx_position;
 in vec4 vtx_color;
+in vec4 vtx_normal;
 in vec2 vtx_uv;
+in vec2 vtx_uv_offset;
 
 out vec4 frg_color;
 
+uniform float timer;
+uniform vec3 lava_direction;
+
+uniform float lava_height;
+
 uniform sampler2D perlin_1_texture;
+uniform sampler2D dirt_texture;
+uniform sampler2D grass_texture;
+uniform sampler2D rock_texture;
+uniform sampler2D lava_texture;
+
 
 void main()
 {
-	vec4 red = vec4(1,0,0,1);
-	vec4 green = vec4(0,1,0,1);
-	vec4 blue = vec4(0,0,1,1);
-	vec4 black = vec4(0,0,0,1);
-	vec4 white = vec4(1,1,1,1);
-
 	vec4 height = texture(perlin_1_texture, vtx_uv).rrrr;
+	vec4 color;
+
+	if( vtx_position.y < lava_height ) {
+		color = texture( lava_texture, (vtx_uv + vtx_uv_offset) * 3 );
+	}
+	else if( vtx_position.y < 3 ) {
+		color = texture( dirt_texture, vtx_uv * 5);
+		//color += mod( vtx_position.x, 2 ) * texture( grass_texture, vtx_uv * 5 );
+		//color += mod( vtx_position.z, 2 ) * texture( grass_texture, vtx_uv * 5 );
+	}
+	else {
+		color = texture( rock_texture, vtx_uv * 5 );
+	}
+
 	
 	
-	//color *= step( 0.5, height.r) * black;
 
-	vec4 color = blue;
-	color += step( 0.5, height.r ) * white;
-	//color += smoothstep( 0.5, 0.7, height.r ) * green;
-	//color += smoothstep( 0.7, 0.9, height.r ) * red;
-	
-	//color += step( 0.5, height.r ) * mix( black, green, 1.0 );
-	//color += step( 0.7, height.r ) * mix( black, blue, 1.0 );
-	//color += step( 0.9, height.r ) * mix( black, red, 1.0 ); 
 
-	//color *= frag_color;
 
-	//frg_color = color;
-	frg_color = vtx_color;
+	frg_color = vtx_normal;
+	frg_color = color;
 	frg_color.a = 1;
 }

@@ -17,7 +17,8 @@ void main()
 
 	vec3 N = normalize(normal_sample);
 
-	float d = max(0,dot(-light_dir, N));
+	float d = max(0, dot( N, -light_dir));
 
-	frg_color = (light_color * d) + vec3( 0.2, 0.2, 0.2 );
+	frg_color = (light_color.xyz * d) + vec3( 0.2, 0.2, 0.2 );
+	//frg_color.w = 1;
 }

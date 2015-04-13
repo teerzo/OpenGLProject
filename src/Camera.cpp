@@ -103,7 +103,7 @@ void Camera::GetFrustumPlanes()
 // FLY Camera
 FlyCamera::FlyCamera(const unsigned int a_ID)
 {
-	movementSpeed = 2.0f;
+	movementSpeed = 10.0f;
 	rotationSpeed = 2.0f;
 	cameraID = a_ID;
 	isActive = true;

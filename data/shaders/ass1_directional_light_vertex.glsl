@@ -5,10 +5,10 @@ layout(location = 1) in vec2 uv;
 
 uniform mat4 projection_view;
 
-out vec2 frg_uv;
+out vec2 vtx_uv;
 
 void main() 
 {
-	frg_uv = uv;
+	vtx_uv = uv;
 	gl_Position = position;
 }
