@@ -19,6 +19,6 @@ void main()
 
 	float d = max(0, dot( N, -light_dir));
 
-	frg_color = (light_color.xyz * d) + vec3( 0.2, 0.2, 0.2 );
+	frg_color = (light_color.xyz * d) + vec3( 0.01, 0.01, 0.01 );
 	//frg_color.w = 1;
 }

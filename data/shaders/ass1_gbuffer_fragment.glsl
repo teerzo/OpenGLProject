@@ -15,9 +15,9 @@ void main()
 	// we simply output the data
 	// Note: you could use a material colour,
 	// or sample a texture for albedo
-	albedo = vec3(0,1,0);
 
 	//albedo = vtx_normal.xyz;
+	albedo = vec3(1,1,0);
 	position = vtx_position.xyz;
 	normal = vtx_normal.xyz;
 }

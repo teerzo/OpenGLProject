@@ -46,7 +46,7 @@ bool ProceduralEnvironment::ApplicationStartup() {
 
 
 	gridMesh = BuildGrid(glm::vec2(128, 128), glm::ivec2(128, 128));
-	
+	//BuildVertexGrid(glm::vec2(128, 128), glm::ivec2(128, 128));
 
 	tweak_light_direction = glm::vec3(1, -1, 0);
 	tweak_light_color = glm::vec3(1, 1, 1);
@@ -194,7 +194,7 @@ void ProceduralEnvironment::RenderGeometry() {
 	unsigned int	uniform_view = glGetUniformLocation( gBufferProgramID, "view" );
 	unsigned int	uniform_proj_view = glGetUniformLocation( gBufferProgramID, "projection_view" );
 	unsigned int	uniform_mesh_position = glGetUniformLocation( gBufferProgramID, "mesh_offset" );
-	glUniformMatrix4fv( uniform_view, 1, GL_FALSE, ( float* ) &cameraVector[currentCamera]->GetView() );
+	glUniformMatrix4fv(uniform_view, 1, GL_FALSE, (float*)&cameraVector[currentCamera]->GetView());
 	glUniformMatrix4fv( uniform_proj_view, 1, GL_FALSE, ( float* ) &cameraVector[currentCamera]->GetProjectionView() );
 	//glUniform3fv(uniform_mesh_position, 1, (float*)&buildingBase->worldTransform[3]);
 
@@ -220,37 +220,12 @@ void ProceduralEnvironment::RenderGeometry() {
 }
 
 void ProceduralEnvironment::DrawPerlin() {
-
-	/*glUseProgram( perlinUpdateProgramID );
-
-	int uniform_projection_view = glGetUniformLocation( perlinUpdateProgramID, "projection_view" );
-	int uniform_world = glGetUniformLocation( perlinUpdateProgramID, "world" );
-	int uniform_timer = glGetUniformLocation( perlinUpdateProgramID, "timer" );
-
-	glUniformMatrix4fv( uniform_projection_view, 1, GL_FALSE, ( float* ) &cameraVector[currentCamera]->GetProjectionView() );
-	glUniformMatrix4fv( uniform_world, 1, GL_FALSE, ( float* ) &cameraVector[currentCamera]->GetWorld() );
-	glUniform1f( uniform_timer, currentGameTime );
-
-	int uniform_perlin_height_texture = glGetUniformLocation( perlinUpdateProgramID, "perlin_1_texture" );
-	glUniform1i( uniform_perlin_height_texture, 0 );
-	glActiveTexture( GL_TEXTURE0 );
-	glBindTexture( GL_TEXTURE_2D, perlin_1_texture );
-
-	glEnable( GL_RASTERIZER_DISCARD );
-	glBindVertexArray( vao[active_buffer] );
-	unsigned int other_buffer = ( active_buffer + 1 ) % 2;
-	glBindBufferBase( GL_TRANSFORM_FEEDBACK_BUFFER, 0, vbo[other_buffer] );
-	glBeginTransformFeedback( GL_POINTS );
-	glDrawArrays( GL_POINTS, 0, grid_size );
-	glEndTransformFeedback();
-	glDisable( GL_RASTERIZER_DISCARD );
-	glBindBufferBase( GL_TRANSFORM_FEEDBACK_BUFFER, 0, 0 );*/
-
 	// render pass
 	glUseProgram( perlinDrawProgramID );
 
 	int uniform_projection_view = glGetUniformLocation( perlinDrawProgramID, "projection_view" );
 	int uniform_world = glGetUniformLocation( perlinDrawProgramID, "world" );
+	unsigned int	uniform_view = glGetUniformLocation(perlinDrawProgramID, "view");
 	int uniform_timer = glGetUniformLocation( perlinDrawProgramID, "timer" );
 	int uniform_position_offset = glGetUniformLocation(perlinDrawProgramID, "position_offset");
 	int uniform_lava_direction = glGetUniformLocation(perlinDrawProgramID, "lava_direction");
@@ -259,6 +234,8 @@ void ProceduralEnvironment::DrawPerlin() {
 
 	glUniformMatrix4fv( uniform_projection_view, 1, GL_FALSE, ( float* ) &cameraVector[currentCamera]->GetProjectionView() );
 	glUniformMatrix4fv(uniform_world, 1, GL_FALSE, (float*)&cameraVector[currentCamera]->GetWorld());
+	glUniformMatrix4fv(uniform_view, 1, GL_FALSE, (float*)&cameraVector[currentCamera]->GetView());
+
 	glUniform1f(uniform_timer, currentGameTime);
 	glUniform3fv(uniform_position_offset, 1, (float*)&tweak_perlin_position);
 	glUniform3fv(uniform_lava_direction, 1, (float*)&tweak_lava_direction);
@@ -305,6 +282,7 @@ void ProceduralEnvironment::RenderLights() {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	DrawDirectionLight(tweak_light_direction, tweak_light_color);
+	//DrawDirectionLight(cameraVector[currentCamera]->GetForward(), tweak_light_color);
 
 	//DrawPointLight(cameraVector[0]->GetPosition(), 10, color.White.xyz);
 
@@ -408,9 +386,9 @@ void ProceduralEnvironment::LoadShaders() {
 	LoadShader( ( GLuint* ) &pointLightProgramID, "ass1_point_light_vertex.glsl", "ass1_point_light_fragment.glsl", nullptr );
 	LoadShader( ( GLuint* ) &spotLightProgramID, "shadow_map_vertex.glsl", "shadow_map_fragment.glsl", nullptr );
 
-	LoadShader((GLuint*)&perlinDrawProgramID, "ass1_perlin_vertex.glsl", "ass1_perlin_fragment.glsl", "ass1_perlin_geometry.glsl");
-	//LoadShader((GLuint*)&perlinDrawProgramID, "ass1_perlin_vertex.glsl", "ass1_perlin_fragment.glsl", nullptr );
 	//CreateUpdateShader();
+	LoadShader((GLuint*)&perlinDrawProgramID, "ass1_perlin_vertex.glsl", "ass1_perlin_fragment.glsl", nullptr);
+	//LoadShader((GLuint*)&perlinDrawProgramID, "ass1_perlin_vertex.glsl", "ass1_perlin_fragment.glsl", nullptr );
 }
 
 void ProceduralEnvironment::Reload()
@@ -458,6 +436,12 @@ OpenGLData ProceduralEnvironment::BuildGrid( glm::vec2 real_dims, glm::ivec2 dim
 		curr_y += real_dims.y / ( float ) dims.y;
 	}
 
+	///// $$$ NORMALS!!!!!!!!
+	/* 
+	for( fucking do all the normals here )
+	
+	*/
+
 	int curr_index = 0;
 	for( int y = 0; y < dims.y; ++y ) {
 		for( int x = 0; x < dims.x; ++x ) {
@@ -485,11 +469,13 @@ OpenGLData ProceduralEnvironment::BuildGrid( glm::vec2 real_dims, glm::ivec2 dim
 	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( unsigned int )* index_count, index_data, GL_STATIC_DRAW );
 
 	// tell opengl about our vertex structure
-	glEnableVertexAttribArray( 0 );
-	glEnableVertexAttribArray( 1 );
+	glEnableVertexAttribArray( 0 ); // Position
+	glEnableVertexAttribArray(1); // UV
+	//glEnableVertexAttribArray(2); // Normals
 
 	glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, sizeof( VertexUV ), 0 );
-	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( VertexUV ), ( void* )sizeof( glm::vec4 ) );
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(VertexUV), (void*)sizeof(glm::vec4));
+	//glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(VertexUV), (void*)sizeof(glm::vec4) + (void*)sizeof(glm::vec2);
 
 	// unbind stuff
 	glBindVertexArray( 0 );
@@ -560,7 +546,7 @@ bool ProceduralEnvironment::BuildPerlinTexture( unsigned int* a_texture, const g
 			perlin_data[y * dims.x + x] = 0;
 
 			for( int i = 0; i < octaves; ++i ) {
-				float perlin_sample = glm::perlin( glm::vec2( x + offset, y + offset ) * scale * frequency + currentGameTime ) * 0.5f + 0.5f;
+				float perlin_sample = glm::perlin(glm::vec2(x + offset, y + offset) * scale * frequency + currentGameTime) * 0.5f + 0.5f;
 				perlin_sample *= amplitude;
 				perlin_data[y * dims.x + x] += perlin_sample;
 
@@ -586,7 +572,7 @@ bool ProceduralEnvironment::BuildPerlinTexture( unsigned int* a_texture, const g
 
 void ProceduralEnvironment::CreateUpdateShader() {
 
-	/*unsigned int vertex_shader;
+	unsigned int vertex_shader;
 	LoadShaderType( "../data/shaders/ass1_perlin_update_vertex.glsl", GL_VERTEX_SHADER, &vertex_shader );
 
 
@@ -611,6 +597,7 @@ void ProceduralEnvironment::CreateUpdateShader() {
 
 		delete[] log;
 	}
-	glDeleteShader( vertex_shader );*/
+	glDeleteShader( vertex_shader );
 
 }
+

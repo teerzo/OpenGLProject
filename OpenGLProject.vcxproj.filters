@@ -335,6 +335,9 @@
     <ClInclude Include="src\PBR.h">
       <Filter>Projects\Computer Graphics\16 Physically-Based Lighting</Filter>
     </ClInclude>
+    <ClInclude Include="src\PerlinNoise.h">
+      <Filter>Projects\_Assignments</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Hotkeys.txt" />

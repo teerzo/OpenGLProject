@@ -6,7 +6,7 @@ layout(triangle_strip, max_vertices = 4 ) out;
 uniform mat4 projection_view;
 uniform mat4 world;
 
-out vec3
+out vec3 normal;
 
 void main()
 {
