@@ -11,6 +11,9 @@ class ProceduralEnvironment : public Application
 {
 public:
 
+	std::vector<glm::vec3>DEBUGNORMALS;
+	std::vector<glm::vec3>DEBUGPOSITIONS;
+
 	OpenGLData gridMesh;
 	unsigned int active_buffer;
 	unsigned int vao[2];
@@ -74,7 +77,9 @@ public:
 	unsigned int spotLightProgramID;
 	
 
-	OpenGLData BuildGrid( glm::vec2 real_dims, glm::ivec2 dims );
+	OpenGLData BuildGrid(glm::vec2 real_dims, glm::ivec2 dims);
+	OpenGLData BuildGridWithNormals(glm::vec2 real_dims, glm::ivec2 dims);
+	
 	void BuildVertexGrid( glm::vec2 real_dims, glm::ivec2 dims );
 	bool BuildPerlinTexture( unsigned int* a_texture, const glm::ivec2 dims, const int octaves, const float persistance, const float offset );
 	double Perlin(double x, double y, double z);

@@ -2,6 +2,7 @@
 
 in vec4 vtx_position;
 in vec4 vtx_color;
+in vec4 vtx_pos;
 in vec4 vtx_normal;
 in vec2 vtx_uv;
 in vec2 vtx_uv_offset;
@@ -52,28 +53,30 @@ void main()
 
 
 
-if( vtx_position.y < lava_height ) {
+	if( vtx_pos.y < lava_height ) {
 	color = texture( lava_texture, (vtx_uv + vtx_uv_offset) * 5 );
-}
-else if( vtx_position.y < 3 ) {
-	color = texture( dirt_texture, vtx_uv * 5);
-	//color += mod( vtx_position.x, 2 ) * texture( grass_texture, vtx_uv * 5 );
-	//color += mod( vtx_position.z, 2 ) * texture( grass_texture, vtx_uv * 5 );
-}
-else {
-	color = texture( rock_texture, vtx_uv * 5 );
-}
+	}
+	else if( vtx_pos.y < 3 ) {
+		color = texture( dirt_texture, vtx_uv * 5);
+		//color += mod( vtx_position.x, 2 ) * texture( grass_texture, vtx_uv * 5 );
+		//color += mod( vtx_position.z, 2 ) * texture( grass_texture, vtx_uv * 5 );
+	}
+	else {
+		color = texture( rock_texture, vtx_uv * 5 );
+	}
 
 	/// $$$ ITS FUCKED
 	
-
 
 	//frg_normal = vtx_normal;
 	//frg_color = vtx_normal;
 	//frg_color = color;
 	//frg_color.a = 1;
 
+	//color = texture(perlin_1_texture, vtx_uv).rrrr;
+	//color.w = 1;
 	
+	//albedo = vtx_normal.xyz;
 	albedo = color.xyz;
 	position = vtx_position.xyz;
 	normal = vtx_normal.xyz;

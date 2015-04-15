@@ -72,6 +72,9 @@ struct OpenGLData
 	// Index Buffer Object
 	unsigned int m_IBO;
 	unsigned int m_index_count;
+	//std::vector<glm::vec3> m_positions;
+	//std::vector<glm::vec3> m_normals;
+
 };
 
 

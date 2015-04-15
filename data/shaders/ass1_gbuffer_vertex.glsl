@@ -18,7 +18,7 @@ void main()
 	
 	vtx_position = view * vec4( position.xyz, 1 );
 	vtx_normal	 = view * vec4(	normal.xyz, 0);
-	//vtx_offset	 = projection_view * ( position + Offset );
+	vtx_offset	 = projection_view * ( position + Offset );
 
 	gl_Position = projection_view * ( position + Offset );
 }

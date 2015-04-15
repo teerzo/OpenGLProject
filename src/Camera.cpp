@@ -54,7 +54,7 @@ glm::mat4 Camera::GetWorld()
 	return temp;
 }
 //glm::mat4 Camera::GetView()				{ return viewTransform; }
-glm::mat4 Camera::GetView()				{ return glm::inverse(worldTransform); }
+glm::mat4 Camera::GetView()				{ return viewTransform; }
 glm::mat4 Camera::GetProjection()		{ return projectionTransform; }
 glm::mat4 Camera::GetProjectionView()	{ return projectionViewTransform; }
 glm::vec3 Camera::GetPosition()			{ return worldTransform[3].xyz; }
