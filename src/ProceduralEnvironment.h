@@ -29,12 +29,16 @@ public:
 	unsigned int perlin_1_texture;
 
 	std::vector<Building*> buildings;
+	std::vector<MeshGroup*> soulspears;
 
+	MeshGroup* buildingBase;
+	MeshGroup* bunnyObject;
 
 	unsigned int dirt_texture;
 	unsigned int grass_texture;
 	unsigned int lava_texture;
 	unsigned int rock_texture;
+	unsigned int soulspear_texture;
 
 
 
@@ -62,8 +66,6 @@ public:
 	float tweak_dirt_height;
 
 
-	MeshGroup* buildingBase;
-	MeshGroup* bunnyObject;
 	RenderTarget gBuffer;
 	OpenGLData pointLight;
 	unsigned int gBufferProgramID;

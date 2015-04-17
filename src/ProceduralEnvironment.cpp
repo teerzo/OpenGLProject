@@ -88,18 +88,22 @@ bool ProceduralEnvironment::ApplicationStartup() {
 
 
 	LoadTexture(&dirt_texture, "Assignment1/dirt512.png");
-	LoadTexture(&grass_texture, "Assignment1/grass512.tga");
+	LoadTexture(&grass_texture, "Assignment1/smiley256.tga");
 	LoadTexture(&lava_texture, "Assignment1/lava512.tga");
 	LoadTexture(&rock_texture, "Assignment1/rock512.tga");
+	if (!LoadTexture(&soulspear_texture, "soulspear/soulspear_diffuse.tga"))
+	{
+		int i = 0;
+	}
 
 	// Load Plane
 	//glPlane = GeneratePlane();
 	// Load Mesh
 
-	buildingBase = new MeshGroup();
-	if (!LoadOBJFile(buildingBase, "BuildingBase.obj")) {
-		return false;
-	}
+	//buildingBase = new MeshGroup();
+	//if (!LoadOBJFile(buildingBase, "soulspear/soulspear.obj")) {
+	//return false;
+	//}
 
 	buildings.resize(9);
 	int index = 0;
@@ -113,16 +117,18 @@ bool ProceduralEnvironment::ApplicationStartup() {
 		}
 	}
 	bunnyObject = new MeshGroup();
-	if (!LoadOBJFile(bunnyObject, "stanford/bunny.obj")) {
+	if (!LoadOBJFile(bunnyObject, "stanford/bunnyUV.obj"))
+	{
 		return false;
 	}
 	//CreateOpenGLBuffers(shapes);
 	// Load Shaders
 
 
+
 	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_size, tweak_perlin_size), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 	//gridMesh = BuildGrid(glm::vec2(128, 128), glm::ivec2(128, 128));
-	gridMesh = BuildGridWithNormals(glm::vec2(128, 128), glm::ivec2(128, 128));
+	//gridMesh = BuildGridWithNormals(glm::vec2(128, 128), glm::ivec2(256, 256));
 	//BuildVertexGrid(glm::vec2(128, 128), glm::ivec2(128, 128));
 
 	Reload();
@@ -135,7 +141,8 @@ void ProceduralEnvironment::ApplicationShutdown() {
 	Application::ApplicationShutdown();
 }
 
-bool ProceduralEnvironment::Update() {
+bool ProceduralEnvironment::Update()
+{
 	CheckInput();
 	if (!Application::Update()) {
 		return false;
@@ -201,13 +208,32 @@ void ProceduralEnvironment::RenderGeometry() {
 	glUniformMatrix4fv(uniform_proj_view, 1, GL_FALSE, (float*)&cameraVector[currentCamera]->GetProjectionView());
 	//glUniform3fv(uniform_mesh_position, 1, (float*)&buildingBase->worldTransform[3]);
 
+	int uniform_timer = glGetUniformLocation(gBufferProgramID, "timer");
+	glUniform1f(uniform_timer, currentGameTime);
+
+	int uniform_lava_texture = glGetUniformLocation(gBufferProgramID, "lava_texture");
+	glUniform1i(uniform_lava_texture, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, lava_texture);
+
+	int uniform_soul_spear_texture = glGetUniformLocation(gBufferProgramID, "soul_spear_texture");
+	glUniform1i(uniform_soul_spear_texture, 1);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, grass_texture);
 
 	//buildingBase->Draw();
+	bunnyObject->worldTransform[3] = glm::vec4(0, 1, 0, 1);
+	glUniform3fv(uniform_mesh_position, 1, (float*)&bunnyObject->worldTransform[3]);
 	bunnyObject->Draw();
 	for (int i = 0; i < 9; ++i) {
-		buildings[i]->Draw(gBufferProgramID);
+		//buildings[i]->Draw(gBufferProgramID);
 	}
 
+	for (int i = 0; i < soulspears.size(); i++)
+	{
+		glUniform3fv(uniform_mesh_position, 1, (float*)&soulspears[i]->worldTransform[3]);
+		soulspears[i]->Draw();
+	}
 
 
 	//glCullFace(GL_BACK); 
@@ -400,7 +426,7 @@ void ProceduralEnvironment::LoadShaders() {
 
 void ProceduralEnvironment::Reload()
 {
-	gridMesh = BuildGridWithNormals(glm::vec2(128, 128), glm::ivec2(128, 128));
+	gridMesh = BuildGridWithNormals(glm::vec2(128, 128), glm::ivec2(tweak_perlin_size, tweak_perlin_size));
 	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_size, tweak_perlin_size), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 
 }
@@ -434,8 +460,8 @@ OpenGLData ProceduralEnvironment::BuildGrid(glm::vec2 real_dims, glm::ivec2 dims
 	unsigned int* index_data = new unsigned int[index_count];
 
 
-	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_size, tweak_perlin_size), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
-	BuildPerlinTexture(&perlin_1_texture, glm::ivec2(128, 128), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
+	BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_size, tweak_perlin_size), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
+	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(128, 128), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 
 	real_dims = vec2(128, 128);
 	dims = vec2(100, 100);
@@ -506,112 +532,138 @@ OpenGLData ProceduralEnvironment::BuildGrid(glm::vec2 real_dims, glm::ivec2 dims
 
 OpenGLData ProceduralEnvironment::BuildGridWithNormals(glm::vec2 real_dims, glm::ivec2 dims) {
 	// Allocate vertex data
-	OpenGLData temp;			// 128 + 1      128 + 1
-	unsigned int vertex_count = (dims.x + 1) * (dims.y + 1);
+	OpenGLData temp;			// 128       128 
+	unsigned int vertex_count = (dims.x) * (dims.y);
 	VertexNormal* vertex_data = new VertexNormal[vertex_count];
 
-	unsigned int index_count = dims.x * dims.y * 6;
+	unsigned int index_count = (dims.x) * (dims.y) * 6;
 	unsigned int* index_data = new unsigned int[index_count];
 
 
 
-
-	BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_size, tweak_perlin_size), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
-	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(128, 128), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
+	BuildPerlinTexture(&perlin_1_texture, glm::vec2(dims.x, dims.y), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
+	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_size, tweak_perlin_size), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
+	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(129, 129), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 
 	//real_dims = vec2(128, 128);
 	//dims = vec2(128, 128);
 
 	int index = 0;
 	float Ypos = 0;
+	int highestIndex = 0;
+	int lowestIndex = 0;
 	float curr_y = -real_dims.y / 2.0f;
-	for (int y = 0; y < dims.y + 1; ++y) {
+	for (int y = 0; y < dims.y; y++) {
 		float curr_x = -real_dims.x / 2.0f;
-		for (int x = 0; x < dims.x + 1; ++x) {
-			//float Ypos = (perlin_data[y * (dims.x) + x] * 30) - (15);
+		for (int x = 0; x < dims.x; x++, index++) {
 
-			if (x >= dims.x || y >= dims.y) {
-				index;
+			Ypos = (perlin_data[index] * tweak_perlin_height) - (tweak_perlin_height / 2);
+			vertex_data[index].Position = glm::vec4(curr_x, Ypos, curr_y, 1);
+			vertex_data[index].UV = glm::vec2((float)x / (float)dims.x, (float)y / (float)dims.y);
+
+			if (index > 0 && vertex_data[index].Position.y >= vertex_data[highestIndex].Position.y)
+			{
+				highestIndex = index;
 			}
-			else {
-				index++;
+			if (index > 0 && vertex_data[index].Position.y <= vertex_data[lowestIndex].Position.y)
+			{
+				lowestIndex = index;
 			}
-			Ypos = (perlin_data[index] * 30) - (15);
-			vertex_data[y * (dims.x + 1) + x].Position = glm::vec4(curr_x, Ypos, curr_y, 1);
-			//vertex_data[y * (dims.x + 1) + x].Position = glm::vec4(curr_x, 0 , curr_y, 1);
-			vertex_data[y * (dims.x + 1) + x].UV = glm::vec2((float)x / (float)dims.x, (float)y / (float)dims.y);
 			curr_x += real_dims.x / (float)dims.x;
 		}
 		curr_y += real_dims.y / (float)dims.y;
 	}
 
+	//bunnyObject = new MeshGroup();
+	//if (!LoadOBJFile(bunnyObject, "stanford/bunny.obj")) {
+	//	return false;
+	//}
+	//
+
+	MeshGroup* spearHigh = new MeshGroup;
+	MeshGroup* spearLow = new MeshGroup;
+	soulspears.clear();
+
+	//if (LoadOBJFile(spear, "stanford/bunnyUV.obj"))
+	if (LoadOBJFile(spearHigh, "soulspear/soulspear.obj"))
+	{
+
+		spearHigh->worldTransform[3] = vertex_data[highestIndex].Position;
+		soulspears.push_back(spearHigh);
+		int i = 0;
+	}
+	if (LoadOBJFile(spearLow, "soulspear/soulspear.obj"))
+	{
+		spearLow->worldTransform[3] = vertex_data[lowestIndex].Position;
+		soulspears.push_back(spearLow);
+		int i = 0;
+	}
 
 
-	float texture_size = 128;
+	float texture_size = dims.x;
 	float texture_offset = 1 / texture_size;
 	float sample_size = 1.0f;
 	index = 0;
 	curr_y = -real_dims.y / 2.0f;
-	for (int y = 0; y < dims.y + 1; ++y) {
+	for (int y = 0; y < dims.y; ++y) {
 		float curr_x = -real_dims.x / 2.0f;
-		for (int x = 0; x < dims.x + 1; ++x) {
+		for (int x = 0; x < dims.x; ++x) {
 
-			index++;
 
-			if (x > 0 && x < dims.x && y > 0 && y < dims.y)
+			if (x > 0 && x < dims.x - 1 && y > 0 && y < dims.y - 1)
 			{
 
 
 				glm::vec4 final_normal = vec4(0, 0, 0, 0);
 
-				glm::vec4 thispos = vertex_data[y * (dims.x + 1) + x].Position;
+				glm::vec4 thispos = vertex_data[index].Position;
 
 				std::vector<glm::vec4> vertexs;
 
-				int index_up = (y * (dims.x + 1) + x) - dims.x + 1;
+				int index_up = index - dims.x;
 				//if (y > 0)
 				{
 					glm::vec4 pos_up = vertex_data[index_up].Position;
 					vertexs.push_back(pos_up);
 				}
-				int index_up_right = ((y * (dims.x + 1) + x) - dims.x + 1 + 1);
+				int index_up_right = (index - dims.x + 1);
 				//if (y > 0 && x < dims.x + 1)
 				{
 					glm::vec4 pos_up_right = vertex_data[index_up_right].Position;
 					vertexs.push_back(pos_up_right);
 				}
-				int index_right = (y * (dims.x + 1) + x) + 1;
+				int index_right = index + 1;
 				//if (x < dims.x + 1)
 				{
 					glm::vec4 pos_right = vertex_data[index_right].Position;
 					vertexs.push_back(pos_right);
 				}
-				int index_down_right = (y * (dims.x + 1) + x) + dims.x + 1 + 1;
+				int index_down_right = index + dims.x + 1;
 				//if (y < dims.y + 1 && x < dims.x + 1)
 				{
 					glm::vec4 pos_down_right = vertex_data[index_down_right].Position;
 					vertexs.push_back(pos_down_right);
 				}
-				int index_down = (y * (dims.x + 1) + x) + dims.x + 1;
+				int index_down = index + dims.x;
 				//if (y < dims.y + 1)
 				{
 					glm::vec4 pos_down = vertex_data[index_down].Position;
 					vertexs.push_back(pos_down);
 				}
-				int index_down_left = (y * (dims.x + 1) + x) + dims.x + 1 - 1;
+				int index_down_left = index + dims.x - 1;
 				//if (y < dims.y + 1 && x > 0)
 				{
 					glm::vec4 pos_down_left = vertex_data[index_down_left].Position;
 					vertexs.push_back(pos_down_left);
 				}
-				int index_left = (y * (dims.x + 1) + x) - 1;
+				int index_left = index - 1;
 				//if (x > 0)
 				{
 					glm::vec4 pos_left = vertex_data[index_left].Position;
 					vertexs.push_back(pos_left);
 				}
-				int index_up_left = (y * (dims.x + 1) + x) - dims.x + 1 - 1;
-			//	if (y > 0 && x > 0)
+				int index_up_left = index - dims.x - 1;
+				//	if (y > 0 && x > 0)
 				{
 					glm::vec4 pos_up_left = vertex_data[index_up_left].Position;
 					vertexs.push_back(pos_up_left);
@@ -631,20 +683,21 @@ OpenGLData ProceduralEnvironment::BuildGridWithNormals(glm::vec2 real_dims, glm:
 
 				final_normal = normalize(final_normal);
 				//vertex_data[y * (dims.x + 1) + x].Normal = glm::vec4(curr_x, 0, curr_y, 1);
-				vertex_data[y * (dims.x + 1) + x].Normal = final_normal;
-				vertex_data[y * (dims.x + 1) + x].Tangent = glm::vec4(curr_x, 0, curr_y, 1);
+				vertex_data[index].Normal = final_normal;
+				vertex_data[index].Tangent = glm::vec4(curr_x, 0, curr_y, 1);
 
 				DEBUGPOSITIONS.push_back(thispos.xyz);
 				DEBUGNORMALS.push_back(final_normal.xyz);
-				//Gizmos::addLine(thispos.xyz, thispos.xyz + (final_normal.xyz * 2.0f), color.Green);
 			}
 			else
 			{
-				vertex_data[y * (dims.x + 1) + x].Normal = glm::vec4(1, 0, 0, 1);
-				vertex_data[y * (dims.x + 1) + x].Tangent = glm::vec4(curr_x, 0, curr_y, 1);
+				vertex_data[index].Normal = glm::vec4(0, 1, 0, 1);
+				vertex_data[index].Tangent = glm::vec4(curr_x, 0, curr_y, 1);
 
 
 			}
+
+			index++;
 
 			curr_x += real_dims.x / (float)dims.x;
 		}
@@ -658,16 +711,19 @@ OpenGLData ProceduralEnvironment::BuildGridWithNormals(glm::vec2 real_dims, glm:
 	for( fucking do all the normals here )
 	pos.y += (texture(perlin_1_texture, uv).r * offset_pos) - offset_pos/2;
 	*/
-
+	index = 0;
 	int curr_index = 0;
-	for (int y = 0; y < dims.y; ++y) {
-		for (int x = 0; x < dims.x; ++x) {
-			index_data[curr_index++] = y * (dims.x + 1) + x;
-			index_data[curr_index++] = (y + 1) * (dims.x + 1) + x;
-			index_data[curr_index++] = (y + 1) * (dims.x + 1) + (x + 1);
-			index_data[curr_index++] = (y + 1) * (dims.x + 1) + (x + 1);
-			index_data[curr_index++] = y * (dims.x + 1) + (x + 1);
-			index_data[curr_index++] = y * (dims.x + 1) + x;
+	for (int y = 0; y < dims.y - 1; y++) {
+		for (int x = 0; x < dims.x - 1; x++) {
+
+			index_data[curr_index++] = y * (dims.x) + x;
+			index_data[curr_index++] = (y + 1) * (dims.x) + x;
+			index_data[curr_index++] = (y + 1) * (dims.x) + (x + 1);
+
+			index_data[curr_index++] = (y + 1) * (dims.x) + (x + 1);
+			index_data[curr_index++] = y * (dims.x) + (x + 1);
+			index_data[curr_index++] = y * (dims.x) + x;
+			index++;
 		}
 	}
 

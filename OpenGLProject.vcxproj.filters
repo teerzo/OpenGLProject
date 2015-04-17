@@ -109,6 +109,9 @@
     <Filter Include="Projects\_Assignments\Shaders">
       <UniqueIdentifier>{a2eceace-0a4a-4a3e-8cac-9dac4c53d35f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Projects\Complex Game Systems\05 GPGPU">
+      <UniqueIdentifier>{e028fc3b-1399-4518-b4e7-762ad5593ad9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Gizmos.cpp">

@@ -142,10 +142,12 @@ bool LoadOBJFile(MeshGroup* mesh, std::string filepath )
 
 			unsigned int float_count = tiny_shapes[shape_index].mesh.positions.size();
 			float_count += tiny_shapes[shape_index].mesh.normals.size();
+			float_count += tiny_shapes[shape_index].mesh.texcoords.size();
 			vertex_data.reserve(float_count);
 
 			vertex_data.insert(vertex_data.end(), tiny_shapes[shape_index].mesh.positions.begin(), tiny_shapes[shape_index].mesh.positions.end());
 			vertex_data.insert(vertex_data.end(), tiny_shapes[shape_index].mesh.normals.begin(), tiny_shapes[shape_index].mesh.normals.end());
+			vertex_data.insert(vertex_data.end(), tiny_shapes[shape_index].mesh.texcoords.begin(), tiny_shapes[shape_index].mesh.texcoords.end());
 
 			mesh->meshData[shape_index].m_index_count = tiny_shapes[shape_index].mesh.indices.size();
 
@@ -164,9 +166,11 @@ bool LoadOBJFile(MeshGroup* mesh, std::string filepath )
 
 			glEnableVertexAttribArray(0); // Position
 			glEnableVertexAttribArray(1); // Normal data
+			glEnableVertexAttribArray(2); // UV
 
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 0, (void*)(sizeof(float)*tiny_shapes[shape_index].mesh.positions.size()));
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_TRUE, 0, (void*)(sizeof(float)*tiny_shapes[shape_index].mesh.positions.size() + sizeof(float)*tiny_shapes[shape_index].mesh.normals.size()));
 
 			glBindVertexArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
