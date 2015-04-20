@@ -125,7 +125,7 @@ void Emitter::EmitParticles()
 	}
 }
 
-void Emitter::UpdateVertexData(glm::vec3 a_camera_position, glm::vec3 a_camera_up  )
+void Emitter::UpdateVertexData(glm::vec3 a_camera_position, glm::vec3 a_camera_up, glm::vec4 offset  )
 {
 	for (unsigned int i = 0; i < m_alive_count; ++i)
 	{
@@ -211,6 +211,8 @@ void Emitter::Render()
 	
 	glBindBuffer(GL_ARRAY_BUFFER, m_buffers.m_VBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, m_alive_count * 4 * sizeof(VertexParticle), m_vertex_data);
+
+
 
 	glBindVertexArray(m_buffers.m_VAO);
 	glDrawElements(GL_TRIANGLES, 6 * m_alive_count, GL_UNSIGNED_INT, 0);

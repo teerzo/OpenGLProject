@@ -118,7 +118,7 @@
     </ClCompile>
     <ClCompile Include="src\DeferredRendering.cpp" />
     <ClCompile Include="src\Emitter.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\Entity.cpp" />
@@ -217,7 +217,7 @@
     <ClInclude Include="src\Cube.h" />
     <ClInclude Include="src\DeferredRendering.h" />
     <ClInclude Include="src\Emitter.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\Entity.h" />
@@ -288,6 +288,8 @@
     <Text Include="Hotkeys.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="data\shaders\ass1_particle_fragment.glsl" />
+    <None Include="data\shaders\ass1_particle_vertex.glsl" />
     <None Include="data\shaders\ass1_composite_fragment.glsl" />
     <None Include="data\shaders\ass1_composite_vertex.glsl" />
     <None Include="data\shaders\ass1_directional_light_fragment.glsl" />

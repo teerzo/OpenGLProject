@@ -14,6 +14,7 @@ uniform float timer;
 
 uniform sampler2D lava_texture;
 uniform sampler2D soul_spear_texture;
+uniform sampler2D mesh_texture;
 
 void main()
 {
@@ -26,7 +27,10 @@ void main()
 	
 	float speed = 10;
 
-	albedo = vec3(texture( lava_texture, (vtx_uv * 5) + (speed * (timer/1000)) ).xyz);
+	albedo = vec3(texture( mesh_texture, vtx_uv).xyz);
+
+	//albedo = vec3(texture( lava_texture, (vtx_uv * 5) + (speed * (timer/1000)) ).xyz);
+	
 	position = vtx_position.xyz;
 	normal = vtx_normal.xyz;
 }

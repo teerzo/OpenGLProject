@@ -34,7 +34,7 @@ struct Particle
 
 class Emitter
 {
-private:
+	public:
 	// Type of emitter
 	emitter_type m_type;
 	vec4 m_direction;
@@ -77,7 +77,7 @@ private:
 	float m_wind_value;
 	vec4 m_wind_direction;
 
-public:
+
 	Emitter();
 	~Emitter();
 
@@ -88,7 +88,7 @@ public:
 	glm::vec4 a_start_color, glm::vec4 a_end_color );
 
 	void EmitParticles();
-	void UpdateVertexData(glm::vec3 a_camera_position, glm::vec3 a_camera_up);
+	void UpdateVertexData(glm::vec3 a_camera_position, glm::vec3 a_camera_up, glm::vec4 offset );
 	void Update(float a_delta_time);
 	void Render();
 

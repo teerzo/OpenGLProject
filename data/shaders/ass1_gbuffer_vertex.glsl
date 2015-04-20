@@ -17,6 +17,7 @@ uniform vec3 mesh_offset;
 void main()
 {
 	vec4 Offset = vec4(mesh_offset.xyz, 1 );
+	//vec4 Offset = vec4(0,0,0, 1 );
 	
 	vtx_position = view * vec4( position.xyz + Offset.xyz, 1 );
 	vtx_normal	 = view * vec4(	normal.xyz, 0);

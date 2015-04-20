@@ -52,9 +52,11 @@ void main()
 //color += lava_value *  texture ( lava_texture, (vtx_uv + vtx_uv_offset ) * 3);	
 
 
-
+	//if( vtx_pos.y < lava_height-0.5 ) {
+	//color = mix( texture( dirt_texture, (vtx_uv + vtx_uv_offset) * 5 ), texture( lava_texture, (vtx_uv + vtx_uv_offset) * 5 ), 0.8);
+	//}
 	if( vtx_pos.y < lava_height ) {
-	color = texture( lava_texture, (vtx_uv + vtx_uv_offset) * 5 );
+		color = mix( texture( dirt_texture, (vtx_uv + vtx_uv_offset) * 5 ), texture( lava_texture, (vtx_uv + vtx_uv_offset) * 5 ), 0.8);
 	}
 	else if( vtx_pos.y < 3 ) {
 		color = texture( dirt_texture, vtx_uv * 5);

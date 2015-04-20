@@ -15,8 +15,8 @@ void RenderTarget::SetWindowSize(int a_Width, int a_Height)
 
 void RenderTarget::SetPlaneSize(int a_Width, int a_Height)
 {
-	m_Width = a_Width;
-	m_Height = a_Height;
+	m_Width = ( float ) a_Width;
+	m_Height = (float)a_Height;
 }
 
 void RenderTarget::Update(float a_DeltaTime, Camera* a_Camera )
