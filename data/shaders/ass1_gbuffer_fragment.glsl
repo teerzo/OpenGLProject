@@ -29,7 +29,7 @@ void main()
 
 	albedo = vec3(texture( mesh_texture, vtx_uv).xyz);
 
-	//albedo = vec3(texture( lava_texture, (vtx_uv * 5) + (speed * (timer/1000)) ).xyz);
+	albedo = vec3(texture( lava_texture, (vtx_uv * 5) + (speed * (timer/1000)) ).xyz);
 	
 	position = vtx_position.xyz;
 	normal = vtx_normal.xyz;

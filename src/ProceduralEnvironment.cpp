@@ -9,6 +9,7 @@
 
 #include "Building.h"
 
+#include"../deps/FBXLoader/FBXFile.h"
 ProceduralEnvironment::~ProceduralEnvironment() {
 
 }
@@ -58,15 +59,19 @@ bool ProceduralEnvironment::ApplicationStartup() {
 	tweak_lava_direction = glm::vec3(0, 0, 1);
 	tweak_lava_speed = 10.0f;
 	tweak_lava_height = 0.0f;
+	tweak_dirt_height = 1.0f;
+	tweak_rock_height = 10000.0f;
 	tweak_perlin_position = glm::vec3(0, 0, 0);
-	tweak_perlin_size = 128.0f;
+	tweak_perlin_texture_size = 128.0f;
+	tweak_perlin_mesh_size = 128.0f;
 	tweak_perlin_height = 50.0f;
 	tweak_perlin_octaves = 8.0f;
 	tweak_perlin_persistance = 0.5f;
 	tweakBarTerrain = TwNewBar("Terrain");
 	TwAddVarRW(tweakBarTerrain, "Position", TW_TYPE_DIR3F, &tweak_perlin_position, "group=Perlin");
 
-	TwAddVarRW(tweakBarTerrain, "Size", TW_TYPE_FLOAT, &tweak_perlin_size, "group=Perlin");
+	TwAddVarRW(tweakBarTerrain, "Texture Size", TW_TYPE_FLOAT, &tweak_perlin_texture_size, "group=Perlin");
+	TwAddVarRW(tweakBarTerrain, "Mesh Size", TW_TYPE_FLOAT, &tweak_perlin_mesh_size, "group=Perlin");
 	TwAddVarRW(tweakBarTerrain, "Height", TW_TYPE_FLOAT, &tweak_perlin_height, "group=Perlin");
 	TwAddVarRW(tweakBarTerrain, "Octaves", TW_TYPE_FLOAT, &tweak_perlin_octaves, "group=Perlin");
 	TwAddVarRW(tweakBarTerrain, "Persistance", TW_TYPE_FLOAT, &tweak_perlin_persistance, "group=Perlin");
@@ -74,7 +79,9 @@ bool ProceduralEnvironment::ApplicationStartup() {
 	TwAddVarRW(tweakBarTerrain, "Direction", TW_TYPE_DIR3F, &tweak_lava_direction, "group=Lava");
 	TwAddVarRW(tweakBarTerrain, "Speed", TW_TYPE_FLOAT, &tweak_lava_speed, "group=Lava");
 	//TwAddVarRW(tweakBarTerrain, "Lava", TW_TYPE_FLOAT, &tweak_lava_height, "group=Heights precision 2");
-	TwAddVarRW(tweakBarTerrain, "LavaHeight", TW_TYPE_FLOAT, &tweak_lava_height, "group=Lava");
+	TwAddVarRW(tweakBarTerrain, "L_Height", TW_TYPE_FLOAT, &tweak_lava_height, "group=Lava");
+	TwAddVarRW(tweakBarTerrain, "D_Height", TW_TYPE_FLOAT, &tweak_dirt_height, "group=Dirt");
+	TwAddVarRW(tweakBarTerrain, "R_Height", TW_TYPE_FLOAT, &tweak_rock_height, "group=Rock");
 
 
 	//glm::vec3 tweak_lava_direction;
@@ -353,6 +360,8 @@ void ProceduralEnvironment::DrawPerlin() {
 	int uniform_lava_direction = glGetUniformLocation(perlinDrawProgramID, "lava_direction");
 	int uniform_lava_speed = glGetUniformLocation(perlinDrawProgramID, "lava_speed");
 	int uniform_lava_height = glGetUniformLocation(perlinDrawProgramID, "lava_height");
+	int uniform_rock_height = glGetUniformLocation(perlinDrawProgramID, "rock_height");
+	int uniform_dirt_height = glGetUniformLocation(perlinDrawProgramID, "dirt_height");
 
 	glUniformMatrix4fv(uniform_projection_view, 1, GL_FALSE, (float*)&cameraVector[currentCamera]->GetProjectionView());
 	glUniformMatrix4fv(uniform_world, 1, GL_FALSE, (float*)&cameraVector[currentCamera]->GetWorld());
@@ -363,6 +372,8 @@ void ProceduralEnvironment::DrawPerlin() {
 	glUniform3fv(uniform_lava_direction, 1, (float*)&tweak_lava_direction);
 	glUniform1f(uniform_lava_speed, tweak_lava_speed);
 	glUniform1f(uniform_lava_height, tweak_lava_height);
+	glUniform1f(uniform_rock_height, tweak_rock_height);
+	glUniform1f(uniform_dirt_height, tweak_dirt_height);
 
 	int uniform_perlin_height_texture = glGetUniformLocation(perlinDrawProgramID, "perlin_1_texture");
 	glUniform1i(uniform_perlin_height_texture, 0);
@@ -521,7 +532,7 @@ void ProceduralEnvironment::LoadShaders() {
 
 void ProceduralEnvironment::Reload()
 {
-	gridMesh = BuildGridWithNormals(glm::vec2(128, 128), glm::ivec2(tweak_perlin_size, tweak_perlin_size));
+	gridMesh = BuildGridWithNormals(glm::vec2(tweak_perlin_mesh_size, tweak_perlin_mesh_size), glm::ivec2(tweak_perlin_texture_size, tweak_perlin_texture_size));
 	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_size, tweak_perlin_size), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 
 }
@@ -555,11 +566,11 @@ OpenGLData ProceduralEnvironment::BuildGrid(glm::vec2 real_dims, glm::ivec2 dims
 	unsigned int* index_data = new unsigned int[index_count];
 
 
-	BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_size, tweak_perlin_size), (int)tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
+	BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_texture_size, tweak_perlin_texture_size), (int)tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(128, 128), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 
-	real_dims = vec2(128, 128);
-	dims = vec2(100, 100);
+	//real_dims = vec2(128, 128);
+	//dims = vec2(100, 100);
 
 	int index = 0;
 	float curr_y = -real_dims.y / 2.0f;

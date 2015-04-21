@@ -107,7 +107,7 @@ void main()
 	//final_normal.x *= -1;
 	//final_normal.z *= -1;
 	//final_normal = vec4( 0,1,0,0);
-	final_normal = normalize( final_normal );
+		final_normal = normalize( final_normal );
 	}
 	else
 	{

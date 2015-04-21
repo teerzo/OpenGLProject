@@ -64,7 +64,8 @@ public:
 	TwBar* tweakBarTerrain;
 	// Perlin tweak
 	glm::vec3 tweak_perlin_position;
-	float tweak_perlin_size;
+	float tweak_perlin_texture_size;
+	float tweak_perlin_mesh_size;
 	float tweak_perlin_height;
 	float tweak_perlin_octaves;
 	float tweak_perlin_persistance;
