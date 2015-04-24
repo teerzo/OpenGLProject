@@ -8,13 +8,12 @@
 class RenderTarget 
 {
 public:
-	RenderTarget();
+	RenderTarget(Screen screenres);
 	
-	void Update(float a_DeltaTime, Camera* a_Camera);
 	void Render();
 	void Draw(GLuint* a_ProgramID);
-	void SetWindowSize(int a_Width, int a_Height);
-	void SetPlaneSize(int a_Width, int a_Height);
+	void SetWindowSize(Screen screenres);
+	void SetPlaneSize(Screen screenres);
 
 	void GenerateFrameBuffer();
 	void GenerateShadowFrameBuffer();
@@ -24,25 +23,25 @@ public:
 	void GeneratePlane();
 	void GenerateTarget();
 	
-	mat4 proj_view;
+	glm::mat4 projection_view;
 
-	RenderTargetCamera* m_Camera;
-	Screen m_screen;
+	Camera* camera;
+	Screen screen;
 	OpenGLData m_plane;
 
 	float m_Width;
 	float m_Height;
 
-	unsigned int m_fbo;
-	unsigned int m_fbo_texture;
-	unsigned int m_fbo_depth;
+	unsigned int gbuffer_fbo;
+	unsigned int gbuffer_texture;
+	unsigned int gbuffer_depth;
 
-	unsigned int albedo_texture;
-	unsigned int position_texture;
-	unsigned int normals_texture;
+	unsigned int texture_albedo;
+	unsigned int texture_position;
+	unsigned int texture_normal;
 
-	unsigned int light_fbo;
-	unsigned int light_texture;
+	unsigned int light_buffer_fbo;
+	unsigned int light_buffer_texture;
 };
 
 

@@ -12,16 +12,19 @@
 class Camera;
 class Line;
 
-struct debugModes_t
+struct km_time
 {
-	bool lockCamera;
-	bool Debug;
-	bool Wireframe;
-	bool ShowObjects;
-	bool ShowLines;
-	bool CastLines;
-	bool ShowGrid;
-	bool ShowUI;
+	float delta_time;
+	float current;
+	float previous;
+	float FPS;
+};
+
+struct km_mode
+{
+	bool debug;
+	bool show_grid;
+	bool wireframe;
 };
 
 struct GLFWwindow;
@@ -39,17 +42,14 @@ public:
 	virtual void Draw();	
 	virtual	void DebugDraw();
 
-	Screen GetScreenSize();
-	void AddFlyCamera();
-	void DestroyActiveCamera();
+	void AddCamera();
 	GLFWwindow* GetWindow();	
 private:
 	void UpdateCameras();
 	void DisableOtherCameras();
 	//void teCheckInput();
 
-	// Project Default Variables
-	float FPS;
+	
 
 	// Debug Variables
 	int debugGridSize;
@@ -58,30 +58,23 @@ protected:
 	std::vector<Camera*> cameraVector;
 	signed int currentCamera;
 	char* applicationName;
-	Screen screenSize;
-	debugModes_t debugModes;
+	Screen screen_size;
 	GLFWwindow* window;
+
+	km_time time;
+	km_mode mode;
 
 	// Grid Functions
 	void DebugDrawGrid();
-	// Line Functions 
-	void DebugUpdateLines();
-	void DebugDrawLines();
-	void DebugClearLines();
-
-	//OpenGLData m_quad;
-	//OpenGLData m_grid;
-
-	glm::vec4 defaultBackgroundColour;
+	
+	glm::vec4 bgColor;
 
 	// Tweak Bar
 	TwBar* tweakBarMain;
 	TwBar* tweakBarCamera;
 
 	// timer/deltatime
-	float currentGameTime;
-	float previousGameTime;
-	float deltaTime;
+
 	float m_fDelayMax;
 	float m_fDelayTimer;
 

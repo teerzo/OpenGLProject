@@ -9,6 +9,7 @@
 
 #include "Building.h"
 
+#include"../deps/FBXLoader/FBXFile.h"
 ProceduralEnvironment::~ProceduralEnvironment() {
 
 }
@@ -58,15 +59,19 @@ bool ProceduralEnvironment::ApplicationStartup() {
 	tweak_lava_direction = glm::vec3(0, 0, 1);
 	tweak_lava_speed = 10.0f;
 	tweak_lava_height = 0.0f;
+	tweak_dirt_height = 1.0f;
+	tweak_rock_height = 10000.0f;
 	tweak_perlin_position = glm::vec3(0, 0, 0);
-	tweak_perlin_size = 128.0f;
+	tweak_perlin_texture_size = 128.0f;
+	tweak_perlin_mesh_size = 128.0f;
 	tweak_perlin_height = 50.0f;
 	tweak_perlin_octaves = 8.0f;
 	tweak_perlin_persistance = 0.5f;
 	tweakBarTerrain = TwNewBar("Terrain");
 	TwAddVarRW(tweakBarTerrain, "Position", TW_TYPE_DIR3F, &tweak_perlin_position, "group=Perlin");
 
-	TwAddVarRW(tweakBarTerrain, "Size", TW_TYPE_FLOAT, &tweak_perlin_size, "group=Perlin");
+	TwAddVarRW(tweakBarTerrain, "Texture Size", TW_TYPE_FLOAT, &tweak_perlin_texture_size, "group=Perlin");
+	TwAddVarRW(tweakBarTerrain, "Mesh Size", TW_TYPE_FLOAT, &tweak_perlin_mesh_size, "group=Perlin");
 	TwAddVarRW(tweakBarTerrain, "Height", TW_TYPE_FLOAT, &tweak_perlin_height, "group=Perlin");
 	TwAddVarRW(tweakBarTerrain, "Octaves", TW_TYPE_FLOAT, &tweak_perlin_octaves, "group=Perlin");
 	TwAddVarRW(tweakBarTerrain, "Persistance", TW_TYPE_FLOAT, &tweak_perlin_persistance, "group=Perlin");
@@ -74,7 +79,9 @@ bool ProceduralEnvironment::ApplicationStartup() {
 	TwAddVarRW(tweakBarTerrain, "Direction", TW_TYPE_DIR3F, &tweak_lava_direction, "group=Lava");
 	TwAddVarRW(tweakBarTerrain, "Speed", TW_TYPE_FLOAT, &tweak_lava_speed, "group=Lava");
 	//TwAddVarRW(tweakBarTerrain, "Lava", TW_TYPE_FLOAT, &tweak_lava_height, "group=Heights precision 2");
-	TwAddVarRW(tweakBarTerrain, "LavaHeight", TW_TYPE_FLOAT, &tweak_lava_height, "group=Lava");
+	TwAddVarRW(tweakBarTerrain, "L_Height", TW_TYPE_FLOAT, &tweak_lava_height, "group=Lava");
+	TwAddVarRW(tweakBarTerrain, "D_Height", TW_TYPE_FLOAT, &tweak_dirt_height, "group=Dirt");
+	TwAddVarRW(tweakBarTerrain, "R_Height", TW_TYPE_FLOAT, &tweak_rock_height, "group=Rock");
 
 
 	//glm::vec3 tweak_lava_direction;
@@ -124,7 +131,15 @@ bool ProceduralEnvironment::ApplicationStartup() {
 	//CreateOpenGLBuffers(shapes);
 	// Load Shaders
 
+	m_file = new FBXFile;
+	m_file->load( "./models/characters/Pyro/pyro.fbx" );
+	//m_file->load("./models/all.fbx");
+	m_file->initialiseOpenGLTextures();
+	GenerateGLMeshes( m_file, m_pyro );
+	//LoadShader("../data/shaders/BasicVertex.glsl", "../data/shaders/BasicFragment.glsl", (GLuint*)&m_ProgramID);
 
+	emitter.Initialise( emitter_type::direction, 100, glm::vec4( 0, 0, 0, 1 ), 100, 0.5, 1, 3, 5, 0.5f, 0.8f, color.Green, color.Green );
+	emitter.SetDirection( glm::vec4( 0, 1, 0, 0 ) );
 
 	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_size, tweak_perlin_size), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 	//gridMesh = BuildGrid(glm::vec2(128, 128), glm::ivec2(128, 128));
@@ -162,6 +177,35 @@ bool ProceduralEnvironment::Update()
 		}
 	}
 
+	//m_pyro.skeleton = m_file->getSkeletonByIndex( 0 );
+	//m_pyro.animation = m_file->getAnimationByIndex( 0 );
+
+	////m_pyro.skeleton->evaluate(m_pyro.animation, m_fTimer);
+	//EvaluateSkeleton( m_pyro.animation, m_pyro.skeleton, currentGameTime );
+
+	//for( unsigned int i = 0; i < m_pyro.skeleton->m_boneCount; ++i ) {
+	//	m_pyro.skeleton->m_nodes[i]->updateGlobalTransform();
+	//	glm::mat4 node_global = m_pyro.skeleton->m_nodes[i]->m_globalTransform;
+	//	glm::vec3 node_pos = node_global[3].xyz;
+	//	Gizmos::addAABB( node_pos, glm::vec3( 5.0f ), color.Red, &node_global );
+	//	if( m_pyro.skeleton->m_nodes[i]->m_parent != nullptr ) {
+	//		Gizmos::addLine( node_pos, m_pyro.skeleton->m_nodes[i]->m_parent->m_globalTransform[3].xyz, color.Green );
+	//	}
+	//}
+
+	if( bunnyObject->worldTransform[3].y > tweak_lava_height )
+		bunnyObject->worldTransform[3].y = highest_position.y + tweak_perlin_position.y;
+
+	if( soulspears[0]->worldTransform[3].y > tweak_lava_height )
+		soulspears[0]->worldTransform[3].y = highest_position.y + tweak_perlin_position.y;
+	if( soulspears[1]->worldTransform[3].y > tweak_lava_height )
+		soulspears[1]->worldTransform[3].y = lowest_position.y + tweak_lava_height;
+
+	emitter.Update( deltaTime );
+	emitter.UpdateVertexData( cameraVector[currentCamera]->GetPosition(), cameraVector[currentCamera]->GetUp(), bunnyObject->worldTransform[3] );
+
+	//emitter.m_position.x += 2 * deltaTime;
+	//emitter.m_position = bunnyObject->worldTransform[3];
 	///////////////////////
 	//! End of Update Code
 	///////////////////////
@@ -221,35 +265,87 @@ void ProceduralEnvironment::RenderGeometry() {
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, grass_texture);
 
+	
+
 	//buildingBase->Draw();
-	bunnyObject->worldTransform[3] = glm::vec4(0, 1, 0, 1);
+	//bunnyObject->worldTransform[3] = glm::vec4(0, 1, 0, 1);
 	glUniform3fv(uniform_mesh_position, 1, (float*)&bunnyObject->worldTransform[3]);
 	bunnyObject->Draw();
+
+	
+
 	for (int i = 0; i < 9; ++i) {
 		//buildings[i]->Draw(gBufferProgramID);
 	}
 
-	for (int i = 0; i < soulspears.size(); i++)
+	for (unsigned int i = 0; i < soulspears.size(); i++)
 	{
 		glUniform3fv(uniform_mesh_position, 1, (float*)&soulspears[i]->worldTransform[3]);
 		soulspears[i]->Draw();
 	}
 
+	DrawParticles();
 
-	//glCullFace(GL_BACK); 
-	//glBindVertexArray(pointLight.m_VAO);
-	//glDrawElements(GL_TRIANGLES, pointLight.m_index_count, GL_UNSIGNED_INT, 0);
 
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//DrawAnimation();
 
 	DrawPerlin();
 
-	for (int i = 0; i < DEBUGPOSITIONS.size(); i++)
+	for( unsigned int i = 0; i < DEBUGPOSITIONS.size(); i++ )
 	{
 		//Gizmos::addLine(DEBUGPOSITIONS[i], DEBUGPOSITIONS[i] + DEBUGNORMALS[i] * 2, color.Green);
 	}
 	DebugDraw();
 
+}
+void ProceduralEnvironment::DrawParticles() {
+
+	emitter.m_position = glm::vec4( 0, 30, 0, 1 );
+	//emitter.m_position = bunnyObject->worldTransform[3];
+
+	glUseProgram( particleProgramID );
+	unsigned int	uniform_proj_view = glGetUniformLocation( particleProgramID, "projection_view" );
+	unsigned int	uniform_view = glGetUniformLocation( particleProgramID, "view" );
+	unsigned int	uniform_mesh_position = glGetUniformLocation( particleProgramID, "offset" );
+	glUniformMatrix4fv( uniform_proj_view, 1, GL_FALSE, ( float* ) &cameraVector[currentCamera]->GetProjectionView() );
+	glUniformMatrix4fv( uniform_view, 1, GL_FALSE, ( float* ) &cameraVector[currentCamera]->GetView() );
+	glUniform3fv( uniform_mesh_position, 1, ( float* ) &emitter.m_position );
+	emitter.Render();
+}
+
+void ProceduralEnvironment::DrawAnimation() {
+	//glUseProgram( animatedProgramID );
+	//int proj_view_handle = glGetUniformLocation( animatedProgramID, "ProjectionView" );
+	//if( proj_view_handle >= 0 ) {
+	//	glUniformMatrix4fv( proj_view_handle, 1, GL_FALSE, ( float* ) &cameraVector[currentCamera]->GetProjectionView() );
+	//}
+
+	//unsigned int	uniform_view = glGetUniformLocation( animatedProgramID, "view" );
+	//glUniformMatrix4fv( uniform_view, 1, GL_FALSE, ( float* ) &cameraVector[currentCamera]->GetView() );
+
+	//UpdateBones( m_pyro.skeleton );
+
+	//int diffuse_uniform = glGetUniformLocation( animatedProgramID, "Diffuse_Tex" );
+	//glUniform1i( diffuse_uniform, 0 );
+	//int bones_uniform = glGetUniformLocation( animatedProgramID, "bones" );
+	//glUniformMatrix4fv( bones_uniform, m_pyro.skeleton->m_boneCount, GL_FALSE, ( float* ) m_pyro.skeleton->m_bones );
+
+	//for( unsigned int i = 0; i < m_pyro.meshes.size(); ++i ) {
+	//	FBXMeshNode* curr_mesh = m_file->getMeshByIndex( i );
+	//	glm::mat4 world_transform = m_file->getMeshByIndex( i )->m_globalTransform;
+	//	FBXMaterial* mesh_material = curr_mesh->m_material;
+
+	//	// Bind Texture from file to opengl
+	//	glActiveTexture( GL_TEXTURE0 );
+	//	glBindTexture( GL_TEXTURE_2D, mesh_material->textures[FBXMaterial::DiffuseTexture]->handle );
+
+	//	// Get World Transform of the mesh from current mesh
+	//	int World_Uniform = glGetUniformLocation( animatedProgramID, "World" );
+	//	glUniformMatrix4fv( World_Uniform, 1, GL_FALSE, ( float* ) &world_transform );
+
+	//	glBindVertexArray( m_pyro.meshes[i].m_VAO );
+	//	glDrawElements( GL_TRIANGLES, m_pyro.meshes[i].m_index_count, GL_UNSIGNED_INT, 0 );
+	//}
 }
 
 void ProceduralEnvironment::DrawPerlin() {
@@ -264,6 +360,8 @@ void ProceduralEnvironment::DrawPerlin() {
 	int uniform_lava_direction = glGetUniformLocation(perlinDrawProgramID, "lava_direction");
 	int uniform_lava_speed = glGetUniformLocation(perlinDrawProgramID, "lava_speed");
 	int uniform_lava_height = glGetUniformLocation(perlinDrawProgramID, "lava_height");
+	int uniform_rock_height = glGetUniformLocation(perlinDrawProgramID, "rock_height");
+	int uniform_dirt_height = glGetUniformLocation(perlinDrawProgramID, "dirt_height");
 
 	glUniformMatrix4fv(uniform_projection_view, 1, GL_FALSE, (float*)&cameraVector[currentCamera]->GetProjectionView());
 	glUniformMatrix4fv(uniform_world, 1, GL_FALSE, (float*)&cameraVector[currentCamera]->GetWorld());
@@ -274,6 +372,8 @@ void ProceduralEnvironment::DrawPerlin() {
 	glUniform3fv(uniform_lava_direction, 1, (float*)&tweak_lava_direction);
 	glUniform1f(uniform_lava_speed, tweak_lava_speed);
 	glUniform1f(uniform_lava_height, tweak_lava_height);
+	glUniform1f(uniform_rock_height, tweak_rock_height);
+	glUniform1f(uniform_dirt_height, tweak_dirt_height);
 
 	int uniform_perlin_height_texture = glGetUniformLocation(perlinDrawProgramID, "perlin_1_texture");
 	glUniform1i(uniform_perlin_height_texture, 0);
@@ -356,9 +456,11 @@ void ProceduralEnvironment::DrawDirectionLight(const glm::vec3& a_direction, con
 
 	int uniform_light_direction = glGetUniformLocation(directionalLightProgramID, "light_dir");
 	int uniform_light_color = glGetUniformLocation(directionalLightProgramID, "light_color");
+	unsigned int	uniform_view = glGetUniformLocation( directionalLightProgramID, "view" );
 
 	glUniform3fv(uniform_light_direction, 1, (float*)&view_space_light);
 	glUniform3fv(uniform_light_color, 1, (float*)&a_color);
+	glUniformMatrix4fv( uniform_view, 1, GL_FALSE, ( float* ) &cameraVector[currentCamera]->GetView() );
 
 	unsigned int uniform_position_texture = glGetUniformLocation(directionalLightProgramID, "position_texture");
 	glUniform1i(uniform_position_texture, 0);
@@ -402,8 +504,10 @@ void ProceduralEnvironment::DebugDraw() {
 
 void ProceduralEnvironment::CheckInput() {
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
-		Reload();
 		ReloadShaders();
+	}
+	if( glfwGetKey( window, GLFW_KEY_T ) == GLFW_PRESS ) {
+		Reload();
 	}
 	Application::CheckInput();
 }
@@ -413,6 +517,8 @@ void ProceduralEnvironment::CheckInput() {
 void ProceduralEnvironment::LoadShaders() {
 	LoadShader((GLuint*)&gBufferProgramID, "ass1_gbuffer_vertex.glsl", "ass1_gbuffer_fragment.glsl", nullptr);
 	LoadShader((GLuint*)&compositeProgramID, "ass1_composite_vertex.glsl", "ass1_composite_fragment.glsl", nullptr);
+
+	LoadShader( ( GLuint* ) &particleProgramID, "ass1_particle_vertex.glsl", "ass1_particle_fragment.glsl", nullptr );
 
 
 	LoadShader((GLuint*)&directionalLightProgramID, "ass1_directional_light_vertex.glsl", "ass1_directional_light_fragment.glsl", nullptr);
@@ -426,7 +532,7 @@ void ProceduralEnvironment::LoadShaders() {
 
 void ProceduralEnvironment::Reload()
 {
-	gridMesh = BuildGridWithNormals(glm::vec2(128, 128), glm::ivec2(tweak_perlin_size, tweak_perlin_size));
+	gridMesh = BuildGridWithNormals(glm::vec2(tweak_perlin_mesh_size, tweak_perlin_mesh_size), glm::ivec2(tweak_perlin_texture_size, tweak_perlin_texture_size));
 	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_size, tweak_perlin_size), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 
 }
@@ -460,11 +566,11 @@ OpenGLData ProceduralEnvironment::BuildGrid(glm::vec2 real_dims, glm::ivec2 dims
 	unsigned int* index_data = new unsigned int[index_count];
 
 
-	BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_size, tweak_perlin_size), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
+	BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_texture_size, tweak_perlin_texture_size), (int)tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(128, 128), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 
-	real_dims = vec2(128, 128);
-	dims = vec2(100, 100);
+	//real_dims = vec2(128, 128);
+	//dims = vec2(100, 100);
 
 	int index = 0;
 	float curr_y = -real_dims.y / 2.0f;
@@ -541,7 +647,7 @@ OpenGLData ProceduralEnvironment::BuildGridWithNormals(glm::vec2 real_dims, glm:
 
 
 
-	BuildPerlinTexture(&perlin_1_texture, glm::vec2(dims.x, dims.y), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
+	BuildPerlinTexture(&perlin_1_texture, glm::vec2(dims.x, dims.y), (int)tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(tweak_perlin_size, tweak_perlin_size), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 	//BuildPerlinTexture(&perlin_1_texture, glm::ivec2(129, 129), tweak_perlin_octaves, tweak_perlin_persistance, (float)0.0f);
 
@@ -569,6 +675,7 @@ OpenGLData ProceduralEnvironment::BuildGridWithNormals(glm::vec2 real_dims, glm:
 			{
 				lowestIndex = index;
 			}
+
 			curr_x += real_dims.x / (float)dims.x;
 		}
 		curr_y += real_dims.y / (float)dims.y;
@@ -587,20 +694,25 @@ OpenGLData ProceduralEnvironment::BuildGridWithNormals(glm::vec2 real_dims, glm:
 	//if (LoadOBJFile(spear, "stanford/bunnyUV.obj"))
 	if (LoadOBJFile(spearHigh, "soulspear/soulspear.obj"))
 	{
-
-		spearHigh->worldTransform[3] = vertex_data[highestIndex].Position;
+		highest_position = vertex_data[highestIndex].Position;
+		spearHigh->worldTransform[3] = highest_position;
 		soulspears.push_back(spearHigh);
 		int i = 0;
 	}
 	if (LoadOBJFile(spearLow, "soulspear/soulspear.obj"))
 	{
-		spearLow->worldTransform[3] = vertex_data[lowestIndex].Position;
+		lowest_position = vertex_data[lowestIndex].Position;
+		spearLow->worldTransform[3] = lowest_position; 
+		spearLow->worldTransform[3].y = 0;
 		soulspears.push_back(spearLow);
 		int i = 0;
 	}
+	bunnyObject->worldTransform[3] = glm::vec4( vertex_data[lowestIndex].Position.x, vertex_data[highestIndex].Position.y, vertex_data[lowestIndex].Position.z, 1 );
+	emitter.m_position = vertex_data[lowestIndex].Position;
+	emitter.m_position.y = 0;
+	
 
-
-	float texture_size = dims.x;
+	float texture_size = (float)dims.x;
 	float texture_offset = 1 / texture_size;
 	float sample_size = 1.0f;
 	index = 0;
@@ -610,66 +722,66 @@ OpenGLData ProceduralEnvironment::BuildGridWithNormals(glm::vec2 real_dims, glm:
 		for (int x = 0; x < dims.x; ++x) {
 
 
-			if (x > 0 && x < dims.x - 1 && y > 0 && y < dims.y - 1)
-			{
+			//if (x > 0 && x < dims.x - 1 && y > 0 && y < dims.y - 1)
+			//{
 
 
-				glm::vec4 final_normal = vec4(0, 0, 0, 0);
+				glm::vec4 final_normal = glm::vec4(0, 0, 0, 0);
 
 				glm::vec4 thispos = vertex_data[index].Position;
 
 				std::vector<glm::vec4> vertexs;
 
 				int index_up = index - dims.x;
-				//if (y > 0)
+				if (y > 0)
 				{
 					glm::vec4 pos_up = vertex_data[index_up].Position;
 					vertexs.push_back(pos_up);
 				}
 				int index_up_right = (index - dims.x + 1);
-				//if (y > 0 && x < dims.x + 1)
+				if (y > 0 && x < dims.x-1)
 				{
 					glm::vec4 pos_up_right = vertex_data[index_up_right].Position;
 					vertexs.push_back(pos_up_right);
 				}
 				int index_right = index + 1;
-				//if (x < dims.x + 1)
+				if (x < dims.x-1 )
 				{
 					glm::vec4 pos_right = vertex_data[index_right].Position;
 					vertexs.push_back(pos_right);
 				}
 				int index_down_right = index + dims.x + 1;
-				//if (y < dims.y + 1 && x < dims.x + 1)
+				if (y < dims.y-1  && x < dims.x-1 )
 				{
 					glm::vec4 pos_down_right = vertex_data[index_down_right].Position;
 					vertexs.push_back(pos_down_right);
 				}
 				int index_down = index + dims.x;
-				//if (y < dims.y + 1)
+				if (y < dims.y-1 )
 				{
 					glm::vec4 pos_down = vertex_data[index_down].Position;
 					vertexs.push_back(pos_down);
 				}
 				int index_down_left = index + dims.x - 1;
-				//if (y < dims.y + 1 && x > 0)
+				if (y < dims.y-1  && x > 0)
 				{
 					glm::vec4 pos_down_left = vertex_data[index_down_left].Position;
 					vertexs.push_back(pos_down_left);
 				}
 				int index_left = index - 1;
-				//if (x > 0)
+				if (x > 0)
 				{
 					glm::vec4 pos_left = vertex_data[index_left].Position;
 					vertexs.push_back(pos_left);
 				}
 				int index_up_left = index - dims.x - 1;
-				//	if (y > 0 && x > 0)
+					if (y > 0 && x > 0)
 				{
 					glm::vec4 pos_up_left = vertex_data[index_up_left].Position;
 					vertexs.push_back(pos_up_left);
 				}
 
-				for (int i = 0; i < vertexs.size(); i++)
+				for (unsigned int i = 0; i < vertexs.size(); i++)
 				{
 					if (i == vertexs.size() - 1)
 					{
@@ -688,14 +800,14 @@ OpenGLData ProceduralEnvironment::BuildGridWithNormals(glm::vec2 real_dims, glm:
 
 				DEBUGPOSITIONS.push_back(thispos.xyz);
 				DEBUGNORMALS.push_back(final_normal.xyz);
-			}
-			else
-			{
-				vertex_data[index].Normal = glm::vec4(0, 1, 0, 1);
-				vertex_data[index].Tangent = glm::vec4(curr_x, 0, curr_y, 1);
-
-
-			}
+		//	}
+			//else
+			//{
+			//	vertex_data[index].Normal = glm::vec4(0, 1, 0, 1);
+			//	vertex_data[index].Tangent = glm::vec4(curr_x, 0, curr_y, 1);
+			//
+			//
+			//}
 
 			index++;
 
@@ -875,5 +987,101 @@ void ProceduralEnvironment::CreateUpdateShader() {
 	}
 	glDeleteShader(vertex_shader);
 
+}
+
+void ProceduralEnvironment::GenerateGLMeshes( FBXFile* fbx, TestObject& object ) {
+	unsigned int mesh_count = fbx->getMeshCount();
+
+	object.meshes.resize( mesh_count );
+
+	for( unsigned int mesh_index = 0; mesh_index < mesh_count; ++mesh_index ) {
+		FBXMeshNode* curr_mesh = fbx->getMeshByIndex( mesh_index );
+
+		object.meshes[mesh_index].m_index_count = curr_mesh->m_indices.size();
+
+		glGenBuffers( 1, &object.meshes[mesh_index].m_VBO );
+		glGenBuffers( 1, &object.meshes[mesh_index].m_IBO );
+		glGenVertexArrays( 1, &object.meshes[mesh_index].m_VAO );
+
+		glBindVertexArray( object.meshes[mesh_index].m_VAO );
+
+		glBindBuffer( GL_ARRAY_BUFFER, object.meshes[mesh_index].m_VBO );
+		glBufferData( GL_ARRAY_BUFFER, sizeof( FBXVertex )* curr_mesh->m_vertices.size(), curr_mesh->m_vertices.data(), GL_STATIC_DRAW );
+
+		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, object.meshes[mesh_index].m_IBO );
+		glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( unsigned int )* curr_mesh->m_indices.size(), curr_mesh->m_indices.data(), GL_STATIC_DRAW );
+
+		glEnableVertexAttribArray( 0 ); // Position
+		glEnableVertexAttribArray( 1 ); // UV
+		glEnableVertexAttribArray( 2 ); // Bone Indices
+		glEnableVertexAttribArray( 3 ); // Bone Weights
+
+		glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, sizeof( FBXVertex ), ( void* ) FBXVertex::PositionOffset );
+		glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( FBXVertex ), ( void* ) FBXVertex::TexCoord1Offset );
+		glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( FBXVertex ), ( void* ) FBXVertex::IndicesOffset );
+		glVertexAttribPointer( 3, 4, GL_FLOAT, GL_FALSE, sizeof( FBXVertex ), ( void* ) FBXVertex::WeightsOffset );
+
+		glBindVertexArray( 0 );
+		glBindBuffer( GL_ARRAY_BUFFER, 0 );
+		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+	}
+}
+
+void ProceduralEnvironment::EvaluateSkeleton( FBXAnimation* anim, FBXSkeleton* skeleton, float timer ) {
+	float fps = 24.0f;
+	int current_frame = ( int ) ( timer * fps );
+
+	// loop through all the tracks
+	for( unsigned int track_index = 0; track_index < anim->m_trackCount; ++track_index ) {
+		// wrap back to the start of the track if we've gone too far
+		int track_frame_count = anim->m_tracks[track_index].m_keyframeCount;
+		int track_frame = current_frame % track_frame_count;
+
+		// find what keyframes are currently affecting the bones
+		FBXKeyFrame curr_frame = anim->m_tracks[track_index].m_keyframes[track_frame];
+		FBXKeyFrame next_frame = anim->m_tracks[track_index].m_keyframes[( track_frame + 1 ) % track_frame_count];
+
+		float time_since_frame_flip = timer - ( current_frame / fps );
+		float t = time_since_frame_flip * fps;
+
+		glm::vec3 new_pos = glm::mix( curr_frame.m_translation, next_frame.m_translation, t );
+		glm::vec3 new_scale = glm::mix( curr_frame.m_scale, next_frame.m_scale, t );
+		glm::quat new_rot = glm::slerp( curr_frame.m_rotation, next_frame.m_rotation, t );
+
+		glm::mat4 local_transform = glm::translate( new_pos ) * glm::toMat4( new_rot ) * glm::scale( new_scale );
+
+		// get the right bone for the given track 
+		int bone_index = anim->m_tracks[track_index].m_boneIndex;
+
+
+		// set the FBXNode's local Transforms to match
+		if( bone_index < skeleton->m_boneCount ) {
+			skeleton->m_nodes[bone_index]->m_localTransform = local_transform;
+		}
+
+		// interpolate between those keyframes to generate the matrix for the current pose
+
+
+	}
+}
+void ProceduralEnvironment::UpdateBones( FBXSkeleton* skeleton ) {
+
+	// loop through the nodes in the skeleton
+	for( unsigned int bone_index = 0; bone_index < skeleton->m_boneCount; ++bone_index ) {
+		// generate their global Transforms
+		int parent_index = skeleton->m_parentIndex[bone_index];
+		if( parent_index == -1 ) {
+			skeleton->m_bones[bone_index] = skeleton->m_nodes[bone_index]->m_localTransform;
+		} else {
+			skeleton->m_bones[bone_index] = skeleton->m_bones[parent_index] * skeleton->m_nodes[bone_index]->m_localTransform;
+		}
+
+
+	}
+
+	for( unsigned int bone_index = 0; bone_index < skeleton->m_boneCount; ++bone_index ) {
+		// mutiply the global transform by the inverse bind pose
+		skeleton->m_bones[bone_index] = skeleton->m_bones[bone_index] * skeleton->m_bindPoses[bone_index];
+	}
 }
 

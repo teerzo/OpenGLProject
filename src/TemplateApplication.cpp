@@ -15,8 +15,8 @@ TemplateApplication::~TemplateApplication()
 void TemplateApplication::SetApplicationDefaults()
 {
 	this->applicationName = "TemplateApplication";
-	this->screenSize.Width = 1280;
-	this->screenSize.Height = 720;
+	this->screen_size.width = 1280;
+	this->screen_size.height = 720;
 }
 
 bool TemplateApplication::ApplicationStartup()
@@ -64,7 +64,7 @@ bool TemplateApplication::Update()
 
 void TemplateApplication::Draw()
 {
-	glClearColor(defaultBackgroundColour.x, defaultBackgroundColour.y, defaultBackgroundColour.z, defaultBackgroundColour.w);
+	glClearColor(bgColor.x, bgColor.y, bgColor.z, bgColor.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(m_ProgramID);
 

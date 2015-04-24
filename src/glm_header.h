@@ -5,8 +5,6 @@
 #include "glm/glm.hpp"
 #include "glm/ext.hpp"
 
-using namespace glm;
-
 struct Color
 {
 	glm::vec4 Clear = glm::vec4(1, 1, 1, 0);

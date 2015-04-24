@@ -4,12 +4,23 @@
 #include "Application.h"
 #include "RenderTarget.h"
 #include "tiny_obj_loader.h"
+#include "Emitter.h"
+#include "../deps/FBXLoader/FBXFile.h"
 
 class Building;
+
+struct TestObject {
+	std::vector<OpenGLData> meshes;
+	FBXSkeleton* skeleton;
+	FBXAnimation* animation;
+
+};
 
 class ProceduralEnvironment : public Application
 {
 public:
+
+	Emitter emitter;
 
 	std::vector<glm::vec3>DEBUGNORMALS;
 	std::vector<glm::vec3>DEBUGPOSITIONS;
@@ -40,7 +51,8 @@ public:
 	unsigned int rock_texture;
 	unsigned int soulspear_texture;
 
-
+	glm::vec4 highest_position;
+	glm::vec4 lowest_position;
 
 	TwBar* tweakBarLighting;	
 	// light tweak
@@ -52,7 +64,8 @@ public:
 	TwBar* tweakBarTerrain;
 	// Perlin tweak
 	glm::vec3 tweak_perlin_position;
-	float tweak_perlin_size;
+	float tweak_perlin_texture_size;
+	float tweak_perlin_mesh_size;
 	float tweak_perlin_height;
 	float tweak_perlin_octaves;
 	float tweak_perlin_persistance;
@@ -70,6 +83,7 @@ public:
 	OpenGLData pointLight;
 	unsigned int gBufferProgramID;
 	unsigned int compositeProgramID;
+	unsigned int particleProgramID;
 
 	unsigned int perlinUpdateProgramID;
 	unsigned int perlinDrawProgramID;
@@ -78,6 +92,17 @@ public:
 	unsigned int pointLightProgramID;
 	unsigned int spotLightProgramID;
 	
+	// Animation
+	FBXFile* m_file;
+	TestObject m_pyro;
+
+	void GenerateGLMeshes( FBXFile* fbx, TestObject& object );
+	void EvaluateSkeleton( FBXAnimation* anim, FBXSkeleton* skeleton, float timer );
+	void UpdateBones( FBXSkeleton* skeleton );
+
+
+	void DrawParticles();
+	void DrawAnimation();
 
 	OpenGLData BuildGrid(glm::vec2 real_dims, glm::ivec2 dims);
 	OpenGLData BuildGridWithNormals(glm::vec2 real_dims, glm::ivec2 dims);

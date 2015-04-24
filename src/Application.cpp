@@ -38,7 +38,7 @@ void OnWindowResize(GLFWwindow* window, int width, int height)
 
 void TW_CALL ClearLines()
 {
-	
+
 }
 
 
@@ -56,9 +56,9 @@ Application::~Application()
 void Application::SetApplicationDefaults()
 {
 	this->applicationName = "Application Default";
-	this->screenSize.Width = 1280;
-	this->screenSize.Height = 720;
-	
+	this->screen_size.width = 1280;
+	this->screen_size.height = 720;
+
 }
 
 bool Application::ApplicationStartup()
@@ -68,7 +68,7 @@ bool Application::ApplicationStartup()
 		return false;
 	}
 	printf("glfwInit Successful\n");
-	this->window = glfwCreateWindow(this->screenSize.Width, this->screenSize.Height, this->applicationName, nullptr, nullptr);
+	this->window = glfwCreateWindow(this->screen_size.width, this->screen_size.height, this->applicationName, nullptr, nullptr);
 	if (this->window == nullptr)
 	{
 		return false;
@@ -87,7 +87,7 @@ bool Application::ApplicationStartup()
 	printf("Opengl Version: %d.%d Loaded\n", Major_Version, Minor_Version);
 
 	TwInit(TW_OPENGL_CORE, nullptr);
-	TwWindowSize(this->screenSize.Width, this->screenSize.Height);
+	TwWindowSize(this->screen_size.width, this->screen_size.width);
 	tweakBarMain = TwNewBar("Main");
 	tweakBarCamera = TwNewBar("Cameras");
 
@@ -100,17 +100,13 @@ bool Application::ApplicationStartup()
 	glfwSetCharCallback(this->window, OnChar);
 	glfwSetWindowSizeCallback(this->window, OnWindowResize);
 
-	if (!LoadShader(&basicProgram, "basic_vertex.glsl", "basic_fragment.glsl", nullptr ))
+	if (!LoadShader(&basicProgram, "basic_vertex.glsl", "basic_fragment.glsl", nullptr))
 	{
 		return false;
 	}
 
-	debugModes.lockCamera = false;
-	debugModes.Debug = true;
-	debugModes.Wireframe = false;
-	debugModes.ShowLines = true;
-	debugModes.ShowGrid = true;
-	debugModes.CastLines = false;
+	mode.debug = true;
+	mode.wireframe = false;
 
 	m_fDelayTimer = 0.0f;
 	m_fDelayMax = 1.0f;
@@ -118,27 +114,19 @@ bool Application::ApplicationStartup()
 	Gizmos::create();
 	glfwSetTime(0.0);
 
-	defaultBackgroundColour = glm::vec4(0.2, 0.2, 0.2, 1);
+	bgColor = glm::vec4(0.2, 0.2, 0.2, 1);
 
-	debugGridSize = 1000;
+	debugGridSize = 100;
 
 	// TweakBar Variables
-	//TwAddSeparator(m_bar, "General", "");
-	TwAddVarRO(tweakBarMain, "FPS ", TW_TYPE_FLOAT, &FPS, "group=General precision=2");
-	TwAddVarRW(tweakBarMain, "Clear Colour", TW_TYPE_COLOR4F, &defaultBackgroundColour, "group=General");
-	TwAddVarRW(tweakBarMain, "Debug ", TW_TYPE_BOOL8, &debugModes.Debug, "group=Modes");
-	TwAddVarRW(tweakBarMain, "Show Grid ", TW_TYPE_BOOL8, &debugModes.ShowGrid, "group=Grid");
+	TwAddVarRO(tweakBarMain, "FPS ", TW_TYPE_FLOAT, &time.FPS, "group=General precision=2");
+	TwAddVarRW(tweakBarMain, "Clear Colour", TW_TYPE_COLOR4F, &bgColor, "group=General");
+	TwAddVarRW(tweakBarMain, "Debug ", TW_TYPE_BOOL8, &mode.debug, "group=Modes");
+	TwAddVarRW(tweakBarMain, "Show Grid ", TW_TYPE_BOOL8, &mode.show_grid, "group=Grid");
 	TwAddVarRW(tweakBarMain, "Size ", TW_TYPE_INT32, &debugGridSize, "group=Grid");
 
-	TwAddVarRW(tweakBarMain, "Show Lines ", TW_TYPE_BOOL8, &debugModes.ShowLines, "group=Lines");
-	TwAddVarRW(tweakBarMain, "Cast Lines ", TW_TYPE_BOOL8, &debugModes.CastLines, "group=Lines");
-	//TwAddButton(m_bar, "Clear Lines", ClearLines )
-	//TwAddVarRW(m_bar, "Max Length ", TW_TYPE_INT32, &_ui_GridSize, "group=Grid");
-
-	//TwAddVarRW(m_bar, "Speed", TW_TYPE_FLOAT, &m_vListofCameras[0]->m_fSpeed, "group=Camera0");
-
 	currentCamera = 0;
-	AddFlyCamera();
+	AddCamera();
 
 	printf("************\n%s Init Complete\n", this->applicationName);
 	return true;
@@ -166,22 +154,21 @@ bool Application::Update()
 		return false;
 	}
 
-	currentGameTime = (float)glfwGetTime();
-	deltaTime = currentGameTime - previousGameTime; // prev of last frame
-	previousGameTime = currentGameTime;
+	time.current = (float)glfwGetTime();
+	time.delta_time = time.current - time.previous; // prev of last frame
+	time.previous = time.current;
 
-	FPS = 1 / deltaTime;
+	time.FPS = 1 / time.delta_time;
 
-	m_sin_wave = sinf(currentGameTime * 5) * 0.5f + 0.5f;
+	m_sin_wave = sinf(time.current * 5) * 0.5f + 0.5f;
 
 
 	if (m_fDelayTimer < m_fDelayMax)
 	{
-		m_fDelayTimer += deltaTime;
+		m_fDelayTimer += time.delta_time;
 	}
 
 	Gizmos::clear();
-	DebugUpdateLines();
 	UpdateCameras();
 	CheckInput();
 
@@ -191,7 +178,6 @@ bool Application::Update()
 void Application::DebugDraw()
 {
 	DebugDrawGrid();
-	DebugDrawLines();
 	Gizmos::draw(cameraVector[currentCamera]->GetProjectionView());
 }
 
@@ -207,9 +193,9 @@ GLFWwindow* Application::GetWindow()
 
 void Application::DebugDrawGrid()
 {
-	if (debugModes.Debug)
+	if (mode.debug)
 	{
-		if (debugModes.ShowGrid)
+		if (mode.show_grid)
 		{
 			for (int i = 0; i <= debugGridSize; ++i)
 			{
@@ -220,60 +206,19 @@ void Application::DebugDrawGrid()
 	}
 }
 
-void Application::DebugDrawLines()
-{
-	if (debugModes.Debug)
-	{
-		if (debugModes.ShowLines)
-		{
-			for (unsigned int i = 0; i < debugLinesVector.size(); ++i)
-			{
-				debugLinesVector[i]->Draw();
-			}
-		}
-	}
-}
-
-void Application::DebugUpdateLines()
-{
-	for (unsigned int i = 0; i < debugLinesVector.size(); ++i)
-	{
-		debugLinesVector[i]->Update();
-	}
-}
-
-void Application::DebugClearLines()
-{
-	debugLinesVector.clear();
-}
-
 void Application::UpdateCameras()
 {
-	cameraVector[currentCamera]->Update(deltaTime);
+	cameraVector[currentCamera]->Update(time.delta_time);
 	for (unsigned i = 0; i < cameraVector.size(); ++i)
 	{
-		if (cameraVector[i]->isActive)
-		{
-			cameraVector[i]->Update(deltaTime);
-		}
-		if (debugModes.Debug)
-		{
-			
-		}
+		cameraVector[i]->Update(time.delta_time);
 	}
 }
 
 void Application::CheckInput()
 {
 	// hotkeys.... move to own function
-	if (glfwGetMouseButton(window, 0) && debugModes.CastLines)
-	{
-		if (m_fDelayTimer >= m_fDelayMax )
-		{
-			m_fDelayTimer = 1.0f;
-			debugLinesVector.push_back(new Line(cameraVector[currentCamera]->GetPosition(), cameraVector[currentCamera]->GetForward()));
-		}
-	}
+	
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 	{
 		if (m_fDelayTimer >= m_fDelayMax)
@@ -311,25 +256,9 @@ void Application::CheckInput()
 	{
 		if (m_fDelayTimer >= m_fDelayMax)
 		{
-			AddFlyCamera();
+			AddCamera();
 			m_fDelayTimer = 0.0f;
 		}
-	}
-	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
-	{
-		if (m_fDelayTimer >= m_fDelayMax)
-		{
-			DestroyActiveCamera();
-			m_fDelayTimer = 0.0f;
-		}
-	}
-	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
-	{
-		debugModes.Debug = true;
-	}
-	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-	{
-		debugModes.Debug = false;
 	}
 }
 
@@ -337,24 +266,19 @@ void Application::DisableOtherCameras()
 {
 	if ((unsigned int)currentCamera < cameraVector.size())
 	{
-		if (!debugModes.lockCamera)
-		{
-			cameraVector[currentCamera]->isSelected = true;
-			printf("~Selected Camera : %d\n", currentCamera);
-		}
 		for (unsigned int i = 0; i < cameraVector.size(); ++i)
 		{
 			if (i != currentCamera)
 			{
-				cameraVector[i]->isSelected = false;
+				cameraVector[i]->is_selected = false;
 			}
 		}
 	}
 }
 
-void Application::AddFlyCamera()
-{	
-	this->cameraVector.push_back(new FlyCamera(cameraVector.size()));
+void Application::AddCamera()
+{
+	this->cameraVector.push_back(new Camera(screen_size));
 	currentCamera = cameraVector.size() - 1;
 	std::string _stringCamera = "group=Camera" + std::to_string(currentCamera);
 	std::string _stringMovementSpeed = std::to_string(currentCamera) + " Move";
@@ -362,16 +286,7 @@ void Application::AddFlyCamera()
 	char const* _MovementSpeed = _stringMovementSpeed.c_str();
 	char const* _RotationSpeed = _stringRotationSpeed.c_str();
 	char const* group = _stringCamera.c_str();
-	TwAddVarRW(tweakBarCamera, _MovementSpeed, TW_TYPE_FLOAT, &cameraVector[currentCamera]->movementSpeed, group);
-	TwAddVarRW(tweakBarCamera, _RotationSpeed, TW_TYPE_FLOAT, &cameraVector[currentCamera]->rotationSpeed, group);
+	TwAddVarRW(tweakBarCamera, _MovementSpeed, TW_TYPE_FLOAT, &cameraVector[currentCamera]->speed_movement, group);
+	TwAddVarRW(tweakBarCamera, _RotationSpeed, TW_TYPE_FLOAT, &cameraVector[currentCamera]->speed_rotation, group);
 	DisableOtherCameras();
-}
-
-void Application::DestroyActiveCamera()
-{
-	if (this->cameraVector.size() > 1)
-	{
-		// delete active camera
-		//this->m_vListofCameras.
-	}
 }

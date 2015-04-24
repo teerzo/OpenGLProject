@@ -106,11 +106,17 @@
     <Filter Include="Projects\Complex Game Systems\03 Advanced Nav">
       <UniqueIdentifier>{c2fb2320-5db3-421e-bb5c-fa02e473e7f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Projects\_Assignments\Shaders">
-      <UniqueIdentifier>{a2eceace-0a4a-4a3e-8cac-9dac4c53d35f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Projects\Complex Game Systems\05 GPGPU">
       <UniqueIdentifier>{e028fc3b-1399-4518-b4e7-762ad5593ad9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\_Assignments\01 Procedural Environment">
+      <UniqueIdentifier>{624a20cc-1b68-42f8-b9af-576225840731}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\_Assignments\01 Procedural Environment\Shaders">
+      <UniqueIdentifier>{a2eceace-0a4a-4a3e-8cac-9dac4c53d35f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\_Assignments\02 Checkers">
+      <UniqueIdentifier>{20313e31-1781-4353-b0b4-79530d4ff0bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -186,9 +192,6 @@
     <ClCompile Include="src\RenderTargets.cpp">
       <Filter>Projects\Computer Graphics\11 Render Targets</Filter>
     </ClCompile>
-    <ClCompile Include="src\RenderTarget.cpp">
-      <Filter>Projects\Computer Graphics\11 Render Targets</Filter>
-    </ClCompile>
     <ClCompile Include="src\PostProcessing.cpp">
       <Filter>Projects\Computer Graphics\12 Post-Processing</Filter>
     </ClCompile>
@@ -207,18 +210,22 @@
     <ClCompile Include="src\kmGUIManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ProceduralEnvironment.cpp">
-      <Filter>Projects\_Assignments</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Building.cpp">
-      <Filter>Projects\_Assignments</Filter>
-    </ClCompile>
     <ClCompile Include="src\AdvancedNavigation.cpp">
       <Filter>Projects\Complex Game Systems\03 Advanced Nav</Filter>
     </ClCompile>
     <ClCompile Include="src\PBR.cpp">
       <Filter>Projects\Computer Graphics\16 Physically-Based Lighting</Filter>
     </ClCompile>
+    <ClCompile Include="src\Building.cpp">
+      <Filter>Projects\_Assignments\01 Procedural Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProceduralEnvironment.cpp">
+      <Filter>Projects\_Assignments\01 Procedural Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="src\kmAppCheckers.cpp">
+      <Filter>Projects\_Assignments\02 Checkers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderTarget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Gizmos.h">
@@ -305,9 +312,6 @@
     <ClInclude Include="src\RenderTargets.h">
       <Filter>Projects\Computer Graphics\11 Render Targets</Filter>
     </ClInclude>
-    <ClInclude Include="src\RenderTarget.h">
-      <Filter>Projects\Computer Graphics\11 Render Targets</Filter>
-    </ClInclude>
     <ClInclude Include="src\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -326,21 +330,28 @@
     <ClInclude Include="src\kmGUIManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ProceduralEnvironment.h">
-      <Filter>Projects\_Assignments</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Building.h">
-      <Filter>Projects\_Assignments</Filter>
-    </ClInclude>
     <ClInclude Include="src\AdvancedNavigation.h">
       <Filter>Projects\Complex Game Systems\03 Advanced Nav</Filter>
     </ClInclude>
     <ClInclude Include="src\PBR.h">
       <Filter>Projects\Computer Graphics\16 Physically-Based Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="src\PerlinNoise.h">
-      <Filter>Projects\_Assignments</Filter>
+    <ClInclude Include="src\Building.h">
+      <Filter>Projects\_Assignments\01 Procedural Environment</Filter>
     </ClInclude>
+    <ClInclude Include="src\PerlinNoise.h">
+      <Filter>Projects\_Assignments\01 Procedural Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProceduralEnvironment.h">
+      <Filter>Projects\_Assignments\01 Procedural Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="src\kmLights.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\kmAppCheckers.h">
+      <Filter>Projects\_Assignments\02 Checkers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderTarget.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Hotkeys.txt" />
@@ -461,40 +472,46 @@
       <Filter>Projects\Complex Game Systems\03 Advanced Nav</Filter>
     </None>
     <None Include="data\shaders\ass1_gbuffer_vertex.glsl">
-      <Filter>Projects\_Assignments\Shaders</Filter>
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
     </None>
     <None Include="data\shaders\ass1_gbuffer_fragment.glsl">
-      <Filter>Projects\_Assignments\Shaders</Filter>
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
     </None>
     <None Include="data\shaders\ass1_composite_vertex.glsl">
-      <Filter>Projects\_Assignments\Shaders</Filter>
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
     </None>
     <None Include="data\shaders\ass1_composite_fragment.glsl">
-      <Filter>Projects\_Assignments\Shaders</Filter>
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
     </None>
     <None Include="data\shaders\ass1_directional_light_vertex.glsl">
-      <Filter>Projects\_Assignments\Shaders</Filter>
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
     </None>
     <None Include="data\shaders\ass1_directional_light_fragment.glsl">
-      <Filter>Projects\_Assignments\Shaders</Filter>
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
     </None>
     <None Include="data\shaders\ass1_point_light_vertex.glsl">
-      <Filter>Projects\_Assignments\Shaders</Filter>
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
     </None>
     <None Include="data\shaders\ass1_point_light_fragment.glsl">
-      <Filter>Projects\_Assignments\Shaders</Filter>
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
     </None>
     <None Include="data\shaders\ass1_perlin_fragment.glsl">
-      <Filter>Projects\_Assignments\Shaders</Filter>
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
     </None>
     <None Include="data\shaders\ass1_perlin_geometry.glsl">
-      <Filter>Projects\_Assignments\Shaders</Filter>
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
     </None>
     <None Include="data\shaders\ass1_perlin_update_vertex.glsl">
-      <Filter>Projects\_Assignments\Shaders</Filter>
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
     </None>
     <None Include="data\shaders\ass1_perlin_vertex.glsl">
-      <Filter>Projects\_Assignments\Shaders</Filter>
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\ass1_particle_vertex.glsl">
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
+    </None>
+    <None Include="data\shaders\ass1_particle_fragment.glsl">
+      <Filter>Projects\_Assignments\01 Procedural Environment\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

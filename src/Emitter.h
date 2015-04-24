@@ -34,10 +34,10 @@ struct Particle
 
 class Emitter
 {
-private:
+	public:
 	// Type of emitter
 	emitter_type m_type;
-	vec4 m_direction;
+	glm::vec4 m_direction;
 
 	// Particle data
 	Particle* m_particles;
@@ -70,14 +70,14 @@ private:
 	float m_Weight;
 	bool m_gravity_bool;
 	float m_gravity_value;
-	vec4 m_gravity_direction;
+	glm::vec4 m_gravity_direction;
 
 	// Force Variables
 	bool m_wind_bool;
 	float m_wind_value;
-	vec4 m_wind_direction;
+	glm::vec4 m_wind_direction;
 
-public:
+
 	Emitter();
 	~Emitter();
 
@@ -88,15 +88,15 @@ public:
 	glm::vec4 a_start_color, glm::vec4 a_end_color );
 
 	void EmitParticles();
-	void UpdateVertexData(glm::vec3 a_camera_position, glm::vec3 a_camera_up);
+	void UpdateVertexData(glm::vec3 a_camera_position, glm::vec3 a_camera_up, glm::vec4 offset );
 	void Update(float a_delta_time);
 	void Render();
 
-	void SetDirection(vec4 a_direction);
+	void SetDirection(glm::vec4 a_direction);
 	void SetWeight(float a_weight);
 	void SetGravityBool(bool a_bool);
 	void SetGravityValue(float a_gravity);
-	void SetGravityDirection(vec3 a_direction);
+	void SetGravityDirection(glm::vec3 a_direction);
 
 };
 

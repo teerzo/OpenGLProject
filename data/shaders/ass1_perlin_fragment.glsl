@@ -18,6 +18,8 @@ uniform float timer;
 uniform vec3 lava_direction;
 
 uniform float lava_height;
+uniform float dirt_height;
+uniform float rock_height;
 
 uniform sampler2D perlin_1_texture;
 uniform sampler2D dirt_texture;
@@ -52,17 +54,23 @@ void main()
 //color += lava_value *  texture ( lava_texture, (vtx_uv + vtx_uv_offset ) * 3);	
 
 
-
+	//if( vtx_pos.y < lava_height-0.5 ) {
+	//color = mix( texture( dirt_texture, (vtx_uv + vtx_uv_offset) * 5 ), texture( lava_texture, (vtx_uv + vtx_uv_offset) * 5 ), 0.8);
+	//}
 	if( vtx_pos.y < lava_height ) {
-	color = texture( lava_texture, (vtx_uv + vtx_uv_offset) * 5 );
+		color = mix( texture( dirt_texture, (vtx_uv + vtx_uv_offset) * 5 ), texture( lava_texture, (vtx_uv + vtx_uv_offset) * 5 ), 0.8);
 	}
-	else if( vtx_pos.y < 3 ) {
+	else if( vtx_pos.y < dirt_height ) {
 		color = texture( dirt_texture, vtx_uv * 5);
 		//color += mod( vtx_position.x, 2 ) * texture( grass_texture, vtx_uv * 5 );
 		//color += mod( vtx_position.z, 2 ) * texture( grass_texture, vtx_uv * 5 );
 	}
-	else {
+	else if( vtx_pos.y < rock_height ){
 		color = texture( rock_texture, vtx_uv * 5 );
+	}
+	else
+	{
+		color.w = 0;
 	}
 
 	/// $$$ ITS FUCKED

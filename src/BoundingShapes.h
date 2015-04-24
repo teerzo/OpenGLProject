@@ -43,7 +43,7 @@ public:
 	~BoundingSphere() {}
 	void fit(const std::vector<glm::vec3>& points) 
 	{
-	glm:vec3 min(1e37f), max(-1e37f);
+	glm::vec3 min(1e37f), max(-1e37f);
 
 		for (auto& p : points) {
 			if (p.x < min.x) min.x = p.x;

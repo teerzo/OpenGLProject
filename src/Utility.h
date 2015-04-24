@@ -6,8 +6,8 @@
 
 struct Screen
 {
-	int Width;
-	int Height;
+	int width;
+	int height;
 };
 
 

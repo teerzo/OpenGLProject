@@ -8,29 +8,23 @@
 
 class  Object
 {
-protected:
-
-	glm::mat4 m_WorldMatrix;
-	glm::mat4 m_LocalMatrix;
-	bool m_bIsVisible;
-		
 public:
-	virtual void Update();
-	virtual void Draw();
-
-	// Get Globals
-	glm::vec3 GetGlobalPosition();
-
-	// Set Globals
-	void SetGlobalPosition(glm::vec3 a_position);
-
-	// Get Locals
-	glm::vec3 GetLocalPosition();
-
-	// Set Locals
-	void SetLocalPosition(glm::vec3 a_position);
+	Object* parent;
+	glm::mat4 matrix_world;
+	glm::mat4 matrix_local;
+	bool is_visible;
+	bool is_active;
+		
+	void Update();
+	void Draw();
+	// Sets
+	void SetWorldPosition(const glm::vec3 position);
+	void SetLocalPosition(const glm::vec3 position);
+	// Gets
+	glm::mat4 GetWorld();
+	glm::mat4 GetLocal();
+	glm::vec3 GetForward();
+	glm::vec3 GetUp();
+	glm::vec3 GetRight();
 };
-
-
-
 #endif // _OBJECT_H_
